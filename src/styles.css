@@ -111,3 +111,10 @@
   }
   h1, h2, h3, h4 { letter-spacing: -0.01em; }
 }
+
+@media print {
+  aside, nav, .print\:hidden { display: none !important; }
+  body { background: white !important; }
+  main { padding: 0 !important; }
+}
+
