@@ -22,6 +22,12 @@ type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; roles?
 
 const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
   {
+    title: "Pilotage",
+    items: [
+      { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
+    ],
+  },
+  {
     title: "Vente",
     items: [
       { to: "/pos", label: "Caisse", icon: ShoppingCart },
@@ -30,12 +36,11 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
     ],
   },
   {
-    title: "Stock",
+    title: "Catalogue & Stock",
     items: [
-      { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
       { to: "/products", label: "Produits", icon: Package },
-      { to: "/warehouses", label: "Entrepôts", icon: Warehouse, roles: ["admin", "responsable"] },
       { to: "/movements", label: "Mouvements", icon: ArrowLeftRight },
+      { to: "/warehouses", label: "Entrepôts", icon: Warehouse, roles: ["admin", "responsable"] },
     ],
   },
   {
