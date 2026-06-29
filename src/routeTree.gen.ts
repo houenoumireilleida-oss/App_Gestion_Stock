@@ -13,7 +13,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWarehousesRouteImport } from './routes/_authenticated/warehouses'
-import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedSuppliersRouteImport } from './routes/_authenticated/suppliers'
 import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -47,11 +46,6 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedWarehousesRoute = AuthenticatedWarehousesRouteImport.update({
   id: '/warehouses',
   path: '/warehouses',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSuppliersRoute = AuthenticatedSuppliersRouteImport.update({
@@ -146,7 +140,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
-  '/users': typeof AuthenticatedUsersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
@@ -167,7 +160,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
-  '/users': typeof AuthenticatedUsersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
@@ -190,7 +182,6 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/pos': typeof AuthenticatedPosRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
-  '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
   '/_authenticated/movements/new': typeof AuthenticatedMovementsNewRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
@@ -213,7 +204,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/pos'
     | '/suppliers'
-    | '/users'
     | '/warehouses'
     | '/movements/new'
     | '/products/$id'
@@ -234,7 +224,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/pos'
     | '/suppliers'
-    | '/users'
     | '/warehouses'
     | '/movements/new'
     | '/products/$id'
@@ -256,7 +245,6 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/pos'
     | '/_authenticated/suppliers'
-    | '/_authenticated/users'
     | '/_authenticated/warehouses'
     | '/_authenticated/movements/new'
     | '/_authenticated/products/$id'
@@ -304,13 +292,6 @@ declare module '@tanstack/react-router' {
       path: '/warehouses'
       fullPath: '/warehouses'
       preLoaderRoute: typeof AuthenticatedWarehousesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/users': {
-      id: '/_authenticated/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/suppliers': {
@@ -427,7 +408,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedPosRoute: typeof AuthenticatedPosRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
-  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
   AuthenticatedMovementsNewRoute: typeof AuthenticatedMovementsNewRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
@@ -447,7 +427,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedPosRoute: AuthenticatedPosRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
-  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
   AuthenticatedMovementsNewRoute: AuthenticatedMovementsNewRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
