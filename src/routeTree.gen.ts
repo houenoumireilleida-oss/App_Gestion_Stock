@@ -13,7 +13,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWarehousesRouteImport } from './routes/_authenticated/warehouses'
-import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedSuppliersRouteImport } from './routes/_authenticated/suppliers'
 import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -23,12 +22,18 @@ import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './routes/_authenticated/purchase-orders.index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products.index'
 import { Route as AuthenticatedMovementsIndexRouteImport } from './routes/_authenticated/movements.index'
+import { Route as AuthenticatedBillingIndexRouteImport } from './routes/_authenticated/billing.index'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
 import { Route as AuthenticatedPurchaseOrdersNewRouteImport } from './routes/_authenticated/purchase-orders.new'
 import { Route as AuthenticatedPurchaseOrdersIdRouteImport } from './routes/_authenticated/purchase-orders.$id'
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated/products.new'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated/products.$id'
 import { Route as AuthenticatedMovementsNewRouteImport } from './routes/_authenticated/movements.new'
+import { Route as AuthenticatedBillingSettingsRouteImport } from './routes/_authenticated/billing.settings'
+import { Route as AuthenticatedBillingNewRouteImport } from './routes/_authenticated/billing.new'
+import { Route as AuthenticatedBillingIdRouteImport } from './routes/_authenticated/billing.$id'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
+import { Route as AuthenticatedAdminRolesRouteImport } from './routes/_authenticated/admin.roles'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -47,11 +52,6 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedWarehousesRoute = AuthenticatedWarehousesRouteImport.update({
   id: '/warehouses',
   path: '/warehouses',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSuppliersRoute = AuthenticatedSuppliersRouteImport.update({
@@ -103,6 +103,12 @@ const AuthenticatedMovementsIndexRoute =
     path: '/movements/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBillingIndexRoute =
+  AuthenticatedBillingIndexRouteImport.update({
+    id: '/billing/',
+    path: '/billing/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSalesIdRoute = AuthenticatedSalesIdRouteImport.update({
   id: '/sales/$id',
   path: '/sales/$id',
@@ -137,6 +143,32 @@ const AuthenticatedMovementsNewRoute =
     path: '/movements/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBillingSettingsRoute =
+  AuthenticatedBillingSettingsRouteImport.update({
+    id: '/billing/settings',
+    path: '/billing/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBillingNewRoute = AuthenticatedBillingNewRouteImport.update({
+  id: '/billing/new',
+  path: '/billing/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBillingIdRoute = AuthenticatedBillingIdRouteImport.update({
+  id: '/billing/$id',
+  path: '/billing/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRolesRoute = AuthenticatedAdminRolesRouteImport.update({
+  id: '/admin/roles',
+  path: '/admin/roles',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -146,14 +178,19 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
-  '/users': typeof AuthenticatedUsersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
+  '/admin/roles': typeof AuthenticatedAdminRolesRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/billing/$id': typeof AuthenticatedBillingIdRoute
+  '/billing/new': typeof AuthenticatedBillingNewRoute
+  '/billing/settings': typeof AuthenticatedBillingSettingsRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/purchase-orders/$id': typeof AuthenticatedPurchaseOrdersIdRoute
   '/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
+  '/billing/': typeof AuthenticatedBillingIndexRoute
   '/movements/': typeof AuthenticatedMovementsIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -167,14 +204,19 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
-  '/users': typeof AuthenticatedUsersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
+  '/admin/roles': typeof AuthenticatedAdminRolesRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/billing/$id': typeof AuthenticatedBillingIdRoute
+  '/billing/new': typeof AuthenticatedBillingNewRoute
+  '/billing/settings': typeof AuthenticatedBillingSettingsRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/purchase-orders/$id': typeof AuthenticatedPurchaseOrdersIdRoute
   '/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
+  '/billing': typeof AuthenticatedBillingIndexRoute
   '/movements': typeof AuthenticatedMovementsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/purchase-orders': typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -190,14 +232,19 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/pos': typeof AuthenticatedPosRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
-  '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
+  '/_authenticated/admin/roles': typeof AuthenticatedAdminRolesRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/billing/$id': typeof AuthenticatedBillingIdRoute
+  '/_authenticated/billing/new': typeof AuthenticatedBillingNewRoute
+  '/_authenticated/billing/settings': typeof AuthenticatedBillingSettingsRoute
   '/_authenticated/movements/new': typeof AuthenticatedMovementsNewRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/purchase-orders/$id': typeof AuthenticatedPurchaseOrdersIdRoute
   '/_authenticated/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
+  '/_authenticated/billing/': typeof AuthenticatedBillingIndexRoute
   '/_authenticated/movements/': typeof AuthenticatedMovementsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -213,14 +260,19 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/pos'
     | '/suppliers'
-    | '/users'
     | '/warehouses'
+    | '/admin/roles'
+    | '/admin/users'
+    | '/billing/$id'
+    | '/billing/new'
+    | '/billing/settings'
     | '/movements/new'
     | '/products/$id'
     | '/products/new'
     | '/purchase-orders/$id'
     | '/purchase-orders/new'
     | '/sales/$id'
+    | '/billing/'
     | '/movements/'
     | '/products/'
     | '/purchase-orders/'
@@ -234,14 +286,19 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/pos'
     | '/suppliers'
-    | '/users'
     | '/warehouses'
+    | '/admin/roles'
+    | '/admin/users'
+    | '/billing/$id'
+    | '/billing/new'
+    | '/billing/settings'
     | '/movements/new'
     | '/products/$id'
     | '/products/new'
     | '/purchase-orders/$id'
     | '/purchase-orders/new'
     | '/sales/$id'
+    | '/billing'
     | '/movements'
     | '/products'
     | '/purchase-orders'
@@ -256,14 +313,19 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/pos'
     | '/_authenticated/suppliers'
-    | '/_authenticated/users'
     | '/_authenticated/warehouses'
+    | '/_authenticated/admin/roles'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/billing/$id'
+    | '/_authenticated/billing/new'
+    | '/_authenticated/billing/settings'
     | '/_authenticated/movements/new'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
     | '/_authenticated/purchase-orders/$id'
     | '/_authenticated/purchase-orders/new'
     | '/_authenticated/sales/$id'
+    | '/_authenticated/billing/'
     | '/_authenticated/movements/'
     | '/_authenticated/products/'
     | '/_authenticated/purchase-orders/'
@@ -304,13 +366,6 @@ declare module '@tanstack/react-router' {
       path: '/warehouses'
       fullPath: '/warehouses'
       preLoaderRoute: typeof AuthenticatedWarehousesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/users': {
-      id: '/_authenticated/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/suppliers': {
@@ -376,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMovementsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/billing/': {
+      id: '/_authenticated/billing/'
+      path: '/billing'
+      fullPath: '/billing/'
+      preLoaderRoute: typeof AuthenticatedBillingIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/sales/$id': {
       id: '/_authenticated/sales/$id'
       path: '/sales/$id'
@@ -418,6 +480,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMovementsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/billing/settings': {
+      id: '/_authenticated/billing/settings'
+      path: '/billing/settings'
+      fullPath: '/billing/settings'
+      preLoaderRoute: typeof AuthenticatedBillingSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/billing/new': {
+      id: '/_authenticated/billing/new'
+      path: '/billing/new'
+      fullPath: '/billing/new'
+      preLoaderRoute: typeof AuthenticatedBillingNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/billing/$id': {
+      id: '/_authenticated/billing/$id'
+      path: '/billing/$id'
+      fullPath: '/billing/$id'
+      preLoaderRoute: typeof AuthenticatedBillingIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/roles': {
+      id: '/_authenticated/admin/roles'
+      path: '/admin/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AuthenticatedAdminRolesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -427,14 +524,19 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedPosRoute: typeof AuthenticatedPosRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
-  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
+  AuthenticatedAdminRolesRoute: typeof AuthenticatedAdminRolesRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedBillingIdRoute: typeof AuthenticatedBillingIdRoute
+  AuthenticatedBillingNewRoute: typeof AuthenticatedBillingNewRoute
+  AuthenticatedBillingSettingsRoute: typeof AuthenticatedBillingSettingsRoute
   AuthenticatedMovementsNewRoute: typeof AuthenticatedMovementsNewRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedPurchaseOrdersIdRoute: typeof AuthenticatedPurchaseOrdersIdRoute
   AuthenticatedPurchaseOrdersNewRoute: typeof AuthenticatedPurchaseOrdersNewRoute
   AuthenticatedSalesIdRoute: typeof AuthenticatedSalesIdRoute
+  AuthenticatedBillingIndexRoute: typeof AuthenticatedBillingIndexRoute
   AuthenticatedMovementsIndexRoute: typeof AuthenticatedMovementsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedPurchaseOrdersIndexRoute: typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -447,14 +549,19 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedPosRoute: AuthenticatedPosRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
-  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
+  AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedBillingIdRoute: AuthenticatedBillingIdRoute,
+  AuthenticatedBillingNewRoute: AuthenticatedBillingNewRoute,
+  AuthenticatedBillingSettingsRoute: AuthenticatedBillingSettingsRoute,
   AuthenticatedMovementsNewRoute: AuthenticatedMovementsNewRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
   AuthenticatedPurchaseOrdersIdRoute: AuthenticatedPurchaseOrdersIdRoute,
   AuthenticatedPurchaseOrdersNewRoute: AuthenticatedPurchaseOrdersNewRoute,
   AuthenticatedSalesIdRoute: AuthenticatedSalesIdRoute,
+  AuthenticatedBillingIndexRoute: AuthenticatedBillingIndexRoute,
   AuthenticatedMovementsIndexRoute: AuthenticatedMovementsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedPurchaseOrdersIndexRoute: AuthenticatedPurchaseOrdersIndexRoute,

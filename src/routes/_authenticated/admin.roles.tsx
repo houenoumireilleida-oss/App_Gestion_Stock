@@ -7,9 +7,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { ShieldAlert } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/users")({
-  head: () => ({ meta: [{ title: "Utilisateurs & rôles — StockFlow" }] }),
-  component: UsersPage,
+export const Route = createFileRoute("/_authenticated/admin/roles")({
+  head: () => ({ meta: [{ title: "Rôles — StockFlow" }] }),
+  component: RolesPage,
 });
 
 type Profile = { user_id: string; display_name: string };
@@ -29,7 +29,7 @@ async function fetchAllRoles(): Promise<Row[]> {
 
 const ALL_ROLES: AppRole[] = ["admin", "responsable", "vendeur"];
 
-function UsersPage() {
+function RolesPage() {
   const { data: myRoles } = useMyRoles();
   const qc = useQueryClient();
   const profiles = useQuery({ queryKey: ["profiles"], queryFn: fetchProfiles });
@@ -67,8 +67,8 @@ function UsersPage() {
   return (
     <div className="p-6 lg:p-10 space-y-6 max-w-4xl">
       <header>
-        <h1 className="text-3xl font-semibold tracking-tight">Utilisateurs & rôles</h1>
-        <p className="text-muted-foreground mt-1">Accordez les permissions par utilisateur. Les nouveaux comptes sont vendeurs par défaut.</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Rôles & permissions</h1>
+        <p className="text-muted-foreground mt-1">Accordez les permissions par utilisateur.</p>
       </header>
       <Card className="overflow-hidden">
         <table className="w-full text-sm">
