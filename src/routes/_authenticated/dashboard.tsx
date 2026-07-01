@@ -136,6 +136,8 @@ function Dashboard() {
           )}
         </Card>
       </section>
+      </div>
     </div>
   );
 }
+
