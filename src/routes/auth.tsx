@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Boxes } from "lucide-react";
+import { Boxes, Sparkles, ShieldCheck, Zap } from "lucide-react";
+import heroImg from "@/assets/auth-hero.jpg";
+
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
