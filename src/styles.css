@@ -128,9 +128,35 @@
   h1, h2, h3, h4 { letter-spacing: -0.01em; }
 }
 
+.hero-gradient { background: var(--gradient-hero); }
+.accent-gradient { background: var(--gradient-accent); }
+.surface-gradient { background: var(--gradient-surface); }
+.shadow-elegant { box-shadow: var(--shadow-elegant); }
+.shadow-glow { box-shadow: var(--shadow-glow); }
+.shadow-card { box-shadow: var(--shadow-card); }
+
+.glass {
+  background: color-mix(in oklab, white 70%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid color-mix(in oklab, white 60%, transparent);
+}
+.glass-dark {
+  background: color-mix(in oklab, black 35%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid color-mix(in oklab, white 12%, transparent);
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
 @media print {
   aside, nav, .print\:hidden { display: none !important; }
   body { background: white !important; }
   main { padding: 0 !important; }
 }
+
 
