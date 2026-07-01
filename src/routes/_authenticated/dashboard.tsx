@@ -2,8 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts, fetchWarehouses, fetchStockLevels, fetchMovements, formatMoney, formatDate, MOVEMENT_LABEL } from "@/lib/stock";
 import { Card } from "@/components/ui/card";
-import { Package, Warehouse, AlertTriangle, TrendingUp, ArrowDownRight, ArrowUpRight, RefreshCw, ArrowLeftRight } from "lucide-react";
+import { Package, Warehouse, AlertTriangle, TrendingUp, ArrowDownRight, ArrowUpRight, RefreshCw, ArrowLeftRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroBg from "@/assets/dashboard-hero.jpg";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Tableau de bord — StockFlow" }] }),
@@ -45,27 +47,39 @@ function Dashboard() {
   } as const;
 
   return (
-    <div className="p-6 lg:p-10 space-y-8 max-w-7xl">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight">Tableau de bord</h1>
-        <p className="text-muted-foreground mt-1">Vue d'ensemble de votre catalogue et de votre stock.</p>
-      </header>
+    <div className="min-h-full">
+      {/* Hero */}
+      <div className="relative overflow-hidden">
+        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-90" />
+        <div className="absolute inset-0 hero-gradient opacity-85" />
+        <div className="absolute inset-0" style={{ background: "var(--gradient-glow)" }} />
+        <div className="relative p-6 lg:p-10 max-w-7xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-dark text-xs text-white/90 mb-4">
+            <Sparkles className="size-3 text-sidebar-primary" />
+            Vue d'ensemble en temps réel
+          </div>
+          <h1 className="text-4xl font-semibold tracking-tight text-white">Tableau de bord</h1>
+          <p className="text-white/70 mt-2 max-w-2xl">Votre catalogue, vos entrepôts et vos mouvements de stock, tout au même endroit.</p>
+        </div>
+      </div>
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map(s => (
-          <Card key={s.label} className="p-5">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">{s.label}</p>
-                <p className="text-2xl font-semibold mt-2">{s.value}</p>
+      <div className="p-6 lg:p-10 space-y-8 max-w-7xl -mt-10 relative">
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map(s => (
+            <Card key={s.label} className="p-5 shadow-card border-border/60 hover:shadow-elegant transition-shadow">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">{s.label}</p>
+                  <p className="text-2xl font-semibold mt-2 tracking-tight">{s.value}</p>
+                </div>
+                <div className={`size-11 rounded-xl grid place-items-center ${s.tone}`}>
+                  <s.icon className="size-5" />
+                </div>
               </div>
-              <div className={`size-10 rounded-lg grid place-items-center ${s.tone}`}>
-                <s.icon className="size-5" />
-              </div>
-            </div>
-          </Card>
-        ))}
-      </section>
+            </Card>
+          ))}
+        </section>
+
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="p-6 lg:col-span-2">
@@ -122,6 +136,8 @@ function Dashboard() {
           )}
         </Card>
       </section>
+      </div>
     </div>
   );
 }
+
