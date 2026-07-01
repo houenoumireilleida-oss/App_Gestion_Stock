@@ -2,8 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts, fetchWarehouses, fetchStockLevels, fetchMovements, formatMoney, formatDate, MOVEMENT_LABEL } from "@/lib/stock";
 import { Card } from "@/components/ui/card";
-import { Package, Warehouse, AlertTriangle, TrendingUp, ArrowDownRight, ArrowUpRight, RefreshCw, ArrowLeftRight } from "lucide-react";
+import { Package, Warehouse, AlertTriangle, TrendingUp, ArrowDownRight, ArrowUpRight, RefreshCw, ArrowLeftRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import heroBg from "@/assets/dashboard-hero.jpg";
+
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Tableau de bord — StockFlow" }] }),
