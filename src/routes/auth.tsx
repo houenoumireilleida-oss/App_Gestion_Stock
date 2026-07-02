@@ -22,7 +22,6 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,17 +30,8 @@ function AuthPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email, password,
-          options: { emailRedirectTo: `${window.location.origin}/dashboard` },
-        });
-        if (error) throw error;
-        toast.success("Compte créé. Connexion en cours…");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
       navigate({ to: "/dashboard" });
     } catch (err: any) {
       toast.error(err.message ?? "Erreur d'authentification");
@@ -107,10 +97,10 @@ function AuthPage() {
             StockFlow
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">
-            {mode === "signin" ? "Bon retour parmi nous" : "Créer un compte"}
+            Bon retour parmi nous
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {mode === "signin" ? "Accédez à votre espace de gestion." : "Rejoignez votre équipe."}
+            Accédez à votre espace de gestion.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -125,22 +115,11 @@ function AuthPage() {
                 value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <Button type="submit" disabled={loading} className="w-full accent-gradient text-white border-0 hover:opacity-90 shadow-glow">
-              {loading ? "…" : mode === "signin" ? "Se connecter" : "Créer le compte"}
+              {loading ? "…" : "Se connecter"}
             </Button>
           </form>
-
-          <button
-            type="button"
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="mt-4 text-sm text-muted-foreground hover:text-foreground w-full text-center"
-          >
-            {mode === "signin"
-              ? "Pas encore de compte ? Créer un compte"
-              : "Déjà inscrit ? Se connecter"}
-          </button>
         </Card>
       </div>
     </div>
   );
 }
-
