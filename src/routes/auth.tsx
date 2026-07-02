@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Boxes, Sparkles, ShieldCheck, Zap } from "lucide-react";
+import { Boxes, Sparkles, ShieldCheck, Zap, Eye, EyeOff } from "lucide-react";
 import heroImg from "@/assets/auth-hero.jpg";
 
 
@@ -22,17 +22,34 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      navigate({ to: "/dashboard" });
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: { display_name: displayName || email.split("@")[0] },
+          },
+        });
+        if (error) throw error;
+        toast.success("Compte créé — connectez-vous.");
+        setMode("signin");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        navigate({ to: "/dashboard" });
+      }
     } catch (err: any) {
       toast.error(err.message ?? "Erreur d'authentification");
     } finally {
@@ -97,13 +114,22 @@ function AuthPage() {
             StockFlow
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Bon retour parmi nous
+            {mode === "signin" ? "Bon retour parmi nous" : "Créer un compte"}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Accédez à votre espace de gestion.
+            {mode === "signin"
+              ? "Accédez à votre espace de gestion."
+              : "Le premier compte créé devient administrateur."}
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            {mode === "signup" && (
+              <div className="space-y-2">
+                <Label htmlFor="name">Nom affiché</Label>
+                <Input id="name" value={displayName}
+                  onChange={e => setDisplayName(e.target.value)} placeholder="Prénom Nom" />
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">E-mail professionnel</Label>
               <Input id="email" type="email" required value={email}
@@ -111,13 +137,36 @@ function AuthPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
-              <Input id="password" type="password" required minLength={6}
-                value={password} onChange={e => setPassword(e.target.value)} />
+              <div className="relative">
+                <Input id="password" type={showPassword ? "text" : "password"} required minLength={6}
+                  value={password} onChange={e => setPassword(e.target.value)}
+                  className="pr-10" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              </div>
             </div>
             <Button type="submit" disabled={loading} className="w-full accent-gradient text-white border-0 hover:opacity-90 shadow-glow">
-              {loading ? "…" : "Se connecter"}
+              {loading ? "…" : mode === "signin" ? "Se connecter" : "Créer le compte"}
             </Button>
           </form>
+
+          <div className="mt-6 text-center text-sm text-muted-foreground">
+            {mode === "signin" ? (
+              <button type="button" onClick={() => setMode("signup")} className="hover:text-foreground underline underline-offset-4">
+                Pas encore de compte ? Créer un compte
+              </button>
+            ) : (
+              <button type="button" onClick={() => setMode("signin")} className="hover:text-foreground underline underline-offset-4">
+                Déjà un compte ? Se connecter
+              </button>
+            )}
+          </div>
         </Card>
       </div>
     </div>
