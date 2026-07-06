@@ -121,6 +121,7 @@ function AuthLayout() {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
+            <NotificationBell />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="text-sidebar-foreground hover:bg-sidebar-accent/40 hover:text-sidebar-foreground gap-2">
