@@ -85,7 +85,7 @@ export async function declareDefective(input: {
     _product_id: input.product_id, _warehouse_id: input.warehouse_id,
     _quantity: input.quantity, _severity: input.severity,
     _category: input.category, _reason: input.reason,
-    _evidence_url: input.evidence_url ?? null,
+    _evidence_url: input.evidence_url ?? "",
   });
   if (error) throw error;
   return data as string;
