@@ -35,7 +35,8 @@ const NAV: NavSection[] = [
   { key: "sell", title: "Vente", items: [
     { to: "/pos", label: "Caisse", icon: ShoppingCart },
     { to: "/sales", label: "Ventes", icon: Receipt },
-    { to: "/cash-sessions", label: "Sessions de caisse", icon: Wallet },
+    { to: "/cash-sessions", label: "Sessions & Clôture Z", icon: Wallet },
+    { to: "/returns", label: "Retours clients", icon: Undo2 },
   ]},
   { key: "billing", title: "Facturation", items: [
     { to: "/billing", label: "Factures", icon: FileText },
@@ -45,7 +46,12 @@ const NAV: NavSection[] = [
   { key: "inventory", title: "Stock", items: [
     { to: "/products", label: "Produits", icon: Package },
     { to: "/movements", label: "Mouvements", icon: ArrowLeftRight },
+    { to: "/defective", label: "Défectueux", icon: AlertTriangle },
+    { to: "/destocking", label: "Déstockage", icon: PackageMinus },
     { to: "/warehouses", label: "Entrepôts", icon: Warehouse, roles: ["admin","responsable"] },
+  ]},
+  { key: "finance", title: "Finances", items: [
+    { to: "/disbursement", label: "Décaissements", icon: Banknote },
   ]},
   { key: "purchasing", title: "Achats", items: [
     { to: "/suppliers", label: "Fournisseurs", icon: Truck, roles: ["admin","responsable"] },
