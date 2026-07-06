@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { PackageMinus, Plus, Check, X } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/destocking")({
+export const Route = createFileRoute("/_authenticated/destocking/")({
   head: () => ({ meta: [{ title: "Déstockage — StockFlow" }] }),
   component: DestockingPage,
 });
