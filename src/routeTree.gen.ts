@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWarehousesRouteImport } from './routes/_authenticated/warehouses'
 import { Route as AuthenticatedSuppliersRouteImport } from './routes/_authenticated/suppliers'
 import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedCashSessionsRouteImport } from './routes/_authenticated/cash-sessions'
@@ -72,6 +73,12 @@ const AuthenticatedPosRoute = AuthenticatedPosRouteImport.update({
   path: '/pos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -231,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
@@ -265,6 +273,7 @@ export interface FileRoutesByTo {
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
@@ -301,6 +310,7 @@ export interface FileRoutesById {
   '/_authenticated/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/pos': typeof AuthenticatedPosRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
     | '/cash-sessions'
     | '/customers'
     | '/dashboard'
+    | '/notifications'
     | '/pos'
     | '/suppliers'
     | '/warehouses'
@@ -371,6 +382,7 @@ export interface FileRouteTypes {
     | '/cash-sessions'
     | '/customers'
     | '/dashboard'
+    | '/notifications'
     | '/pos'
     | '/suppliers'
     | '/warehouses'
@@ -406,6 +418,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cash-sessions'
     | '/_authenticated/customers'
     | '/_authenticated/dashboard'
+    | '/_authenticated/notifications'
     | '/_authenticated/pos'
     | '/_authenticated/suppliers'
     | '/_authenticated/warehouses'
@@ -483,6 +496,13 @@ declare module '@tanstack/react-router' {
       path: '/pos'
       fullPath: '/pos'
       preLoaderRoute: typeof AuthenticatedPosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -681,6 +701,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCashSessionsRoute: typeof AuthenticatedCashSessionsRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPosRoute: typeof AuthenticatedPosRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
@@ -714,6 +735,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCashSessionsRoute: AuthenticatedCashSessionsRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPosRoute: AuthenticatedPosRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
