@@ -22,6 +22,7 @@ import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './routes/_authenticated/purchase-orders.index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products.index'
 import { Route as AuthenticatedMovementsIndexRouteImport } from './routes/_authenticated/movements.index'
+import { Route as AuthenticatedDefectiveIndexRouteImport } from './routes/_authenticated/defective.index'
 import { Route as AuthenticatedBillingIndexRouteImport } from './routes/_authenticated/billing.index'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
 import { Route as AuthenticatedPurchaseOrdersNewRouteImport } from './routes/_authenticated/purchase-orders.new'
@@ -101,6 +102,12 @@ const AuthenticatedMovementsIndexRoute =
   AuthenticatedMovementsIndexRouteImport.update({
     id: '/movements/',
     path: '/movements/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDefectiveIndexRoute =
+  AuthenticatedDefectiveIndexRouteImport.update({
+    id: '/defective/',
+    path: '/defective/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBillingIndexRoute =
@@ -191,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/billing/': typeof AuthenticatedBillingIndexRoute
+  '/defective/': typeof AuthenticatedDefectiveIndexRoute
   '/movements/': typeof AuthenticatedMovementsIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -217,6 +225,7 @@ export interface FileRoutesByTo {
   '/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/billing': typeof AuthenticatedBillingIndexRoute
+  '/defective': typeof AuthenticatedDefectiveIndexRoute
   '/movements': typeof AuthenticatedMovementsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/purchase-orders': typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -245,6 +254,7 @@ export interface FileRoutesById {
   '/_authenticated/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/billing/': typeof AuthenticatedBillingIndexRoute
+  '/_authenticated/defective/': typeof AuthenticatedDefectiveIndexRoute
   '/_authenticated/movements/': typeof AuthenticatedMovementsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/purchase-orders/new'
     | '/sales/$id'
     | '/billing/'
+    | '/defective/'
     | '/movements/'
     | '/products/'
     | '/purchase-orders/'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/purchase-orders/new'
     | '/sales/$id'
     | '/billing'
+    | '/defective'
     | '/movements'
     | '/products'
     | '/purchase-orders'
@@ -326,6 +338,7 @@ export interface FileRouteTypes {
     | '/_authenticated/purchase-orders/new'
     | '/_authenticated/sales/$id'
     | '/_authenticated/billing/'
+    | '/_authenticated/defective/'
     | '/_authenticated/movements/'
     | '/_authenticated/products/'
     | '/_authenticated/purchase-orders/'
@@ -429,6 +442,13 @@ declare module '@tanstack/react-router' {
       path: '/movements'
       fullPath: '/movements/'
       preLoaderRoute: typeof AuthenticatedMovementsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/defective/': {
+      id: '/_authenticated/defective/'
+      path: '/defective'
+      fullPath: '/defective/'
+      preLoaderRoute: typeof AuthenticatedDefectiveIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/billing/': {
@@ -537,6 +557,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPurchaseOrdersNewRoute: typeof AuthenticatedPurchaseOrdersNewRoute
   AuthenticatedSalesIdRoute: typeof AuthenticatedSalesIdRoute
   AuthenticatedBillingIndexRoute: typeof AuthenticatedBillingIndexRoute
+  AuthenticatedDefectiveIndexRoute: typeof AuthenticatedDefectiveIndexRoute
   AuthenticatedMovementsIndexRoute: typeof AuthenticatedMovementsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedPurchaseOrdersIndexRoute: typeof AuthenticatedPurchaseOrdersIndexRoute
@@ -562,6 +583,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPurchaseOrdersNewRoute: AuthenticatedPurchaseOrdersNewRoute,
   AuthenticatedSalesIdRoute: AuthenticatedSalesIdRoute,
   AuthenticatedBillingIndexRoute: AuthenticatedBillingIndexRoute,
+  AuthenticatedDefectiveIndexRoute: AuthenticatedDefectiveIndexRoute,
   AuthenticatedMovementsIndexRoute: AuthenticatedMovementsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedPurchaseOrdersIndexRoute: AuthenticatedPurchaseOrdersIndexRoute,

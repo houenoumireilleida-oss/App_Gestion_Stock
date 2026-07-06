@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { AlertTriangle, Plus, Check, X } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/defective")({
+export const Route = createFileRoute("/_authenticated/defective/")({
   head: () => ({ meta: [{ title: "Défectueux — StockFlow" }] }),
   component: DefectivePage,
 });
