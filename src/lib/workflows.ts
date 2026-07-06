@@ -66,10 +66,10 @@ export type NotificationRow = {
 };
 
 // ============ FETCHERS ============
-async function list<T>(table: string): Promise<T[]> {
-  const { data, error } = await supabase.from(table as never).select("*").order("created_at", { ascending: false });
+async function list<T>(table: "defective_items" | "destocking_requests" | "disbursement_requests" | "customer_returns"): Promise<T[]> {
+  const { data, error } = await supabase.from(table).select("*").order("created_at", { ascending: false });
   if (error) throw error;
-  return (data ?? []) as T[];
+  return (data ?? []) as unknown as T[];
 }
 export const fetchDefective = () => list<DefectiveItem>("defective_items");
 export const fetchDestocking = () => list<DestockingRequest>("destocking_requests");
