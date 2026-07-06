@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   LayoutDashboard, Package, Warehouse, ArrowLeftRight, Boxes, LogOut,
   ShoppingCart, Receipt, Truck, ClipboardList, Users, Wallet, Shield,
-  FileText, ChevronDown, Settings, UserPlus,
+  FileText, ChevronDown, Settings, UserPlus, AlertTriangle, PackageMinus,
+  Undo2, Banknote,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -12,6 +13,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NotificationBell } from "@/components/NotificationBell";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
