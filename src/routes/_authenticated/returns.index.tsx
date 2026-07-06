@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Undo2, Plus, Check, X } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/returns")({
+export const Route = createFileRoute("/_authenticated/returns/")({
   head: () => ({ meta: [{ title: "Retours clients — StockFlow" }] }),
   component: ReturnsPage,
 });
