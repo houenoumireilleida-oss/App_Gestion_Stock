@@ -31,6 +31,7 @@ import { Route as AuthenticatedPurchaseOrdersIdRouteImport } from './routes/_aut
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated/products.new'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated/products.$id'
 import { Route as AuthenticatedMovementsNewRouteImport } from './routes/_authenticated/movements.new'
+import { Route as AuthenticatedDestockingNewRouteImport } from './routes/_authenticated/destocking.new'
 import { Route as AuthenticatedDefectiveNewRouteImport } from './routes/_authenticated/defective.new'
 import { Route as AuthenticatedBillingSettingsRouteImport } from './routes/_authenticated/billing.settings'
 import { Route as AuthenticatedBillingNewRouteImport } from './routes/_authenticated/billing.new'
@@ -158,6 +159,12 @@ const AuthenticatedMovementsNewRoute =
     path: '/movements/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDestockingNewRoute =
+  AuthenticatedDestockingNewRouteImport.update({
+    id: '/destocking/new',
+    path: '/destocking/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDefectiveNewRoute =
   AuthenticatedDefectiveNewRouteImport.update({
     id: '/defective/new',
@@ -206,6 +213,7 @@ export interface FileRoutesByFullPath {
   '/billing/new': typeof AuthenticatedBillingNewRoute
   '/billing/settings': typeof AuthenticatedBillingSettingsRoute
   '/defective/new': typeof AuthenticatedDefectiveNewRoute
+  '/destocking/new': typeof AuthenticatedDestockingNewRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
@@ -235,6 +243,7 @@ export interface FileRoutesByTo {
   '/billing/new': typeof AuthenticatedBillingNewRoute
   '/billing/settings': typeof AuthenticatedBillingSettingsRoute
   '/defective/new': typeof AuthenticatedDefectiveNewRoute
+  '/destocking/new': typeof AuthenticatedDestockingNewRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
@@ -266,6 +275,7 @@ export interface FileRoutesById {
   '/_authenticated/billing/new': typeof AuthenticatedBillingNewRoute
   '/_authenticated/billing/settings': typeof AuthenticatedBillingSettingsRoute
   '/_authenticated/defective/new': typeof AuthenticatedDefectiveNewRoute
+  '/_authenticated/destocking/new': typeof AuthenticatedDestockingNewRoute
   '/_authenticated/movements/new': typeof AuthenticatedMovementsNewRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
@@ -297,6 +307,7 @@ export interface FileRouteTypes {
     | '/billing/new'
     | '/billing/settings'
     | '/defective/new'
+    | '/destocking/new'
     | '/movements/new'
     | '/products/$id'
     | '/products/new'
@@ -326,6 +337,7 @@ export interface FileRouteTypes {
     | '/billing/new'
     | '/billing/settings'
     | '/defective/new'
+    | '/destocking/new'
     | '/movements/new'
     | '/products/$id'
     | '/products/new'
@@ -356,6 +368,7 @@ export interface FileRouteTypes {
     | '/_authenticated/billing/new'
     | '/_authenticated/billing/settings'
     | '/_authenticated/defective/new'
+    | '/_authenticated/destocking/new'
     | '/_authenticated/movements/new'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
@@ -533,6 +546,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMovementsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/destocking/new': {
+      id: '/_authenticated/destocking/new'
+      path: '/destocking/new'
+      fullPath: '/destocking/new'
+      preLoaderRoute: typeof AuthenticatedDestockingNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/defective/new': {
       id: '/_authenticated/defective/new'
       path: '/defective/new'
@@ -591,6 +611,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBillingNewRoute: typeof AuthenticatedBillingNewRoute
   AuthenticatedBillingSettingsRoute: typeof AuthenticatedBillingSettingsRoute
   AuthenticatedDefectiveNewRoute: typeof AuthenticatedDefectiveNewRoute
+  AuthenticatedDestockingNewRoute: typeof AuthenticatedDestockingNewRoute
   AuthenticatedMovementsNewRoute: typeof AuthenticatedMovementsNewRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
@@ -619,6 +640,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBillingNewRoute: AuthenticatedBillingNewRoute,
   AuthenticatedBillingSettingsRoute: AuthenticatedBillingSettingsRoute,
   AuthenticatedDefectiveNewRoute: AuthenticatedDefectiveNewRoute,
+  AuthenticatedDestockingNewRoute: AuthenticatedDestockingNewRoute,
   AuthenticatedMovementsNewRoute: AuthenticatedMovementsNewRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
