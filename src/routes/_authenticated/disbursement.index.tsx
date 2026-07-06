@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Wallet, Plus, Check, X, FileText, Banknote } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/disbursement")({
+export const Route = createFileRoute("/_authenticated/disbursement/")({
   head: () => ({ meta: [{ title: "Décaissements — StockFlow" }] }),
   component: DisbPage,
 });
