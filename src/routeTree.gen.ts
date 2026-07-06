@@ -15,20 +15,29 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWarehousesRouteImport } from './routes/_authenticated/warehouses'
 import { Route as AuthenticatedSuppliersRouteImport } from './routes/_authenticated/suppliers'
 import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedCashSessionsRouteImport } from './routes/_authenticated/cash-sessions'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
+import { Route as AuthenticatedReturnsIndexRouteImport } from './routes/_authenticated/returns.index'
 import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './routes/_authenticated/purchase-orders.index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products.index'
 import { Route as AuthenticatedMovementsIndexRouteImport } from './routes/_authenticated/movements.index'
+import { Route as AuthenticatedDisbursementIndexRouteImport } from './routes/_authenticated/disbursement.index'
+import { Route as AuthenticatedDestockingIndexRouteImport } from './routes/_authenticated/destocking.index'
+import { Route as AuthenticatedDefectiveIndexRouteImport } from './routes/_authenticated/defective.index'
 import { Route as AuthenticatedBillingIndexRouteImport } from './routes/_authenticated/billing.index'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
+import { Route as AuthenticatedReturnsNewRouteImport } from './routes/_authenticated/returns.new'
 import { Route as AuthenticatedPurchaseOrdersNewRouteImport } from './routes/_authenticated/purchase-orders.new'
 import { Route as AuthenticatedPurchaseOrdersIdRouteImport } from './routes/_authenticated/purchase-orders.$id'
 import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated/products.new'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated/products.$id'
 import { Route as AuthenticatedMovementsNewRouteImport } from './routes/_authenticated/movements.new'
+import { Route as AuthenticatedDisbursementNewRouteImport } from './routes/_authenticated/disbursement.new'
+import { Route as AuthenticatedDestockingNewRouteImport } from './routes/_authenticated/destocking.new'
+import { Route as AuthenticatedDefectiveNewRouteImport } from './routes/_authenticated/defective.new'
 import { Route as AuthenticatedBillingSettingsRouteImport } from './routes/_authenticated/billing.settings'
 import { Route as AuthenticatedBillingNewRouteImport } from './routes/_authenticated/billing.new'
 import { Route as AuthenticatedBillingIdRouteImport } from './routes/_authenticated/billing.$id'
@@ -64,6 +73,12 @@ const AuthenticatedPosRoute = AuthenticatedPosRouteImport.update({
   path: '/pos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -85,6 +100,12 @@ const AuthenticatedSalesIndexRoute = AuthenticatedSalesIndexRouteImport.update({
   path: '/sales/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedReturnsIndexRoute =
+  AuthenticatedReturnsIndexRouteImport.update({
+    id: '/returns/',
+    path: '/returns/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPurchaseOrdersIndexRoute =
   AuthenticatedPurchaseOrdersIndexRouteImport.update({
     id: '/purchase-orders/',
@@ -103,6 +124,24 @@ const AuthenticatedMovementsIndexRoute =
     path: '/movements/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDisbursementIndexRoute =
+  AuthenticatedDisbursementIndexRouteImport.update({
+    id: '/disbursement/',
+    path: '/disbursement/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDestockingIndexRoute =
+  AuthenticatedDestockingIndexRouteImport.update({
+    id: '/destocking/',
+    path: '/destocking/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDefectiveIndexRoute =
+  AuthenticatedDefectiveIndexRouteImport.update({
+    id: '/defective/',
+    path: '/defective/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedBillingIndexRoute =
   AuthenticatedBillingIndexRouteImport.update({
     id: '/billing/',
@@ -112,6 +151,11 @@ const AuthenticatedBillingIndexRoute =
 const AuthenticatedSalesIdRoute = AuthenticatedSalesIdRouteImport.update({
   id: '/sales/$id',
   path: '/sales/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReturnsNewRoute = AuthenticatedReturnsNewRouteImport.update({
+  id: '/returns/new',
+  path: '/returns/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPurchaseOrdersNewRoute =
@@ -141,6 +185,24 @@ const AuthenticatedMovementsNewRoute =
   AuthenticatedMovementsNewRouteImport.update({
     id: '/movements/new',
     path: '/movements/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDisbursementNewRoute =
+  AuthenticatedDisbursementNewRouteImport.update({
+    id: '/disbursement/new',
+    path: '/disbursement/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDestockingNewRoute =
+  AuthenticatedDestockingNewRouteImport.update({
+    id: '/destocking/new',
+    path: '/destocking/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDefectiveNewRoute =
+  AuthenticatedDefectiveNewRouteImport.update({
+    id: '/defective/new',
+    path: '/defective/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBillingSettingsRoute =
@@ -176,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
@@ -184,16 +247,24 @@ export interface FileRoutesByFullPath {
   '/billing/$id': typeof AuthenticatedBillingIdRoute
   '/billing/new': typeof AuthenticatedBillingNewRoute
   '/billing/settings': typeof AuthenticatedBillingSettingsRoute
+  '/defective/new': typeof AuthenticatedDefectiveNewRoute
+  '/destocking/new': typeof AuthenticatedDestockingNewRoute
+  '/disbursement/new': typeof AuthenticatedDisbursementNewRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/purchase-orders/$id': typeof AuthenticatedPurchaseOrdersIdRoute
   '/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
+  '/returns/new': typeof AuthenticatedReturnsNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/billing/': typeof AuthenticatedBillingIndexRoute
+  '/defective/': typeof AuthenticatedDefectiveIndexRoute
+  '/destocking/': typeof AuthenticatedDestockingIndexRoute
+  '/disbursement/': typeof AuthenticatedDisbursementIndexRoute
   '/movements/': typeof AuthenticatedMovementsIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
+  '/returns/': typeof AuthenticatedReturnsIndexRoute
   '/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -202,6 +273,7 @@ export interface FileRoutesByTo {
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
@@ -210,16 +282,24 @@ export interface FileRoutesByTo {
   '/billing/$id': typeof AuthenticatedBillingIdRoute
   '/billing/new': typeof AuthenticatedBillingNewRoute
   '/billing/settings': typeof AuthenticatedBillingSettingsRoute
+  '/defective/new': typeof AuthenticatedDefectiveNewRoute
+  '/destocking/new': typeof AuthenticatedDestockingNewRoute
+  '/disbursement/new': typeof AuthenticatedDisbursementNewRoute
   '/movements/new': typeof AuthenticatedMovementsNewRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
   '/products/new': typeof AuthenticatedProductsNewRoute
   '/purchase-orders/$id': typeof AuthenticatedPurchaseOrdersIdRoute
   '/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
+  '/returns/new': typeof AuthenticatedReturnsNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/billing': typeof AuthenticatedBillingIndexRoute
+  '/defective': typeof AuthenticatedDefectiveIndexRoute
+  '/destocking': typeof AuthenticatedDestockingIndexRoute
+  '/disbursement': typeof AuthenticatedDisbursementIndexRoute
   '/movements': typeof AuthenticatedMovementsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/purchase-orders': typeof AuthenticatedPurchaseOrdersIndexRoute
+  '/returns': typeof AuthenticatedReturnsIndexRoute
   '/sales': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesById {
@@ -230,6 +310,7 @@ export interface FileRoutesById {
   '/_authenticated/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/pos': typeof AuthenticatedPosRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
@@ -238,16 +319,24 @@ export interface FileRoutesById {
   '/_authenticated/billing/$id': typeof AuthenticatedBillingIdRoute
   '/_authenticated/billing/new': typeof AuthenticatedBillingNewRoute
   '/_authenticated/billing/settings': typeof AuthenticatedBillingSettingsRoute
+  '/_authenticated/defective/new': typeof AuthenticatedDefectiveNewRoute
+  '/_authenticated/destocking/new': typeof AuthenticatedDestockingNewRoute
+  '/_authenticated/disbursement/new': typeof AuthenticatedDisbursementNewRoute
   '/_authenticated/movements/new': typeof AuthenticatedMovementsNewRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
   '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/purchase-orders/$id': typeof AuthenticatedPurchaseOrdersIdRoute
   '/_authenticated/purchase-orders/new': typeof AuthenticatedPurchaseOrdersNewRoute
+  '/_authenticated/returns/new': typeof AuthenticatedReturnsNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/billing/': typeof AuthenticatedBillingIndexRoute
+  '/_authenticated/defective/': typeof AuthenticatedDefectiveIndexRoute
+  '/_authenticated/destocking/': typeof AuthenticatedDestockingIndexRoute
+  '/_authenticated/disbursement/': typeof AuthenticatedDisbursementIndexRoute
   '/_authenticated/movements/': typeof AuthenticatedMovementsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/purchase-orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
+  '/_authenticated/returns/': typeof AuthenticatedReturnsIndexRoute
   '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRouteTypes {
@@ -258,6 +347,7 @@ export interface FileRouteTypes {
     | '/cash-sessions'
     | '/customers'
     | '/dashboard'
+    | '/notifications'
     | '/pos'
     | '/suppliers'
     | '/warehouses'
@@ -266,16 +356,24 @@ export interface FileRouteTypes {
     | '/billing/$id'
     | '/billing/new'
     | '/billing/settings'
+    | '/defective/new'
+    | '/destocking/new'
+    | '/disbursement/new'
     | '/movements/new'
     | '/products/$id'
     | '/products/new'
     | '/purchase-orders/$id'
     | '/purchase-orders/new'
+    | '/returns/new'
     | '/sales/$id'
     | '/billing/'
+    | '/defective/'
+    | '/destocking/'
+    | '/disbursement/'
     | '/movements/'
     | '/products/'
     | '/purchase-orders/'
+    | '/returns/'
     | '/sales/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -284,6 +382,7 @@ export interface FileRouteTypes {
     | '/cash-sessions'
     | '/customers'
     | '/dashboard'
+    | '/notifications'
     | '/pos'
     | '/suppliers'
     | '/warehouses'
@@ -292,16 +391,24 @@ export interface FileRouteTypes {
     | '/billing/$id'
     | '/billing/new'
     | '/billing/settings'
+    | '/defective/new'
+    | '/destocking/new'
+    | '/disbursement/new'
     | '/movements/new'
     | '/products/$id'
     | '/products/new'
     | '/purchase-orders/$id'
     | '/purchase-orders/new'
+    | '/returns/new'
     | '/sales/$id'
     | '/billing'
+    | '/defective'
+    | '/destocking'
+    | '/disbursement'
     | '/movements'
     | '/products'
     | '/purchase-orders'
+    | '/returns'
     | '/sales'
   id:
     | '__root__'
@@ -311,6 +418,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cash-sessions'
     | '/_authenticated/customers'
     | '/_authenticated/dashboard'
+    | '/_authenticated/notifications'
     | '/_authenticated/pos'
     | '/_authenticated/suppliers'
     | '/_authenticated/warehouses'
@@ -319,16 +427,24 @@ export interface FileRouteTypes {
     | '/_authenticated/billing/$id'
     | '/_authenticated/billing/new'
     | '/_authenticated/billing/settings'
+    | '/_authenticated/defective/new'
+    | '/_authenticated/destocking/new'
+    | '/_authenticated/disbursement/new'
     | '/_authenticated/movements/new'
     | '/_authenticated/products/$id'
     | '/_authenticated/products/new'
     | '/_authenticated/purchase-orders/$id'
     | '/_authenticated/purchase-orders/new'
+    | '/_authenticated/returns/new'
     | '/_authenticated/sales/$id'
     | '/_authenticated/billing/'
+    | '/_authenticated/defective/'
+    | '/_authenticated/destocking/'
+    | '/_authenticated/disbursement/'
     | '/_authenticated/movements/'
     | '/_authenticated/products/'
     | '/_authenticated/purchase-orders/'
+    | '/_authenticated/returns/'
     | '/_authenticated/sales/'
   fileRoutesById: FileRoutesById
 }
@@ -382,6 +498,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -410,6 +533,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/returns/': {
+      id: '/_authenticated/returns/'
+      path: '/returns'
+      fullPath: '/returns/'
+      preLoaderRoute: typeof AuthenticatedReturnsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/purchase-orders/': {
       id: '/_authenticated/purchase-orders/'
       path: '/purchase-orders'
@@ -431,6 +561,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMovementsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/disbursement/': {
+      id: '/_authenticated/disbursement/'
+      path: '/disbursement'
+      fullPath: '/disbursement/'
+      preLoaderRoute: typeof AuthenticatedDisbursementIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/destocking/': {
+      id: '/_authenticated/destocking/'
+      path: '/destocking'
+      fullPath: '/destocking/'
+      preLoaderRoute: typeof AuthenticatedDestockingIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/defective/': {
+      id: '/_authenticated/defective/'
+      path: '/defective'
+      fullPath: '/defective/'
+      preLoaderRoute: typeof AuthenticatedDefectiveIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/billing/': {
       id: '/_authenticated/billing/'
       path: '/billing'
@@ -443,6 +594,13 @@ declare module '@tanstack/react-router' {
       path: '/sales/$id'
       fullPath: '/sales/$id'
       preLoaderRoute: typeof AuthenticatedSalesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/returns/new': {
+      id: '/_authenticated/returns/new'
+      path: '/returns/new'
+      fullPath: '/returns/new'
+      preLoaderRoute: typeof AuthenticatedReturnsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/purchase-orders/new': {
@@ -478,6 +636,27 @@ declare module '@tanstack/react-router' {
       path: '/movements/new'
       fullPath: '/movements/new'
       preLoaderRoute: typeof AuthenticatedMovementsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/disbursement/new': {
+      id: '/_authenticated/disbursement/new'
+      path: '/disbursement/new'
+      fullPath: '/disbursement/new'
+      preLoaderRoute: typeof AuthenticatedDisbursementNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/destocking/new': {
+      id: '/_authenticated/destocking/new'
+      path: '/destocking/new'
+      fullPath: '/destocking/new'
+      preLoaderRoute: typeof AuthenticatedDestockingNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/defective/new': {
+      id: '/_authenticated/defective/new'
+      path: '/defective/new'
+      fullPath: '/defective/new'
+      preLoaderRoute: typeof AuthenticatedDefectiveNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/billing/settings': {
@@ -522,6 +701,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCashSessionsRoute: typeof AuthenticatedCashSessionsRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPosRoute: typeof AuthenticatedPosRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
@@ -530,16 +710,24 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBillingIdRoute: typeof AuthenticatedBillingIdRoute
   AuthenticatedBillingNewRoute: typeof AuthenticatedBillingNewRoute
   AuthenticatedBillingSettingsRoute: typeof AuthenticatedBillingSettingsRoute
+  AuthenticatedDefectiveNewRoute: typeof AuthenticatedDefectiveNewRoute
+  AuthenticatedDestockingNewRoute: typeof AuthenticatedDestockingNewRoute
+  AuthenticatedDisbursementNewRoute: typeof AuthenticatedDisbursementNewRoute
   AuthenticatedMovementsNewRoute: typeof AuthenticatedMovementsNewRoute
   AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
   AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
   AuthenticatedPurchaseOrdersIdRoute: typeof AuthenticatedPurchaseOrdersIdRoute
   AuthenticatedPurchaseOrdersNewRoute: typeof AuthenticatedPurchaseOrdersNewRoute
+  AuthenticatedReturnsNewRoute: typeof AuthenticatedReturnsNewRoute
   AuthenticatedSalesIdRoute: typeof AuthenticatedSalesIdRoute
   AuthenticatedBillingIndexRoute: typeof AuthenticatedBillingIndexRoute
+  AuthenticatedDefectiveIndexRoute: typeof AuthenticatedDefectiveIndexRoute
+  AuthenticatedDestockingIndexRoute: typeof AuthenticatedDestockingIndexRoute
+  AuthenticatedDisbursementIndexRoute: typeof AuthenticatedDisbursementIndexRoute
   AuthenticatedMovementsIndexRoute: typeof AuthenticatedMovementsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedPurchaseOrdersIndexRoute: typeof AuthenticatedPurchaseOrdersIndexRoute
+  AuthenticatedReturnsIndexRoute: typeof AuthenticatedReturnsIndexRoute
   AuthenticatedSalesIndexRoute: typeof AuthenticatedSalesIndexRoute
 }
 
@@ -547,6 +735,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCashSessionsRoute: AuthenticatedCashSessionsRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPosRoute: AuthenticatedPosRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
@@ -555,16 +744,24 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBillingIdRoute: AuthenticatedBillingIdRoute,
   AuthenticatedBillingNewRoute: AuthenticatedBillingNewRoute,
   AuthenticatedBillingSettingsRoute: AuthenticatedBillingSettingsRoute,
+  AuthenticatedDefectiveNewRoute: AuthenticatedDefectiveNewRoute,
+  AuthenticatedDestockingNewRoute: AuthenticatedDestockingNewRoute,
+  AuthenticatedDisbursementNewRoute: AuthenticatedDisbursementNewRoute,
   AuthenticatedMovementsNewRoute: AuthenticatedMovementsNewRoute,
   AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
   AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
   AuthenticatedPurchaseOrdersIdRoute: AuthenticatedPurchaseOrdersIdRoute,
   AuthenticatedPurchaseOrdersNewRoute: AuthenticatedPurchaseOrdersNewRoute,
+  AuthenticatedReturnsNewRoute: AuthenticatedReturnsNewRoute,
   AuthenticatedSalesIdRoute: AuthenticatedSalesIdRoute,
   AuthenticatedBillingIndexRoute: AuthenticatedBillingIndexRoute,
+  AuthenticatedDefectiveIndexRoute: AuthenticatedDefectiveIndexRoute,
+  AuthenticatedDestockingIndexRoute: AuthenticatedDestockingIndexRoute,
+  AuthenticatedDisbursementIndexRoute: AuthenticatedDisbursementIndexRoute,
   AuthenticatedMovementsIndexRoute: AuthenticatedMovementsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedPurchaseOrdersIndexRoute: AuthenticatedPurchaseOrdersIndexRoute,
+  AuthenticatedReturnsIndexRoute: AuthenticatedReturnsIndexRoute,
   AuthenticatedSalesIndexRoute: AuthenticatedSalesIndexRoute,
 }
 
@@ -579,13 +776,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

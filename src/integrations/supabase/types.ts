@@ -27,6 +27,7 @@ export type Database = {
           opening_float: number
           variance: number | null
           warehouse_id: string
+          z_report_number: string | null
         }
         Insert: {
           closed_at?: string | null
@@ -40,6 +41,7 @@ export type Database = {
           opening_float?: number
           variance?: number | null
           warehouse_id: string
+          z_report_number?: string | null
         }
         Update: {
           closed_at?: string | null
@@ -53,6 +55,7 @@ export type Database = {
           opening_float?: number
           variance?: number | null
           warehouse_id?: string
+          z_report_number?: string | null
         }
         Relationships: [
           {
@@ -121,6 +124,95 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_return_items: {
+        Row: {
+          id: string
+          product_id: string
+          quantity: number
+          return_id: string
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          quantity: number
+          return_id: string
+          unit_price?: number
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          quantity?: number
+          return_id?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_return_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_return_items_return_id_fkey"
+            columns: ["return_id"]
+            isOneToOne: false
+            referencedRelation: "customer_returns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_returns: {
+        Row: {
+          approver_id: string | null
+          created_at: string
+          decided_at: string | null
+          destination: Database["public"]["Enums"]["return_destination"]
+          id: string
+          reason: string
+          refund_amount: number
+          refund_type: Database["public"]["Enums"]["refund_type"]
+          requested_by: string | null
+          sale_id: string
+          status: Database["public"]["Enums"]["return_status"]
+        }
+        Insert: {
+          approver_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          destination?: Database["public"]["Enums"]["return_destination"]
+          id?: string
+          reason: string
+          refund_amount?: number
+          refund_type?: Database["public"]["Enums"]["refund_type"]
+          requested_by?: string | null
+          sale_id: string
+          status?: Database["public"]["Enums"]["return_status"]
+        }
+        Update: {
+          approver_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          destination?: Database["public"]["Enums"]["return_destination"]
+          id?: string
+          reason?: string
+          refund_amount?: number
+          refund_type?: Database["public"]["Enums"]["refund_type"]
+          requested_by?: string | null
+          sale_id?: string
+          status?: Database["public"]["Enums"]["return_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_returns_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           address: string | null
@@ -163,6 +255,180 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      defective_items: {
+        Row: {
+          category: Database["public"]["Enums"]["defective_category"]
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          evidence_url: string | null
+          id: string
+          movement_id: string | null
+          product_id: string
+          quantity: number
+          reason: string
+          reported_by: string | null
+          severity: Database["public"]["Enums"]["defective_severity"]
+          status: Database["public"]["Enums"]["defective_status"]
+          warehouse_id: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["defective_category"]
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          evidence_url?: string | null
+          id?: string
+          movement_id?: string | null
+          product_id: string
+          quantity: number
+          reason: string
+          reported_by?: string | null
+          severity: Database["public"]["Enums"]["defective_severity"]
+          status?: Database["public"]["Enums"]["defective_status"]
+          warehouse_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["defective_category"]
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          evidence_url?: string | null
+          id?: string
+          movement_id?: string | null
+          product_id?: string
+          quantity?: number
+          reason?: string
+          reported_by?: string | null
+          severity?: Database["public"]["Enums"]["defective_severity"]
+          status?: Database["public"]["Enums"]["defective_status"]
+          warehouse_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "defective_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "defective_items_warehouse_id_fkey"
+            columns: ["warehouse_id"]
+            isOneToOne: false
+            referencedRelation: "warehouses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      destocking_requests: {
+        Row: {
+          approver_id: string | null
+          approver_note: string | null
+          created_at: string
+          decided_at: string | null
+          id: string
+          product_id: string
+          quantity: number
+          reason: string
+          requested_by: string | null
+          status: Database["public"]["Enums"]["request_status"]
+          warehouse_id: string
+        }
+        Insert: {
+          approver_id?: string | null
+          approver_note?: string | null
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          product_id: string
+          quantity: number
+          reason: string
+          requested_by?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+          warehouse_id: string
+        }
+        Update: {
+          approver_id?: string | null
+          approver_note?: string | null
+          created_at?: string
+          decided_at?: string | null
+          id?: string
+          product_id?: string
+          quantity?: number
+          reason?: string
+          requested_by?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+          warehouse_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "destocking_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "destocking_requests_warehouse_id_fkey"
+            columns: ["warehouse_id"]
+            isOneToOne: false
+            referencedRelation: "warehouses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      disbursement_requests: {
+        Row: {
+          amount: number
+          approver_id: string | null
+          approver_note: string | null
+          beneficiary: string
+          category: Database["public"]["Enums"]["disbursement_category"]
+          created_at: string
+          decided_at: string | null
+          description: string
+          id: string
+          justification_url: string | null
+          paid_at: string | null
+          payment_method: string | null
+          requested_by: string | null
+          status: Database["public"]["Enums"]["disbursement_status"]
+        }
+        Insert: {
+          amount: number
+          approver_id?: string | null
+          approver_note?: string | null
+          beneficiary: string
+          category: Database["public"]["Enums"]["disbursement_category"]
+          created_at?: string
+          decided_at?: string | null
+          description: string
+          id?: string
+          justification_url?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          requested_by?: string | null
+          status?: Database["public"]["Enums"]["disbursement_status"]
+        }
+        Update: {
+          amount?: number
+          approver_id?: string | null
+          approver_note?: string | null
+          beneficiary?: string
+          category?: Database["public"]["Enums"]["disbursement_category"]
+          created_at?: string
+          decided_at?: string | null
+          description?: string
+          id?: string
+          justification_url?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          requested_by?: string | null
+          status?: Database["public"]["Enums"]["disbursement_status"]
         }
         Relationships: []
       }
@@ -290,6 +556,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       products: {
         Row: {
@@ -616,6 +915,30 @@ export type Database = {
           },
         ]
       }
+      sites: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
       stock_levels: {
         Row: {
           id: string
@@ -814,6 +1137,7 @@ export type Database = {
           id: string
           is_active: boolean
           name: string
+          site_id: string | null
         }
         Insert: {
           address?: string | null
@@ -822,6 +1146,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name: string
+          site_id?: string | null
         }
         Update: {
           address?: string | null
@@ -830,8 +1155,17 @@ export type Database = {
           id?: string
           is_active?: boolean
           name?: string
+          site_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "warehouses_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -839,7 +1173,39 @@ export type Database = {
     }
     Functions: {
       checkout_sale: { Args: { _payload: Json }; Returns: string }
+      close_cash_session: {
+        Args: { _counted: number; _id: string; _notes: string }
+        Returns: string
+      }
       create_invoice_from_sale: { Args: { _sale_id: string }; Returns: string }
+      decide_customer_return: {
+        Args: { _approve: boolean; _id: string }
+        Returns: undefined
+      }
+      decide_defective: {
+        Args: { _approve: boolean; _id: string }
+        Returns: undefined
+      }
+      decide_destocking: {
+        Args: { _approve: boolean; _id: string; _note: string }
+        Returns: undefined
+      }
+      decide_disbursement: {
+        Args: { _approve: boolean; _id: string; _note: string }
+        Returns: undefined
+      }
+      declare_defective: {
+        Args: {
+          _category: Database["public"]["Enums"]["defective_category"]
+          _evidence_url: string
+          _product_id: string
+          _quantity: number
+          _reason: string
+          _severity: Database["public"]["Enums"]["defective_severity"]
+          _warehouse_id: string
+        }
+        Returns: string
+      }
       get_user_roles: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"][]
@@ -851,7 +1217,25 @@ export type Database = {
         }
         Returns: boolean
       }
+      mark_disbursement_paid: {
+        Args: { _id: string; _method: string }
+        Returns: undefined
+      }
       next_invoice_number: { Args: never; Returns: string }
+      notify_admins: {
+        Args: { _body: string; _link: string; _title: string; _type: string }
+        Returns: undefined
+      }
+      notify_user: {
+        Args: {
+          _body: string
+          _link: string
+          _title: string
+          _type: string
+          _user: string
+        }
+        Returns: undefined
+      }
       receive_po_item: {
         Args: { _item_id: string; _qty: number }
         Returns: undefined
@@ -863,6 +1247,26 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "responsable" | "vendeur"
+      defective_category:
+        | "casse"
+        | "vol"
+        | "peremption"
+        | "defaut_fournisseur"
+        | "autre"
+      defective_severity: "mineur" | "majeur" | "critique"
+      defective_status:
+        | "applied"
+        | "pending_confirmation"
+        | "confirmed"
+        | "rejected"
+      disbursement_category:
+        | "achat"
+        | "salaire"
+        | "loyer"
+        | "charges"
+        | "maintenance"
+        | "autre"
+      disbursement_status: "pending" | "approved" | "rejected" | "paid"
       invoice_status: "draft" | "issued" | "paid" | "cancelled"
       movement_type: "in" | "out" | "adjustment" | "transfer"
       payment_method:
@@ -873,6 +1277,10 @@ export type Database = {
         | "voucher"
         | "other"
       po_status: "draft" | "ordered" | "partial" | "received" | "cancelled"
+      refund_type: "cash" | "store_credit" | "none"
+      request_status: "pending" | "approved" | "rejected" | "executed"
+      return_destination: "stock" | "defective"
+      return_status: "pending" | "approved" | "rejected"
       sale_status: "completed" | "refunded" | "partial_refund" | "voided"
     }
     CompositeTypes: {
@@ -1002,10 +1410,37 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "responsable", "vendeur"],
+      defective_category: [
+        "casse",
+        "vol",
+        "peremption",
+        "defaut_fournisseur",
+        "autre",
+      ],
+      defective_severity: ["mineur", "majeur", "critique"],
+      defective_status: [
+        "applied",
+        "pending_confirmation",
+        "confirmed",
+        "rejected",
+      ],
+      disbursement_category: [
+        "achat",
+        "salaire",
+        "loyer",
+        "charges",
+        "maintenance",
+        "autre",
+      ],
+      disbursement_status: ["pending", "approved", "rejected", "paid"],
       invoice_status: ["draft", "issued", "paid", "cancelled"],
       movement_type: ["in", "out", "adjustment", "transfer"],
       payment_method: ["cash", "card", "transfer", "check", "voucher", "other"],
       po_status: ["draft", "ordered", "partial", "received", "cancelled"],
+      refund_type: ["cash", "store_credit", "none"],
+      request_status: ["pending", "approved", "rejected", "executed"],
+      return_destination: ["stock", "defective"],
+      return_status: ["pending", "approved", "rejected"],
       sale_status: ["completed", "refunded", "partial_refund", "voided"],
     },
   },

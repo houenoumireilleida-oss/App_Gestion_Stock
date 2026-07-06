@@ -56,20 +56,13 @@ function CashSessionsPage() {
   async function closeSession(e: React.FormEvent) {
     e.preventDefault();
     if (!closeOpen) return;
-    // expected cash = opening_float + somme paiements cash de la session
-    const { data: pays } = await supabase.from("sale_payments").select("amount, change_given, sale:sales!inner(cash_session_id)").eq("method", "cash").eq("sale.cash_session_id", closeOpen.id);
-    const expected = (closeOpen.opening_float) + (pays ?? []).reduce((s, p: { amount: number; change_given: number }) => s + (p.amount - p.change_given), 0);
-    const c = parseFloat(counted) || 0;
-    const variance = c - expected;
-    const { data: u } = await supabase.auth.getUser();
-    const { error } = await supabase.from("cash_sessions").update({
-      closed_by: u.user!.id, closing_counted: c, expected_cash: expected, variance,
-      notes: notes || null, closed_at: new Date().toISOString(),
-    }).eq("id", closeOpen.id);
-    if (error) { toast.error(error.message); return; }
-    toast.success(`Caisse fermée — écart ${formatMoney(variance)}`);
-    setCloseOpen(null); setCounted(""); setNotes("");
-    qc.invalidateQueries({ queryKey: ["cash_sessions"] });
+    try {
+      const { closeCashSession } = await import("@/lib/workflows");
+      const z = await closeCashSession(closeOpen.id, parseFloat(counted) || 0, notes || "");
+      toast.success(`Caisse fermée — Rapport ${z}`);
+      setCloseOpen(null); setCounted(""); setNotes("");
+      qc.invalidateQueries({ queryKey: ["cash_sessions"] });
+    } catch (err) { toast.error((err as Error).message); }
   }
 
   return (

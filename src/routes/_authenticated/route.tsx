@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   LayoutDashboard, Package, Warehouse, ArrowLeftRight, Boxes, LogOut,
   ShoppingCart, Receipt, Truck, ClipboardList, Users, Wallet, Shield,
-  FileText, ChevronDown, Settings, UserPlus,
+  FileText, ChevronDown, Settings, UserPlus, AlertTriangle, PackageMinus,
+  Undo2, Banknote,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -12,6 +13,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NotificationBell } from "@/components/NotificationBell";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -33,7 +35,8 @@ const NAV: NavSection[] = [
   { key: "sell", title: "Vente", items: [
     { to: "/pos", label: "Caisse", icon: ShoppingCart },
     { to: "/sales", label: "Ventes", icon: Receipt },
-    { to: "/cash-sessions", label: "Sessions de caisse", icon: Wallet },
+    { to: "/cash-sessions", label: "Sessions & Clôture Z", icon: Wallet },
+    { to: "/returns", label: "Retours clients", icon: Undo2 },
   ]},
   { key: "billing", title: "Facturation", items: [
     { to: "/billing", label: "Factures", icon: FileText },
@@ -43,7 +46,12 @@ const NAV: NavSection[] = [
   { key: "inventory", title: "Stock", items: [
     { to: "/products", label: "Produits", icon: Package },
     { to: "/movements", label: "Mouvements", icon: ArrowLeftRight },
+    { to: "/defective", label: "Défectueux", icon: AlertTriangle },
+    { to: "/destocking", label: "Déstockage", icon: PackageMinus },
     { to: "/warehouses", label: "Entrepôts", icon: Warehouse, roles: ["admin","responsable"] },
+  ]},
+  { key: "finance", title: "Finances", items: [
+    { to: "/disbursement", label: "Décaissements", icon: Banknote },
   ]},
   { key: "purchasing", title: "Achats", items: [
     { to: "/suppliers", label: "Fournisseurs", icon: Truck, roles: ["admin","responsable"] },
@@ -113,6 +121,7 @@ function AuthLayout() {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
+            <NotificationBell />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="text-sidebar-foreground hover:bg-sidebar-accent/40 hover:text-sidebar-foreground gap-2">
