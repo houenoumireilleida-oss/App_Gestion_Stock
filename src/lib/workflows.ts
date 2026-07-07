@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 export type Severity = "mineur" | "majeur" | "critique";
 export type DefCategory = "casse" | "vol" | "peremption" | "defaut_fournisseur" | "autre";
 export type DefStatus = "applied" | "pending_confirmation" | "confirmed" | "rejected";
+export type DefTreatment = "reparation" | "rebut" | "retour_fournisseur";
 export type RequestStatus = "pending" | "approved" | "rejected" | "executed";
 export type DisbStatus = "pending" | "approved" | "rejected" | "paid";
 export type DisbCategory = "achat" | "salaire" | "loyer" | "charges" | "maintenance" | "autre";
@@ -19,6 +20,9 @@ export const DEF_CAT_LABEL: Record<DefCategory, string> = {
 export const DISB_CAT_LABEL: Record<DisbCategory, string> = {
   achat: "Achat", salaire: "Salaire", loyer: "Loyer",
   charges: "Charges", maintenance: "Maintenance", autre: "Autre",
+};
+export const TREATMENT_LABEL: Record<DefTreatment, string> = {
+  reparation: "Réparation", rebut: "Mise au rebut", retour_fournisseur: "Retour fournisseur",
 };
 export const STATUS_LABEL: Record<string, string> = {
   pending: "En attente", approved: "Approuvée", rejected: "Rejetée", executed: "Exécutée",
@@ -40,19 +44,20 @@ export type DefectiveItem = {
   severity: Severity; category: DefCategory; reason: string;
   status: DefStatus; reported_by: string | null; decided_by: string | null;
   decided_at: string | null; created_at: string; evidence_url: string | null;
+  treatment: DefTreatment | null; treated_at: string | null; treated_by: string | null;
 };
 export type DestockingRequest = {
   id: string; product_id: string; warehouse_id: string; quantity: number;
   reason: string; status: RequestStatus; requested_by: string | null;
   approver_id: string | null; approver_note: string | null;
-  decided_at: string | null; created_at: string;
+  decided_at: string | null; created_at: string; approved_quantity: number | null;
 };
 export type DisbursementRequest = {
   id: string; amount: number; category: DisbCategory; beneficiary: string;
   description: string; justification_url: string | null; status: DisbStatus;
   requested_by: string | null; approver_id: string | null;
   approver_note: string | null; decided_at: string | null; paid_at: string | null;
-  payment_method: string | null; created_at: string;
+  payment_method: string | null; created_at: string; approved_amount: number | null;
 };
 export type CustomerReturn = {
   id: string; sale_id: string; reason: string; destination: ReturnDestination;
@@ -63,6 +68,10 @@ export type CustomerReturn = {
 export type NotificationRow = {
   id: string; user_id: string; type: string; title: string;
   body: string | null; link: string | null; read_at: string | null; created_at: string;
+};
+export type AuditRow = {
+  id: string; actor_id: string | null; action: string; entity: string;
+  entity_id: string | null; details: unknown; created_at: string;
 };
 
 // ============ FETCHERS ============
@@ -75,6 +84,13 @@ export const fetchDefective = () => list<DefectiveItem>("defective_items");
 export const fetchDestocking = () => list<DestockingRequest>("destocking_requests");
 export const fetchDisbursement = () => list<DisbursementRequest>("disbursement_requests");
 export const fetchReturns = () => list<CustomerReturn>("customer_returns");
+
+export async function fetchAuditLog(limit = 200): Promise<AuditRow[]> {
+  const { data, error } = await supabase.from("audit_log").select("*")
+    .order("created_at", { ascending: false }).limit(limit);
+  if (error) throw error;
+  return (data ?? []) as AuditRow[];
+}
 
 // ============ MUTATIONS via RPC ============
 export async function declareDefective(input: {
@@ -94,6 +110,10 @@ export async function decideDefective(id: string, approve: boolean) {
   const { error } = await supabase.rpc("decide_defective", { _id: id, _approve: approve });
   if (error) throw error;
 }
+export async function setDefectiveTreatment(id: string, treatment: DefTreatment) {
+  const { error } = await supabase.rpc("set_defective_treatment", { _id: id, _treatment: treatment });
+  if (error) throw error;
+}
 
 export async function createDestocking(input: { product_id: string; warehouse_id: string; quantity: number; reason: string }) {
   const { data: u } = await supabase.auth.getUser();
@@ -103,8 +123,10 @@ export async function createDestocking(input: { product_id: string; warehouse_id
   if (error) throw error;
   return data.id as string;
 }
-export async function decideDestocking(id: string, approve: boolean, note: string) {
-  const { error } = await supabase.rpc("decide_destocking", { _id: id, _approve: approve, _note: note });
+export async function decideDestocking(id: string, approve: boolean, note: string, partialQty?: number | null) {
+  const { error } = await supabase.rpc("decide_destocking", {
+    _id: id, _approve: approve, _note: note, _partial_qty: partialQty ?? null,
+  });
   if (error) throw error;
 }
 
@@ -118,8 +140,10 @@ export async function createDisbursement(input: {
   if (error) throw error;
   return data.id as string;
 }
-export async function decideDisbursement(id: string, approve: boolean, note: string) {
-  const { error } = await supabase.rpc("decide_disbursement", { _id: id, _approve: approve, _note: note });
+export async function decideDisbursement(id: string, approve: boolean, note: string, partialAmount?: number | null) {
+  const { error } = await supabase.rpc("decide_disbursement", {
+    _id: id, _approve: approve, _note: note, _partial_amount: partialAmount ?? null,
+  });
   if (error) throw error;
 }
 export async function markDisbursementPaid(id: string, method: string) {
