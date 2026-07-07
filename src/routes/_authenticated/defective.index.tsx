@@ -52,7 +52,7 @@ function DefectivePage() {
             <tr>
               <th className="p-3">Date</th><th className="p-3">Produit</th><th className="p-3">Entrepôt</th>
               <th className="p-3 text-right">Qté</th><th className="p-3">Gravité</th><th className="p-3">Catégorie</th>
-              <th className="p-3">Motif</th><th className="p-3">Statut</th><th className="p-3"></th>
+              <th className="p-3">Motif</th><th className="p-3">Statut</th><th className="p-3">Traitement</th><th className="p-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -67,6 +67,21 @@ function DefectivePage() {
                 <td className="p-3 max-w-xs truncate">{it.reason}</td>
                 <td className="p-3"><span className={`text-xs px-2 py-1 rounded ${STATUS_TONE[it.status]}`}>{STATUS_LABEL[it.status]}</span></td>
                 <td className="p-3">
+                  {(it.status === "applied" || it.status === "confirmed") ? (
+                    it.treatment ? (
+                      <span className="text-xs text-muted-foreground">{TREATMENT_LABEL[it.treatment]}</span>
+                    ) : (
+                      <Select onValueChange={v => applyTreatment(it.id, v as DefTreatment)}>
+                        <SelectTrigger className="h-8 w-40 text-xs"><SelectValue placeholder="Choisir…" /></SelectTrigger>
+                        <SelectContent>
+                          {(Object.keys(TREATMENT_LABEL) as DefTreatment[]).map(t =>
+                            <SelectItem key={t} value={t}>{TREATMENT_LABEL[t]}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    )
+                  ) : "—"}
+                </td>
+                <td className="p-3">
                   {isAdmin && (it.status === "pending_confirmation" || it.status === "applied") && (
                     <div className="flex gap-1 justify-end">
                       <Button size="sm" variant="outline" onClick={() => decide(it.id, true)}><Check className="size-4" /></Button>
@@ -77,7 +92,7 @@ function DefectivePage() {
               </tr>
             ))}
             {(items.data ?? []).length === 0 && (
-              <tr><td colSpan={9} className="p-8 text-center text-muted-foreground">Aucune déclaration.</td></tr>
+              <tr><td colSpan={10} className="p-8 text-center text-muted-foreground">Aucune déclaration.</td></tr>
             )}
           </tbody>
         </table>
