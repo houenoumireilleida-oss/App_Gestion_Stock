@@ -30,6 +30,11 @@ function DefectivePage() {
       qc.invalidateQueries({ queryKey: ["stock_levels"] });
     } catch (e) { toast.error((e as Error).message); }
   }
+  async function applyTreatment(id: string, t: DefTreatment) {
+    try { await setDefectiveTreatment(id, t); toast.success("Traitement enregistré");
+      qc.invalidateQueries({ queryKey: ["defective"] });
+    } catch (e) { toast.error((e as Error).message); }
+  }
 
   return (
     <div className="p-4 lg:p-8 space-y-6">
