@@ -26,15 +26,18 @@ function DisbPage() {
   const [decideId, setDid] = useState<string | null>(null);
   const [approve, setApp] = useState(true);
   const [note, setNote] = useState("");
+  const [partialAmt, setPartialAmt] = useState<string>("");
   const [payId, setPayId] = useState<string | null>(null);
   const [method, setMethod] = useState("virement");
+  const decidingRow = (rows.data ?? []).find(r => r.id === decideId);
 
   async function doDecide() {
     if (!decideId) return;
     try {
-      await decideDisbursement(decideId, approve, note);
+      const partial = partialAmt.trim() ? parseFloat(partialAmt) : null;
+      await decideDisbursement(decideId, approve, note, partial);
       toast.success(approve ? "Approuvée" : "Rejetée");
-      setDid(null); setNote("");
+      setDid(null); setNote(""); setPartialAmt("");
       qc.invalidateQueries({ queryKey: ["disbursement"] });
     } catch (e) { toast.error((e as Error).message); }
   }
@@ -98,9 +101,18 @@ function DisbPage() {
         </table>
       </Card>
 
-      <Dialog open={decideId !== null} onOpenChange={o => { if (!o) setDid(null); }}>
+      <Dialog open={decideId !== null} onOpenChange={o => { if (!o) { setDid(null); setPartialAmt(""); } }}>
         <DialogContent>
           <DialogHeader><DialogTitle>{approve ? "Approuver le décaissement" : "Rejeter le décaissement"}</DialogTitle></DialogHeader>
+          {approve && decidingRow && (
+            <div className="space-y-2">
+              <label className="text-sm">Montant approuvé (max {formatMoney(decidingRow.amount)})</label>
+              <Input type="number" step="0.01" min={0} max={decidingRow.amount}
+                placeholder={`Défaut : ${decidingRow.amount}`}
+                value={partialAmt} onChange={e => setPartialAmt(e.target.value)} />
+              <p className="text-xs text-muted-foreground">Laissez vide pour approuver le montant total.</p>
+            </div>
+          )}
           <Textarea placeholder="Note (optionnelle)" value={note} onChange={e => setNote(e.target.value)} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setDid(null)}>Annuler</Button>

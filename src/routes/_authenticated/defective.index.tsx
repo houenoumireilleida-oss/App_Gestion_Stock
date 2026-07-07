@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchDefective, decideDefective, SEVERITY_LABEL, DEF_CAT_LABEL, STATUS_LABEL, STATUS_TONE } from "@/lib/workflows";
+import { fetchDefective, decideDefective, setDefectiveTreatment, SEVERITY_LABEL, DEF_CAT_LABEL, STATUS_LABEL, STATUS_TONE, TREATMENT_LABEL, type DefTreatment } from "@/lib/workflows";
 import { fetchProducts, fetchWarehouses, formatDate } from "@/lib/stock";
 import { useMyRoles, hasAny } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { AlertTriangle, Plus, Check, X } from "lucide-react";
 
@@ -29,6 +30,11 @@ function DefectivePage() {
       qc.invalidateQueries({ queryKey: ["stock_levels"] });
     } catch (e) { toast.error((e as Error).message); }
   }
+  async function applyTreatment(id: string, t: DefTreatment) {
+    try { await setDefectiveTreatment(id, t); toast.success("Traitement enregistré");
+      qc.invalidateQueries({ queryKey: ["defective"] });
+    } catch (e) { toast.error((e as Error).message); }
+  }
 
   return (
     <div className="p-4 lg:p-8 space-y-6">
@@ -46,7 +52,7 @@ function DefectivePage() {
             <tr>
               <th className="p-3">Date</th><th className="p-3">Produit</th><th className="p-3">Entrepôt</th>
               <th className="p-3 text-right">Qté</th><th className="p-3">Gravité</th><th className="p-3">Catégorie</th>
-              <th className="p-3">Motif</th><th className="p-3">Statut</th><th className="p-3"></th>
+              <th className="p-3">Motif</th><th className="p-3">Statut</th><th className="p-3">Traitement</th><th className="p-3"></th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -61,6 +67,21 @@ function DefectivePage() {
                 <td className="p-3 max-w-xs truncate">{it.reason}</td>
                 <td className="p-3"><span className={`text-xs px-2 py-1 rounded ${STATUS_TONE[it.status]}`}>{STATUS_LABEL[it.status]}</span></td>
                 <td className="p-3">
+                  {(it.status === "applied" || it.status === "confirmed") ? (
+                    it.treatment ? (
+                      <span className="text-xs text-muted-foreground">{TREATMENT_LABEL[it.treatment]}</span>
+                    ) : (
+                      <Select onValueChange={v => applyTreatment(it.id, v as DefTreatment)}>
+                        <SelectTrigger className="h-8 w-40 text-xs"><SelectValue placeholder="Choisir…" /></SelectTrigger>
+                        <SelectContent>
+                          {(Object.keys(TREATMENT_LABEL) as DefTreatment[]).map(t =>
+                            <SelectItem key={t} value={t}>{TREATMENT_LABEL[t]}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    )
+                  ) : "—"}
+                </td>
+                <td className="p-3">
                   {isAdmin && (it.status === "pending_confirmation" || it.status === "applied") && (
                     <div className="flex gap-1 justify-end">
                       <Button size="sm" variant="outline" onClick={() => decide(it.id, true)}><Check className="size-4" /></Button>
@@ -71,7 +92,7 @@ function DefectivePage() {
               </tr>
             ))}
             {(items.data ?? []).length === 0 && (
-              <tr><td colSpan={9} className="p-8 text-center text-muted-foreground">Aucune déclaration.</td></tr>
+              <tr><td colSpan={10} className="p-8 text-center text-muted-foreground">Aucune déclaration.</td></tr>
             )}
           </tbody>
         </table>

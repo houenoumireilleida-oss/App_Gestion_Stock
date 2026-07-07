@@ -7,6 +7,7 @@ import { useMyRoles, hasAny } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { PackageMinus, Plus, Check, X } from "lucide-react";
@@ -28,13 +29,16 @@ function DestockingPage() {
   const [decidingId, setDecidingId] = useState<string | null>(null);
   const [approve, setApprove] = useState(true);
   const [note, setNote] = useState("");
+  const [partialQty, setPartialQty] = useState<string>("");
+  const decidingRow = (rows.data ?? []).find(r => r.id === decidingId);
 
   async function submit() {
     if (!decidingId) return;
     try {
-      await decideDestocking(decidingId, approve, note);
+      const partial = partialQty.trim() ? parseInt(partialQty) : null;
+      await decideDestocking(decidingId, approve, note, partial);
       toast.success(approve ? "Approuvée, stock mis à jour" : "Rejetée");
-      setDecidingId(null); setNote("");
+      setDecidingId(null); setNote(""); setPartialQty("");
       qc.invalidateQueries({ queryKey: ["destocking"] });
       qc.invalidateQueries({ queryKey: ["stock_levels"] });
     } catch (e) { toast.error((e as Error).message); }
@@ -78,9 +82,18 @@ function DestockingPage() {
           </tbody>
         </table>
       </Card>
-      <Dialog open={decidingId !== null} onOpenChange={o => { if (!o) setDecidingId(null); }}>
+      <Dialog open={decidingId !== null} onOpenChange={o => { if (!o) { setDecidingId(null); setPartialQty(""); } }}>
         <DialogContent>
           <DialogHeader><DialogTitle>{approve ? "Approuver la demande" : "Rejeter la demande"}</DialogTitle></DialogHeader>
+          {approve && decidingRow && (
+            <div className="space-y-2">
+              <label className="text-sm">Quantité approuvée (max {decidingRow.quantity})</label>
+              <Input type="number" min={1} max={decidingRow.quantity}
+                placeholder={`Défaut : ${decidingRow.quantity}`}
+                value={partialQty} onChange={e => setPartialQty(e.target.value)} />
+              <p className="text-xs text-muted-foreground">Laissez vide pour approuver la quantité totale.</p>
+            </div>
+          )}
           <Textarea placeholder="Note (optionnelle)" value={note} onChange={e => setNote(e.target.value)} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setDecidingId(null)}>Annuler</Button>
