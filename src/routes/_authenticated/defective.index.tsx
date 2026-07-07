@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchDefective, decideDefective, SEVERITY_LABEL, DEF_CAT_LABEL, STATUS_LABEL, STATUS_TONE } from "@/lib/workflows";
+import { fetchDefective, decideDefective, setDefectiveTreatment, SEVERITY_LABEL, DEF_CAT_LABEL, STATUS_LABEL, STATUS_TONE, TREATMENT_LABEL, type DefTreatment } from "@/lib/workflows";
 import { fetchProducts, fetchWarehouses, formatDate } from "@/lib/stock";
 import { useMyRoles, hasAny } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { AlertTriangle, Plus, Check, X } from "lucide-react";
 
