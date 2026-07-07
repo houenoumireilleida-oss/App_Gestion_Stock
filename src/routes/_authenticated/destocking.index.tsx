@@ -28,13 +28,16 @@ function DestockingPage() {
   const [decidingId, setDecidingId] = useState<string | null>(null);
   const [approve, setApprove] = useState(true);
   const [note, setNote] = useState("");
+  const [partialQty, setPartialQty] = useState<string>("");
+  const decidingRow = (rows.data ?? []).find(r => r.id === decidingId);
 
   async function submit() {
     if (!decidingId) return;
     try {
-      await decideDestocking(decidingId, approve, note);
+      const partial = partialQty.trim() ? parseInt(partialQty) : null;
+      await decideDestocking(decidingId, approve, note, partial);
       toast.success(approve ? "Approuvée, stock mis à jour" : "Rejetée");
-      setDecidingId(null); setNote("");
+      setDecidingId(null); setNote(""); setPartialQty("");
       qc.invalidateQueries({ queryKey: ["destocking"] });
       qc.invalidateQueries({ queryKey: ["stock_levels"] });
     } catch (e) { toast.error((e as Error).message); }
