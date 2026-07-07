@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWarehousesRouteImport } from './routes/_authenticated/warehouses'
 import { Route as AuthenticatedSuppliersRouteImport } from './routes/_authenticated/suppliers'
+import { Route as AuthenticatedSupplierReturnsRouteImport } from './routes/_authenticated/supplier-returns'
 import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -69,6 +70,12 @@ const AuthenticatedSuppliersRoute = AuthenticatedSuppliersRouteImport.update({
   path: '/suppliers',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSupplierReturnsRoute =
+  AuthenticatedSupplierReturnsRouteImport.update({
+    id: '/supplier-returns',
+    path: '/supplier-returns',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPosRoute = AuthenticatedPosRouteImport.update({
   id: '/pos',
   path: '/pos',
@@ -247,6 +254,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
+  '/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
@@ -283,6 +291,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
+  '/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
@@ -321,6 +330,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/pos': typeof AuthenticatedPosRoute
+  '/_authenticated/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
   '/_authenticated/admin/roles': typeof AuthenticatedAdminRolesRoute
@@ -359,6 +369,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/notifications'
     | '/pos'
+    | '/supplier-returns'
     | '/suppliers'
     | '/warehouses'
     | '/admin/roles'
@@ -395,6 +406,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/notifications'
     | '/pos'
+    | '/supplier-returns'
     | '/suppliers'
     | '/warehouses'
     | '/admin/roles'
@@ -432,6 +444,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/notifications'
     | '/_authenticated/pos'
+    | '/_authenticated/supplier-returns'
     | '/_authenticated/suppliers'
     | '/_authenticated/warehouses'
     | '/_authenticated/admin/roles'
@@ -501,6 +514,13 @@ declare module '@tanstack/react-router' {
       path: '/suppliers'
       fullPath: '/suppliers'
       preLoaderRoute: typeof AuthenticatedSuppliersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/supplier-returns': {
+      id: '/_authenticated/supplier-returns'
+      path: '/supplier-returns'
+      fullPath: '/supplier-returns'
+      preLoaderRoute: typeof AuthenticatedSupplierReturnsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/pos': {
@@ -723,6 +743,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPosRoute: typeof AuthenticatedPosRoute
+  AuthenticatedSupplierReturnsRoute: typeof AuthenticatedSupplierReturnsRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
   AuthenticatedAdminRolesRoute: typeof AuthenticatedAdminRolesRoute
@@ -758,6 +779,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPosRoute: AuthenticatedPosRoute,
+  AuthenticatedSupplierReturnsRoute: AuthenticatedSupplierReturnsRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
   AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute,
