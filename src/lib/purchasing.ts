@@ -104,7 +104,7 @@ export async function createSupplierReturn(input: {
 }): Promise<string> {
   const { data, error } = await supabase.rpc("create_supplier_return", {
     _supplier_id: input.supplier_id, _product_id: input.product_id,
-    _quantity: input.quantity, _defective_id: input.defective_id,
+    _quantity: input.quantity, _defective_id: input.defective_id as string,
     _reason: input.reason,
   });
   if (error) throw error;
