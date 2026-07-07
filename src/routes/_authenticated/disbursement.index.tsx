@@ -101,9 +101,18 @@ function DisbPage() {
         </table>
       </Card>
 
-      <Dialog open={decideId !== null} onOpenChange={o => { if (!o) setDid(null); }}>
+      <Dialog open={decideId !== null} onOpenChange={o => { if (!o) { setDid(null); setPartialAmt(""); } }}>
         <DialogContent>
           <DialogHeader><DialogTitle>{approve ? "Approuver le décaissement" : "Rejeter le décaissement"}</DialogTitle></DialogHeader>
+          {approve && decidingRow && (
+            <div className="space-y-2">
+              <label className="text-sm">Montant approuvé (max {formatMoney(decidingRow.amount)})</label>
+              <Input type="number" step="0.01" min={0} max={decidingRow.amount}
+                placeholder={`Défaut : ${decidingRow.amount}`}
+                value={partialAmt} onChange={e => setPartialAmt(e.target.value)} />
+              <p className="text-xs text-muted-foreground">Laissez vide pour approuver le montant total.</p>
+            </div>
+          )}
           <Textarea placeholder="Note (optionnelle)" value={note} onChange={e => setNote(e.target.value)} />
           <DialogFooter>
             <Button variant="outline" onClick={() => setDid(null)}>Annuler</Button>
