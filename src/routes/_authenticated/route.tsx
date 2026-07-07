@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, Warehouse, ArrowLeftRight, Boxes, LogOut,
   ShoppingCart, Receipt, Truck, ClipboardList, Users, Wallet, Shield,
   FileText, ChevronDown, Settings, UserPlus, AlertTriangle, PackageMinus,
-  Undo2, Banknote,
+  Undo2, Banknote, ScrollText, PackageX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
