@@ -26,15 +26,18 @@ function DisbPage() {
   const [decideId, setDid] = useState<string | null>(null);
   const [approve, setApp] = useState(true);
   const [note, setNote] = useState("");
+  const [partialAmt, setPartialAmt] = useState<string>("");
   const [payId, setPayId] = useState<string | null>(null);
   const [method, setMethod] = useState("virement");
+  const decidingRow = (rows.data ?? []).find(r => r.id === decideId);
 
   async function doDecide() {
     if (!decideId) return;
     try {
-      await decideDisbursement(decideId, approve, note);
+      const partial = partialAmt.trim() ? parseFloat(partialAmt) : null;
+      await decideDisbursement(decideId, approve, note, partial);
       toast.success(approve ? "Approuvée" : "Rejetée");
-      setDid(null); setNote("");
+      setDid(null); setNote(""); setPartialAmt("");
       qc.invalidateQueries({ queryKey: ["disbursement"] });
     } catch (e) { toast.error((e as Error).message); }
   }
