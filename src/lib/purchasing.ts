@@ -44,6 +44,18 @@ export type POItem = {
   unit_cost: number;
 };
 
+export type SupplierReturn = {
+  id: string;
+  reference: string;
+  supplier_id: string;
+  product_id: string;
+  quantity: number;
+  defective_id: string | null;
+  reason: string;
+  status: string;
+  created_at: string;
+};
+
 export async function fetchSuppliers() {
   const { data, error } = await supabase.from("suppliers").select("*").order("name");
   if (error) throw error;
@@ -69,4 +81,32 @@ export async function fetchPurchaseOrder(id: string) {
 export async function receivePOItem(itemId: string, qty: number) {
   const { error } = await supabase.rpc("receive_po_item", { _item_id: itemId, _qty: qty });
   if (error) throw error;
+}
+
+export async function generateReorderPO(supplierId: string, warehouseId: string): Promise<string> {
+  const { data, error } = await supabase.rpc("generate_reorder_po", {
+    _supplier_id: supplierId, _warehouse_id: warehouseId,
+  });
+  if (error) throw error;
+  return data as string;
+}
+
+export async function fetchSupplierReturns() {
+  const { data, error } = await supabase.from("supplier_returns").select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as SupplierReturn[];
+}
+
+export async function createSupplierReturn(input: {
+  supplier_id: string; product_id: string; quantity: number;
+  defective_id: string | null; reason: string;
+}): Promise<string> {
+  const { data, error } = await supabase.rpc("create_supplier_return", {
+    _supplier_id: input.supplier_id, _product_id: input.product_id,
+    _quantity: input.quantity, _defective_id: input.defective_id,
+    _reason: input.reason,
+  });
+  if (error) throw error;
+  return data as string;
 }
