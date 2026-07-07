@@ -56,6 +56,7 @@ const NAV: NavSection[] = [
   { key: "purchasing", title: "Achats", items: [
     { to: "/suppliers", label: "Fournisseurs", icon: Truck, roles: ["admin","responsable"] },
     { to: "/purchase-orders", label: "Commandes", icon: ClipboardList, roles: ["admin","responsable"] },
+    { to: "/supplier-returns", label: "Retours fournisseurs", icon: PackageX, roles: ["admin","responsable"] },
   ]},
   { key: "customers", title: "Clients", items: [
     { to: "/customers", label: "Clients & fidélité", icon: Users },
@@ -63,6 +64,7 @@ const NAV: NavSection[] = [
   { key: "admin", title: "Admin", items: [
     { to: "/admin/users", label: "Employés", icon: UserPlus, roles: ["admin"] },
     { to: "/admin/roles", label: "Rôles", icon: Shield, roles: ["admin"] },
+    { to: "/audit", label: "Journal d'audit", icon: ScrollText, roles: ["admin"] },
   ]},
 ];
 
