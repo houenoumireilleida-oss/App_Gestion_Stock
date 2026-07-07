@@ -55,21 +55,33 @@ function InvoicesPage() {
               <th className="px-4 py-2">Échéance</th>
               <th className="px-4 py-2">Statut</th>
               <th className="px-4 py-2 text-right">Total TTC</th>
+              <th className="px-4 py-2"></th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {list.map(inv => (
-              <tr key={inv.id} className="hover:bg-muted/30">
-                <td className="px-4 py-2"><Link to="/billing/$id" params={{ id: inv.id }} className="text-accent hover:underline font-mono">{inv.number}</Link></td>
-                <td className="px-4 py-2">{formatDate(inv.issue_date)}</td>
-                <td className="px-4 py-2">{inv.customer_name}</td>
-                <td className="px-4 py-2 text-muted-foreground">{inv.due_date ? formatDate(inv.due_date) : "—"}</td>
-                <td className="px-4 py-2"><Badge variant={STATUS_VARIANT[inv.status]}>{INVOICE_STATUS_LABEL[inv.status]}</Badge></td>
-                <td className="px-4 py-2 text-right font-mono">{formatMoney(inv.total)}</td>
-              </tr>
-            ))}
+            {list.map(inv => {
+              const overdue = inv.status === "issued" && inv.due_date && new Date(inv.due_date) < new Date();
+              const mailto = inv.customer_email
+                ? `mailto:${inv.customer_email}?subject=${encodeURIComponent(`Relance facture ${inv.number}`)}&body=${encodeURIComponent(`Bonjour,\n\nSauf erreur de notre part, la facture ${inv.number} d'un montant de ${inv.total} € reste impayée à ce jour.\nMerci de procéder au règlement dans les meilleurs délais.\n\nCordialement.`)}`
+                : null;
+              return (
+                <tr key={inv.id} className={`hover:bg-muted/30 ${overdue ? "bg-rose-50/50" : ""}`}>
+                  <td className="px-4 py-2"><Link to="/billing/$id" params={{ id: inv.id }} className="text-accent hover:underline font-mono">{inv.number}</Link></td>
+                  <td className="px-4 py-2">{formatDate(inv.issue_date)}</td>
+                  <td className="px-4 py-2">{inv.customer_name}</td>
+                  <td className="px-4 py-2 text-muted-foreground">{inv.due_date ? formatDate(inv.due_date) : "—"}{overdue && <span className="ml-2 text-xs text-rose-700 font-medium">En retard</span>}</td>
+                  <td className="px-4 py-2"><Badge variant={STATUS_VARIANT[inv.status]}>{INVOICE_STATUS_LABEL[inv.status]}</Badge></td>
+                  <td className="px-4 py-2 text-right font-mono">{formatMoney(inv.total)}</td>
+                  <td className="px-4 py-2 text-right">
+                    {overdue && mailto && (
+                      <Button asChild size="sm" variant="outline"><a href={mailto}>Relancer</a></Button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
             {list.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">
+              <tr><td colSpan={7} className="px-4 py-12 text-center text-muted-foreground">
                 <FileText className="mx-auto size-10 mb-2 opacity-40" />
                 Aucune facture pour le moment.
               </td></tr>
