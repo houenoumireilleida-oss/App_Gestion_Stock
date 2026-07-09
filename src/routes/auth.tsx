@@ -22,10 +22,8 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -33,23 +31,9 @@ function AuthPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: window.location.origin,
-            data: { display_name: displayName || email.split("@")[0] },
-          },
-        });
-        if (error) throw error;
-        toast.success("Compte créé — connectez-vous.");
-        setMode("signin");
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        navigate({ to: "/dashboard" });
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      navigate({ to: "/dashboard" });
     } catch (err: any) {
       toast.error(err.message ?? "Erreur d'authentification");
     } finally {
@@ -113,23 +97,10 @@ function AuthPage() {
             </div>
             StockFlow
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {mode === "signin" ? "Bon retour parmi nous" : "Créer un compte"}
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {mode === "signin"
-              ? "Accédez à votre espace de gestion."
-              : "Le premier compte créé devient administrateur."}
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">Bon retour parmi nous</h1>
+          <p className="text-sm text-muted-foreground mt-1">Accédez à votre espace de gestion.</p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-            {mode === "signup" && (
-              <div className="space-y-2">
-                <Label htmlFor="name">Nom affiché</Label>
-                <Input id="name" value={displayName}
-                  onChange={e => setDisplayName(e.target.value)} placeholder="Prénom Nom" />
-              </div>
-            )}
             <div className="space-y-2">
               <Label htmlFor="email">E-mail professionnel</Label>
               <Input id="email" type="email" required value={email}
@@ -152,23 +123,12 @@ function AuthPage() {
               </div>
             </div>
             <Button type="submit" disabled={loading} className="w-full accent-gradient text-white border-0 hover:opacity-90 shadow-glow">
-              {loading ? "…" : mode === "signin" ? "Se connecter" : "Créer le compte"}
+              {loading ? "…" : "Se connecter"}
             </Button>
           </form>
-
-          <div className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signin" ? (
-              <button type="button" onClick={() => setMode("signup")} className="hover:text-foreground underline underline-offset-4">
-                Pas encore de compte ? Créer un compte
-              </button>
-            ) : (
-              <button type="button" onClick={() => setMode("signin")} className="hover:text-foreground underline underline-offset-4">
-                Déjà un compte ? Se connecter
-              </button>
-            )}
-          </div>
         </Card>
       </div>
     </div>
   );
 }
+
