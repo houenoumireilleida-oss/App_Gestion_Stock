@@ -98,8 +98,8 @@ function AuthLayout() {
       <header className="bg-sidebar text-sidebar-foreground border-b border-sidebar-border">
         <div className="px-4 lg:px-8 h-14 flex items-center gap-6">
           <Link to="/dashboard" className="flex items-center gap-2 font-semibold text-base shrink-0">
-            <Boxes className="size-5 text-sidebar-primary" />
-            <span>StockFlow</span>
+            <img src="/logo-mytics.png" alt="Mytics" className="h-5 w-auto" />
+            <span>Mytics</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1 flex-1 overflow-x-auto">
