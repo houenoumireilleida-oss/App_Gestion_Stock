@@ -82,7 +82,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "StockFlow — Gestion catalogue & stock multicanal" },
       { name: "description", content: "Pilotez votre catalogue produits et vos stocks multi-entrepôts en temps réel." },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/logo-mytics.png" },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
