@@ -48,9 +48,10 @@ function AuthPage() {
         <div className="absolute inset-0 hero-gradient opacity-90" />
         <div className="absolute inset-0" style={{ background: "var(--gradient-glow)" }} />
 
-        <Link to="/" className="relative flex items-center gap-2 text-lg font-semibold z-10">
-          <img src="/logo-mytics.png" alt="Mytics" className="h-9 w-auto" />
-          Mytics
+        <Link to="/" className="relative flex items-center z-10">
+          <span className="inline-flex items-center bg-white rounded-lg px-3 py-2 shadow-md">
+            <img src="/logo-mytics.png" alt="Mytics" className="h-10 w-auto" />
+          </span>
         </Link>
 
         <div className="relative space-y-6 max-w-md z-10">
@@ -89,9 +90,8 @@ function AuthPage() {
       <div className="relative flex items-center justify-center p-6 sm:p-12 grid-pattern">
         <div className="absolute inset-0" style={{ background: "var(--gradient-glow)" }} />
         <Card className="relative w-full max-w-md p-8 shadow-elegant border-border/60">
-          <div className="lg:hidden mb-6 flex items-center gap-2 text-lg font-semibold">
-            <img src="/logo-mytics.png" alt="Mytics" className="h-8 w-auto" />
-            Mytics
+          <div className="lg:hidden mb-6 flex items-center">
+            <img src="/logo-mytics.png" alt="Mytics" className="h-12 w-auto" />
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">Bon retour parmi nous</h1>
           <p className="text-sm text-muted-foreground mt-1">Accédez à votre espace de gestion.</p>
