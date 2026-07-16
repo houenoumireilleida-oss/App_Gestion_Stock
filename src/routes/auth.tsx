@@ -48,9 +48,10 @@ function AuthPage() {
         <div className="absolute inset-0 hero-gradient opacity-90" />
         <div className="absolute inset-0" style={{ background: "var(--gradient-glow)" }} />
 
-        <Link to="/" className="relative flex items-center gap-2 text-lg font-semibold z-10">
-          <img src="/logo-mytics.png" alt="Mytics" className="h-9 w-auto" />
-          Mytics
+        <Link to="/" className="relative flex items-center z-10">
+          <span className="inline-flex items-center bg-white rounded-lg px-3 py-2 shadow-md">
+            <img src="/logo-mytics.png" alt="Mytics" className="h-10 w-auto" />
+          </span>
         </Link>
 
         <div className="relative space-y-6 max-w-md z-10">
