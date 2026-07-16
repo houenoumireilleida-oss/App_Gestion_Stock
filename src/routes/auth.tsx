@@ -90,10 +90,8 @@ function AuthPage() {
         <div className="absolute inset-0" style={{ background: "var(--gradient-glow)" }} />
         <Card className="relative w-full max-w-md p-8 shadow-elegant border-border/60">
           <div className="lg:hidden mb-6 flex items-center gap-2 text-lg font-semibold">
-            <div className="size-8 rounded-lg accent-gradient grid place-items-center">
-              <Boxes className="size-5 text-white" />
-            </div>
-            StockFlow
+            <img src="/logo-mytics.png" alt="Mytics" className="h-8 w-auto" />
+            Mytics
           </div>
           <h1 className="text-2xl font-semibold tracking-tight">Bon retour parmi nous</h1>
           <p className="text-sm text-muted-foreground mt-1">Accédez à votre espace de gestion.</p>
