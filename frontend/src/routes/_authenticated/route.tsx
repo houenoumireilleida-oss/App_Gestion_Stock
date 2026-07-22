@@ -98,8 +98,8 @@ function AuthLayout() {
       <header className="bg-sidebar text-sidebar-foreground border-b border-sidebar-border">
         <div className="px-4 lg:px-8 h-14 flex items-center gap-6">
           <Link to="/dashboard" className="flex items-center shrink-0">
-            <span className="inline-flex items-center bg-white rounded-md px-2 py-1 shadow-sm">
-              <img src="/logo-mytics.png" alt="Mytics" className="h-7 w-auto" />
+            <span className="inline-flex items-center">
+              <img src="/logo-mytics.png" alt="Mytics" className="h-20 w-auto" />
             </span>
           </Link>
 
