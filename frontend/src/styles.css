@@ -59,8 +59,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.025 250);
 
-  /* Primary — deep slate ink (sober, professional) */
-  --primary: oklch(0.24 0.03 250);
+  /* Primary — logo blue (#0057C2) */
+  --primary: oklch(0.48 0.18 258);
   --primary-foreground: oklch(0.985 0.003 247);
 
   --secondary: oklch(0.96 0.008 247);
@@ -69,13 +69,14 @@
   --muted: oklch(0.96 0.008 247);
   --muted-foreground: oklch(0.5 0.02 250);
 
-  /* Accent — emerald (stock / availability) */
-  --accent: oklch(0.65 0.16 158);
+  /* Accent — lighter logo-blue variant (hover/focus surfaces, active nav) */
+  --accent: oklch(0.53 0.17 258);
   --accent-foreground: oklch(0.99 0 0);
 
   --destructive: oklch(0.58 0.22 27);
   --destructive-foreground: oklch(0.99 0 0);
 
+  /* Success stays emerald — distinct semantic state, independent of the brand accent */
   --success: oklch(0.65 0.16 158);
   --success-foreground: oklch(0.99 0 0);
 
@@ -84,7 +85,7 @@
 
   --border: oklch(0.92 0.01 250);
   --input: oklch(0.92 0.01 250);
-  --ring: oklch(0.65 0.16 158);
+  --ring: oklch(0.53 0.17 258);
 
   --chart-1: oklch(0.65 0.16 158);
   --chart-2: oklch(0.55 0.14 240);
@@ -94,15 +95,15 @@
 
   --sidebar: oklch(0.22 0.025 250);
   --sidebar-foreground: oklch(0.86 0.01 250);
-  --sidebar-primary: oklch(0.65 0.16 158);
+  --sidebar-primary: oklch(0.48 0.18 258);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.28 0.03 250);
   --sidebar-accent-foreground: oklch(0.985 0.003 247);
   --sidebar-border: oklch(0.3 0.03 250);
 
   /* Gradients & shadows — polished depth */
-  --gradient-hero: linear-gradient(135deg, oklch(0.28 0.05 220) 0%, oklch(0.22 0.04 250) 45%, oklch(0.45 0.14 165) 100%);
-  --gradient-accent: linear-gradient(135deg, oklch(0.7 0.17 158) 0%, oklch(0.55 0.14 200) 100%);
+  --gradient-hero: linear-gradient(135deg, oklch(0.28 0.05 220) 0%, oklch(0.22 0.04 250) 45%, oklch(0.45 0.16 258) 100%);
+  --gradient-accent: linear-gradient(135deg, oklch(0.6 0.15 258) 0%, oklch(0.4 0.17 258) 100%);
   --gradient-surface: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.97 0.008 200) 100%);
   --gradient-glow: radial-gradient(ellipse at top, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%);
   --shadow-elegant: 0 20px 50px -20px color-mix(in oklab, var(--primary) 35%, transparent);
