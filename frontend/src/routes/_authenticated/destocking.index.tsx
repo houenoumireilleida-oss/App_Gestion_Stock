@@ -54,6 +54,7 @@ function DestockingPage() {
         <Link to="/destocking/new"><Button><Plus className="size-4" /> Nouvelle demande</Button></Link>
       </header>
       <Card className="p-0 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left"><tr>
             <th className="p-3">Date</th><th className="p-3">Produit</th><th className="p-3">Entrepôt</th>
@@ -81,6 +82,7 @@ function DestockingPage() {
             {(rows.data ?? []).length === 0 && <tr><td colSpan={7} className="p-8 text-center text-muted-foreground">Aucune demande.</td></tr>}
           </tbody>
         </table>
+        </div>
       </Card>
       <Dialog open={decidingId !== null} onOpenChange={o => { if (!o) { setDecidingId(null); setPartialQty(""); } }}>
         <DialogContent>

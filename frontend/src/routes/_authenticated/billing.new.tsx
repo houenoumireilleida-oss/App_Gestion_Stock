@@ -145,33 +145,37 @@ function NewInvoicePage() {
                   <Plus className="size-4 mr-1" />Ligne
                 </Button>
               </div>
-              <div className="space-y-2">
-                {lines.map((l, i) => (
-                  <div key={i} className="grid grid-cols-12 gap-2 items-start">
-                    <Input className="col-span-5" placeholder="Description" required value={l.description}
-                      onChange={e => updateLine(i, { description: e.target.value })} />
-                    <Input className="col-span-1" type="number" min={0} step="0.01" value={l.quantity}
-                      onChange={e => updateLine(i, { quantity: Number(e.target.value) })} />
-                    <Input className="col-span-2" type="number" min={0} step="1" placeholder="PU HT FCFA" value={l.unit_price}
-                      onChange={e => updateLine(i, { unit_price: Number(e.target.value) })} />
-                    <Input className="col-span-1" type="number" min={0} step="0.1" value={l.vat_rate}
-                      onChange={e => updateLine(i, { vat_rate: Number(e.target.value) })} />
-                    <div className="col-span-2 text-right text-sm font-mono pt-2">
-                      {formatMoney(l.quantity * l.unit_price * (1 + l.vat_rate / 100))}
-                    </div>
-                    <Button type="button" variant="ghost" size="sm" className="col-span-1"
-                      onClick={() => setLines(ls => ls.filter((_, idx) => idx !== i))}>
-                      <Trash2 className="size-4 text-destructive" />
-                    </Button>
+              <div className="overflow-x-auto">
+                <div className="min-w-[640px]">
+                  <div className="space-y-2">
+                    {lines.map((l, i) => (
+                      <div key={i} className="grid grid-cols-12 gap-2 items-start">
+                        <Input className="col-span-5" placeholder="Description" required value={l.description}
+                          onChange={e => updateLine(i, { description: e.target.value })} />
+                        <Input className="col-span-1" type="number" min={0} step="0.01" value={l.quantity}
+                          onChange={e => updateLine(i, { quantity: Number(e.target.value) })} />
+                        <Input className="col-span-2" type="number" min={0} step="1" placeholder="PU HT FCFA" value={l.unit_price}
+                          onChange={e => updateLine(i, { unit_price: Number(e.target.value) })} />
+                        <Input className="col-span-1" type="number" min={0} step="0.1" value={l.vat_rate}
+                          onChange={e => updateLine(i, { vat_rate: Number(e.target.value) })} />
+                        <div className="col-span-2 text-right text-sm font-mono pt-2">
+                          {formatMoney(l.quantity * l.unit_price * (1 + l.vat_rate / 100))}
+                        </div>
+                        <Button type="button" variant="ghost" size="sm" className="col-span-1"
+                          onClick={() => setLines(ls => ls.filter((_, idx) => idx !== i))}>
+                          <Trash2 className="size-4 text-destructive" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="grid grid-cols-12 gap-2 text-xs text-muted-foreground border-t pt-2">
-                <span className="col-span-5">Description</span>
-                <span className="col-span-1">Qté</span>
-                <span className="col-span-2">PU HT FCFA</span>
-                <span className="col-span-1">TVA %</span>
-                <span className="col-span-2 text-right">Total TTC</span>
+                  <div className="grid grid-cols-12 gap-2 text-xs text-muted-foreground border-t pt-2">
+                    <span className="col-span-5">Description</span>
+                    <span className="col-span-1">Qté</span>
+                    <span className="col-span-2">PU HT FCFA</span>
+                    <span className="col-span-1">TVA %</span>
+                    <span className="col-span-2 text-right">Total TTC</span>
+                  </div>
+                </div>
               </div>
             </Card>
 
@@ -212,6 +216,7 @@ function NewInvoicePage() {
 
         <TabsContent value="sale" className="mt-6">
           <Card className="overflow-hidden">
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-muted/50 text-left">
                 <tr>
@@ -244,6 +249,7 @@ function NewInvoicePage() {
                 )}
               </tbody>
             </table>
+            </div>
           </Card>
         </TabsContent>
       </Tabs>

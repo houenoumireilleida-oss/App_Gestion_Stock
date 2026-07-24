@@ -39,7 +39,7 @@ function NewDisb() {
       <h1 className="text-2xl font-semibold mb-6">Nouvelle demande de décaissement</h1>
       <Card className="p-6">
         <form onSubmit={submit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div><Label>Montant (FCFA)</Label><Input type="number" step="1" min={0} value={amount || ""} onChange={e => setA(parseFloat(e.target.value) || 0)} required /></div>
             <div><Label>Catégorie</Label>
               <Select value={category} onValueChange={v => setC(v as DisbCategory)}>

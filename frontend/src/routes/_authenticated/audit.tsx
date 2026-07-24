@@ -21,6 +21,7 @@ function AuditPage() {
           <p className="text-sm text-muted-foreground">Trace horodatée et inaltérable de toutes les actions sensibles.</p>
         </header>
         <Card className="p-0 overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted/50 text-left"><tr>
               <th className="p-3">Horodatage</th><th className="p-3">Acteur</th>
@@ -44,6 +45,7 @@ function AuditPage() {
               )}
             </tbody>
           </table>
+          </div>
         </Card>
       </div>
     </TooltipProvider>

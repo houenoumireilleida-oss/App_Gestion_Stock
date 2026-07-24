@@ -76,6 +76,7 @@ function CashSessionsPage() {
       </div>
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr><th className="px-4 py-2">Entrepôt</th><th className="px-4 py-2">Ouverte</th><th className="px-4 py-2">Fermée</th><th className="px-4 py-2 text-right">Fond</th><th className="px-4 py-2 text-right">Compté</th><th className="px-4 py-2 text-right">Écart</th><th className="px-4 py-2">Action</th></tr>
@@ -100,6 +101,7 @@ function CashSessionsPage() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
 
       <Dialog open={openOpen} onOpenChange={setOpenOpen}>

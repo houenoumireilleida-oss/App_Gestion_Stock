@@ -291,7 +291,7 @@ function PaymentDialog({ open, onOpenChange, total, onConfirm }: {
               </div>
             </div>
           )}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {(["cash", "card", "transfer", "check", "voucher", "other"] as PaymentMethod[]).map(m => (
               <Button key={m} variant={method === m ? "default" : "outline"} onClick={() => setMethod(m)}>
                 {PAYMENT_LABEL[m]}

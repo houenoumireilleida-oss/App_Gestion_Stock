@@ -79,6 +79,7 @@ function POList() {
       </div>
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr><th className="px-4 py-2">Référence</th><th className="px-4 py-2">Fournisseur</th><th className="px-4 py-2">Entrepôt</th><th className="px-4 py-2">Date prévue</th><th className="px-4 py-2">Statut</th><th className="px-4 py-2">Créée le</th></tr>
@@ -103,6 +104,7 @@ function POList() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

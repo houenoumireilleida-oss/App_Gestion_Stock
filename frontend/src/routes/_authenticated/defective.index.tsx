@@ -47,6 +47,7 @@ function DefectivePage() {
       </header>
 
       <Card className="p-0 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr>
@@ -96,6 +97,7 @@ function DefectivePage() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

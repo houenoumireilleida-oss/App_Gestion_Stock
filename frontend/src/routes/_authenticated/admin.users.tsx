@@ -163,6 +163,7 @@ function EmployeesPage() {
       </header>
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr>
@@ -201,6 +202,7 @@ function EmployeesPage() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
       <CredentialsDialog credentials={credentials} onOpenChange={nextOpen => { if (!nextOpen) setCredentials(null); }} />
     </div>

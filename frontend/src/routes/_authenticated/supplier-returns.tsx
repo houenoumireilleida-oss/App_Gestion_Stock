@@ -99,6 +99,7 @@ function Page() {
         </Dialog>
       </header>
       <Card className="p-0 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left"><tr>
             <th className="p-3">Référence</th><th className="p-3">Date</th>
@@ -122,6 +123,7 @@ function Page() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

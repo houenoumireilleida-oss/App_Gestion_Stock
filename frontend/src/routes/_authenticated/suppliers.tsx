@@ -45,7 +45,7 @@ function SuppliersPage() {
           <DialogContent>
             <DialogHeader><DialogTitle>Nouveau fournisseur</DialogTitle></DialogHeader>
             <form onSubmit={save} className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><Label>Code *</Label><Input required value={form.code} onChange={e => setForm({...form, code: e.target.value})} /></div>
                 <div><Label>Nom *</Label><Input required value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></div>
                 <div><Label>Contact</Label><Input value={form.contact_name} onChange={e => setForm({...form, contact_name: e.target.value})} /></div>
@@ -62,6 +62,7 @@ function SuppliersPage() {
       </div>
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr><th className="px-4 py-2">Code</th><th className="px-4 py-2">Nom</th><th className="px-4 py-2">Contact</th><th className="px-4 py-2">Email</th><th className="px-4 py-2">Téléphone</th><th className="px-4 py-2">Conditions</th></tr>
@@ -82,6 +83,7 @@ function SuppliersPage() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

@@ -55,6 +55,7 @@ function ProductsList() {
         </Card>
       ) : (
         <Card className="overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted/50 text-muted-foreground">
               <tr className="text-left">
@@ -91,6 +92,7 @@ function ProductsList() {
               })}
             </tbody>
           </table>
+          </div>
           {warehouses.data?.length === 0 && (
             <div className="p-4 bg-warning/10 text-sm text-warning-foreground border-t">
               Aucun entrepôt configuré. <Link to="/warehouses" className="underline">Créez-en un</Link> pour suivre vos stocks.

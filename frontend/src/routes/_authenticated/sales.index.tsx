@@ -34,6 +34,7 @@ function SalesPage() {
       </div>
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr><th className="px-4 py-2">Référence</th><th className="px-4 py-2">Date</th><th className="px-4 py-2">Client</th><th className="px-4 py-2">Entrepôt</th><th className="px-4 py-2">Statut</th><th className="px-4 py-2 text-right">Total</th></tr>
@@ -58,6 +59,7 @@ function SalesPage() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

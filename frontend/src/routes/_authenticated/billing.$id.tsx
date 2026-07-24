@@ -99,6 +99,7 @@ function InvoicePage() {
           {invoice.customer_vat_number && <div className="text-sm text-muted-foreground">TVA : {invoice.customer_vat_number}</div>}
         </div>
 
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b text-left">
             <tr>
@@ -121,6 +122,7 @@ function InvoicePage() {
             ))}
           </tbody>
         </table>
+        </div>
 
         <div className="flex justify-end">
           <div className="w-72 space-y-1 text-sm">

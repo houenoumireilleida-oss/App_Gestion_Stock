@@ -87,7 +87,7 @@ function NewReturn() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div><Label>Destination</Label>
               <Select value={destination} onValueChange={v => setDest(v as ReturnDestination)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>

@@ -85,6 +85,7 @@ function PODetail() {
       </Card>
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr><th className="px-4 py-2">Produit</th><th className="px-4 py-2 text-right">Commandé</th><th className="px-4 py-2 text-right">Reçu</th><th className="px-4 py-2 text-right">Coût unitaire</th><th className="px-4 py-2">Réception</th></tr>
@@ -116,6 +117,7 @@ function PODetail() {
             <tr><td className="px-4 py-2" colSpan={3}>Total HT estimé</td><td className="px-4 py-2 text-right font-mono" colSpan={2}>{formatMoney(totalCost)}</td></tr>
           </tfoot>
         </table>
+        </div>
       </Card>
     </div>
   );

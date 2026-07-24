@@ -68,6 +68,7 @@ function WarehousesPage() {
 
       {warehouses.data && warehouses.data.length > 0 ? (
         <Card className="overflow-hidden">
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted/50 text-muted-foreground">
               <tr className="text-left">
@@ -93,6 +94,7 @@ function WarehousesPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </Card>
       ) : (
         <Card className="p-12 text-center">

@@ -35,6 +35,7 @@ function ReturnsPage() {
         <Link to="/returns/new"><Button><Plus className="size-4" /> Nouveau retour</Button></Link>
       </header>
       <Card className="p-0 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left"><tr>
             <th className="p-3">Date</th><th className="p-3">Vente</th><th className="p-3">Destination</th>
@@ -64,6 +65,7 @@ function ReturnsPage() {
             {(rows.data ?? []).length === 0 && <tr><td colSpan={8} className="p-8 text-center text-muted-foreground">Aucun retour.</td></tr>}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

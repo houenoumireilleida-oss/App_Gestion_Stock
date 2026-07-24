@@ -65,6 +65,7 @@ function DisbPage() {
         <Link to="/disbursement/new"><Button><Plus className="size-4" /> Nouvelle demande</Button></Link>
       </header>
       <Card className="p-0 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left"><tr>
             <th className="p-3">Date</th><th className="p-3">Bénéficiaire</th><th className="p-3">Catégorie</th>
@@ -99,6 +100,7 @@ function DisbPage() {
             {(rows.data ?? []).length === 0 && <tr><td colSpan={8} className="p-8 text-center text-muted-foreground">Aucune demande.</td></tr>}
           </tbody>
         </table>
+        </div>
       </Card>
 
       <Dialog open={decideId !== null} onOpenChange={o => { if (!o) { setDid(null); setPartialAmt(""); } }}>

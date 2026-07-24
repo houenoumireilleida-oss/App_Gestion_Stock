@@ -54,7 +54,7 @@ function CustomersPage() {
           <DialogContent>
             <DialogHeader><DialogTitle>Nouveau client</DialogTitle></DialogHeader>
             <form onSubmit={save} className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><Label>Prénom</Label><Input value={form.first_name} onChange={e => setForm({...form, first_name: e.target.value})} /></div>
                 <div><Label>Nom *</Label><Input required value={form.last_name} onChange={e => setForm({...form, last_name: e.target.value})} /></div>
                 <div><Label>Email</Label><Input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></div>
@@ -71,6 +71,7 @@ function CustomersPage() {
       <Input placeholder="Rechercher (nom, email, téléphone)" value={search} onChange={e => setSearch(e.target.value)} className="max-w-md" />
 
       <Card className="overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr><th className="px-4 py-2">Nom</th><th className="px-4 py-2">Email</th><th className="px-4 py-2">Téléphone</th><th className="px-4 py-2 text-right">Points</th></tr>
@@ -89,6 +90,7 @@ function CustomersPage() {
             )}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

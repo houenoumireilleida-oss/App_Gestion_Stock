@@ -100,6 +100,7 @@ function SaleDetail() {
         </div>
         {c && <p className="text-sm mb-3">Client : <span className="font-medium">{customerName(c)}</span></p>}
 
+        <div className="overflow-x-auto">
         <table className="w-full text-sm mb-4">
           <thead><tr className="text-left text-muted-foreground border-b"><th className="py-2">Article</th><th className="text-right">Qté</th><th className="text-right">PU</th><th className="text-right">Total</th></tr></thead>
           <tbody>
@@ -113,6 +114,7 @@ function SaleDetail() {
             ))}
           </tbody>
         </table>
+        </div>
 
         <div className="space-y-1 text-sm border-t pt-3">
           <div className="flex justify-between"><span>Sous-total</span><span className="font-mono">{formatMoney(sale.subtotal)}</span></div>

@@ -57,7 +57,7 @@ function NewDefective() {
               <SelectContent>{(wh.data ?? []).map(w => <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>)}</SelectContent>
             </Select>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div><Label>Quantité</Label><Input type="number" min={1} value={quantity} onChange={e => setQ(parseInt(e.target.value) || 1)} /></div>
             <div><Label>Gravité</Label>
               <Select value={severity} onValueChange={v => setS(v as Severity)}>
