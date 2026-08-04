@@ -605,6 +605,36 @@ export type Database = {
           },
         ]
       }
+      login_history: {
+        Row: {
+          email: string
+          id: string
+          ip_address: string | null
+          logged_in_at: string
+          success: boolean
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          email: string
+          id?: string
+          ip_address?: string | null
+          logged_in_at?: string
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          ip_address?: string | null
+          logged_in_at?: string
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           body: string | null

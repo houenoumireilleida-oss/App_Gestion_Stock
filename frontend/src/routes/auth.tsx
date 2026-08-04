@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { recordLoginAttempt } from "@/lib/loginHistory";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,8 +34,10 @@ function AuthPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      void recordLoginAttempt(email, true);
       navigate({ to: "/dashboard" });
     } catch (err: any) {
+      void recordLoginAttempt(email, false);
       toast.error(err.message ?? "Erreur d'authentification");
     } finally {
       setLoading(false);

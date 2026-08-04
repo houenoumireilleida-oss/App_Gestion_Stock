@@ -21,6 +21,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedCashSessionsRouteImport } from './routes/_authenticated/cash-sessions'
 import { Route as AuthenticatedAuditRouteImport } from './routes/_authenticated/audit'
+import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
 import { Route as AuthenticatedReturnsIndexRouteImport } from './routes/_authenticated/returns.index'
 import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './routes/_authenticated/purchase-orders.index'
@@ -45,6 +46,7 @@ import { Route as AuthenticatedBillingNewRouteImport } from './routes/_authentic
 import { Route as AuthenticatedBillingIdRouteImport } from './routes/_authenticated/billing.$id'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminRolesRouteImport } from './routes/_authenticated/admin.roles'
+import { Route as AuthenticatedAdminLoginHistoryRouteImport } from './routes/_authenticated/admin.login-history'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -106,6 +108,11 @@ const AuthenticatedCashSessionsRoute =
 const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
   id: '/audit',
   path: '/audit',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
+  id: '/aide',
+  path: '/aide',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSalesIndexRoute = AuthenticatedSalesIndexRouteImport.update({
@@ -244,10 +251,17 @@ const AuthenticatedAdminRolesRoute = AuthenticatedAdminRolesRouteImport.update({
   path: '/admin/roles',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminLoginHistoryRoute =
+  AuthenticatedAdminLoginHistoryRouteImport.update({
+    id: '/admin/login-history',
+    path: '/admin/login-history',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/aide': typeof AuthenticatedAideRoute
   '/audit': typeof AuthenticatedAuditRoute
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
@@ -257,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
+  '/admin/login-history': typeof AuthenticatedAdminLoginHistoryRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/billing/$id': typeof AuthenticatedBillingIdRoute
@@ -285,6 +300,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/aide': typeof AuthenticatedAideRoute
   '/audit': typeof AuthenticatedAuditRoute
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
@@ -294,6 +310,7 @@ export interface FileRoutesByTo {
   '/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
+  '/admin/login-history': typeof AuthenticatedAdminLoginHistoryRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/billing/$id': typeof AuthenticatedBillingIdRoute
@@ -324,6 +341,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/aide': typeof AuthenticatedAideRoute
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
   '/_authenticated/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
@@ -333,6 +351,7 @@ export interface FileRoutesById {
   '/_authenticated/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
+  '/_authenticated/admin/login-history': typeof AuthenticatedAdminLoginHistoryRoute
   '/_authenticated/admin/roles': typeof AuthenticatedAdminRolesRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/billing/$id': typeof AuthenticatedBillingIdRoute
@@ -363,6 +382,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/aide'
     | '/audit'
     | '/cash-sessions'
     | '/customers'
@@ -372,6 +392,7 @@ export interface FileRouteTypes {
     | '/supplier-returns'
     | '/suppliers'
     | '/warehouses'
+    | '/admin/login-history'
     | '/admin/roles'
     | '/admin/users'
     | '/billing/$id'
@@ -400,6 +421,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/aide'
     | '/audit'
     | '/cash-sessions'
     | '/customers'
@@ -409,6 +431,7 @@ export interface FileRouteTypes {
     | '/supplier-returns'
     | '/suppliers'
     | '/warehouses'
+    | '/admin/login-history'
     | '/admin/roles'
     | '/admin/users'
     | '/billing/$id'
@@ -438,6 +461,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/aide'
     | '/_authenticated/audit'
     | '/_authenticated/cash-sessions'
     | '/_authenticated/customers'
@@ -447,6 +471,7 @@ export interface FileRouteTypes {
     | '/_authenticated/supplier-returns'
     | '/_authenticated/suppliers'
     | '/_authenticated/warehouses'
+    | '/_authenticated/admin/login-history'
     | '/_authenticated/admin/roles'
     | '/_authenticated/admin/users'
     | '/_authenticated/billing/$id'
@@ -563,6 +588,13 @@ declare module '@tanstack/react-router' {
       path: '/audit'
       fullPath: '/audit'
       preLoaderRoute: typeof AuthenticatedAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/aide': {
+      id: '/_authenticated/aide'
+      path: '/aide'
+      fullPath: '/aide'
+      preLoaderRoute: typeof AuthenticatedAideRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/sales/': {
@@ -733,10 +765,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRolesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/login-history': {
+      id: '/_authenticated/admin/login-history'
+      path: '/admin/login-history'
+      fullPath: '/admin/login-history'
+      preLoaderRoute: typeof AuthenticatedAdminLoginHistoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAideRoute: typeof AuthenticatedAideRoute
   AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
   AuthenticatedCashSessionsRoute: typeof AuthenticatedCashSessionsRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
@@ -746,6 +786,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSupplierReturnsRoute: typeof AuthenticatedSupplierReturnsRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
+  AuthenticatedAdminLoginHistoryRoute: typeof AuthenticatedAdminLoginHistoryRoute
   AuthenticatedAdminRolesRoute: typeof AuthenticatedAdminRolesRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedBillingIdRoute: typeof AuthenticatedBillingIdRoute
@@ -773,6 +814,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAideRoute: AuthenticatedAideRoute,
   AuthenticatedAuditRoute: AuthenticatedAuditRoute,
   AuthenticatedCashSessionsRoute: AuthenticatedCashSessionsRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
@@ -782,6 +824,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSupplierReturnsRoute: AuthenticatedSupplierReturnsRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
+  AuthenticatedAdminLoginHistoryRoute: AuthenticatedAdminLoginHistoryRoute,
   AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedBillingIdRoute: AuthenticatedBillingIdRoute,

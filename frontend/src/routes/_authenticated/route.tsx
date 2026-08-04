@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, Warehouse, ArrowLeftRight, Boxes, LogOut,
   ShoppingCart, Receipt, Truck, ClipboardList, Users, Wallet, Shield,
   FileText, ChevronDown, Settings, UserPlus, AlertTriangle, PackageMinus,
-  Undo2, Banknote, ScrollText, PackageX,
+  Undo2, Banknote, ScrollText, PackageX, History, BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -65,6 +65,10 @@ const NAV: NavSection[] = [
     { to: "/admin/users", label: "Employés", icon: UserPlus, roles: ["admin"] },
     { to: "/admin/roles", label: "Rôles", icon: Shield, roles: ["admin"] },
     { to: "/audit", label: "Journal d'audit", icon: ScrollText, roles: ["admin"] },
+    { to: "/admin/login-history", label: "Historique de connexion", icon: History, roles: ["admin"] },
+  ]},
+  { key: "help", title: "Aide", items: [
+    { to: "/aide", label: "Guide d'utilisation", icon: BookOpen },
   ]},
 ];
 
