@@ -27,8 +27,8 @@ function POList() {
   const [rSup, setRSup] = useState("");
   const [rWh, setRWh] = useState("");
 
-  const tone: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-    draft: "outline", ordered: "secondary", partial: "secondary", received: "default", cancelled: "destructive",
+  const tone: Record<string, "outline" | "warning" | "success" | "danger"> = {
+    draft: "outline", ordered: "warning", partial: "warning", received: "success", cancelled: "danger",
   };
 
   async function doReorder() {
@@ -81,7 +81,7 @@ function POList() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left">
+          <thead className="table-head-dark text-left">
             <tr><th className="px-4 py-2">Référence</th><th className="px-4 py-2">Fournisseur</th><th className="px-4 py-2">Entrepôt</th><th className="px-4 py-2">Date prévue</th><th className="px-4 py-2">Statut</th><th className="px-4 py-2">Créée le</th></tr>
           </thead>
           <tbody className="divide-y">

@@ -5,11 +5,20 @@ import { fetchWarehouses, formatMoney, formatDate } from "@/lib/stock";
 import { fetchCustomers, customerName } from "@/lib/customers";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SectionHero } from "@/components/SectionHero";
+import { ShoppingCart, Receipt, Wallet, Undo2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/sales/")({
   head: () => ({ meta: [{ title: "Ventes — StockFlow" }] }),
   component: SalesPage,
 });
+
+const VENTE_LINKS = [
+  { to: "/pos", label: "Caisse", icon: ShoppingCart },
+  { to: "/sales", label: "Ventes", icon: Receipt },
+  { to: "/cash-sessions", label: "Sessions & Clôture Z", icon: Wallet },
+  { to: "/returns", label: "Retours clients", icon: Undo2 },
+];
 
 function SalesPage() {
   const sales = useQuery({ queryKey: ["sales"], queryFn: () => fetchSales(200) });
@@ -22,9 +31,15 @@ function SalesPage() {
   const caToday = todaySales.reduce((s, x) => s + x.total, 0);
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
+    <div>
+      <SectionHero
+        eyebrow="Vente"
+        title="Encaissement, tickets, sessions de caisse et retours clients"
+        links={VENTE_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
       <header>
-        <h1 className="text-3xl font-semibold tracking-tight">Ventes</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Ventes</h1>
         <p className="text-muted-foreground mt-1">Historique des encaissements et tickets.</p>
       </header>
       <div className="grid sm:grid-cols-3 gap-4">
@@ -36,7 +51,7 @@ function SalesPage() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left">
+          <thead className="table-head-dark text-left">
             <tr><th className="px-4 py-2">Référence</th><th className="px-4 py-2">Date</th><th className="px-4 py-2">Client</th><th className="px-4 py-2">Entrepôt</th><th className="px-4 py-2">Statut</th><th className="px-4 py-2 text-right">Total</th></tr>
           </thead>
           <tbody className="divide-y">
@@ -49,7 +64,7 @@ function SalesPage() {
                   <td className="px-4 py-2">{formatDate(s.created_at)}</td>
                   <td className="px-4 py-2">{c ? customerName(c) : "—"}</td>
                   <td className="px-4 py-2">{w?.name ?? "—"}</td>
-                  <td className="px-4 py-2"><Badge variant={s.status === "refunded" ? "destructive" : "secondary"}>{s.status}</Badge></td>
+                  <td className="px-4 py-2"><Badge variant={s.status === "refunded" ? "danger" : "success"}>{s.status}</Badge></td>
                   <td className="px-4 py-2 text-right font-mono">{formatMoney(s.total)}</td>
                 </tr>
               );
@@ -61,6 +76,7 @@ function SalesPage() {
         </table>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

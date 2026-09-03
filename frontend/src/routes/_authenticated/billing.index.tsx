@@ -6,15 +6,22 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useMyRoles, hasAny } from "@/lib/roles";
-import { FileText, Plus } from "lucide-react";
+import { FileText, Plus, Settings } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/billing/")({
   head: () => ({ meta: [{ title: "Factures — StockFlow" }] }),
   component: InvoicesPage,
 });
 
-const STATUS_VARIANT: Record<InvoiceStatus, "default" | "secondary" | "destructive" | "outline"> = {
-  draft: "outline", issued: "secondary", paid: "default", cancelled: "destructive",
+const BILLING_LINKS = [
+  { to: "/billing", label: "Factures", icon: FileText },
+  { to: "/billing/new", label: "Nouvelle facture", icon: Plus },
+  { to: "/billing/settings", label: "Société", icon: Settings },
+];
+
+const STATUS_VARIANT: Record<InvoiceStatus, "outline" | "warning" | "success" | "danger"> = {
+  draft: "outline", issued: "warning", paid: "success", cancelled: "danger",
 };
 
 function InvoicesPage() {
@@ -28,10 +35,16 @@ function InvoicesPage() {
   const paid = list.filter(i => i.status === "paid").reduce((s, i) => s + i.total, 0);
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
+    <div>
+      <SectionHero
+        eyebrow="Facturation"
+        title="Factures, règlements et paramètres de facturation"
+        links={canEdit ? BILLING_LINKS : BILLING_LINKS.filter(l => l.to === "/billing")}
+      />
+      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
       <header className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Factures</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Factures</h1>
           <p className="text-muted-foreground mt-1">Suivi des factures émises et de leur règlement.</p>
         </div>
         {canEdit && (
@@ -48,7 +61,7 @@ function InvoicesPage() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left">
+          <thead className="table-head-dark text-left">
             <tr>
               <th className="px-4 py-2">N°</th>
               <th className="px-4 py-2">Date</th>
@@ -91,6 +104,7 @@ function InvoicesPage() {
         </table>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

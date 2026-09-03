@@ -6,12 +6,21 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Package } from "lucide-react";
+import { Plus, Search, Package, ArrowLeftRight, AlertTriangle, PackageMinus, Warehouse } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/products/")({
   head: () => ({ meta: [{ title: "Produits — StockFlow" }] }),
   component: ProductsList,
 });
+
+const STOCK_LINKS = [
+  { to: "/products", label: "Produits", icon: Package },
+  { to: "/movements", label: "Mouvements", icon: ArrowLeftRight },
+  { to: "/defective", label: "Défectueux", icon: AlertTriangle },
+  { to: "/destocking", label: "Déstockage", icon: PackageMinus },
+  { to: "/warehouses", label: "Entrepôts", icon: Warehouse },
+];
 
 function ProductsList() {
   const products = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
@@ -31,10 +40,16 @@ function ProductsList() {
   }
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
+    <div>
+      <SectionHero
+        eyebrow="Stock"
+        title="Produits, mouvements, entrepôts et suivi des seuils"
+        links={STOCK_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Produits</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Produits</h1>
           <p className="text-muted-foreground mt-1">{items.length} référence{items.length > 1 ? "s" : ""}</p>
         </div>
         <Link to="/products/new"><Button><Plus className="size-4 mr-1" /> Nouveau produit</Button></Link>
@@ -57,7 +72,7 @@ function ProductsList() {
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-muted-foreground">
+            <thead className="table-head-dark">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Produit</th>
                 <th className="px-4 py-3 font-medium">SKU</th>
@@ -84,8 +99,8 @@ function ProductsList() {
                     </td>
                     <td className="px-4 py-3">
                       {!p.is_active ? <Badge variant="secondary">Inactif</Badge>
-                       : low ? <Badge className="bg-warning text-warning-foreground hover:bg-warning">Seuil bas</Badge>
-                       : <Badge variant="outline" className="border-success text-success">OK</Badge>}
+                       : low ? <Badge variant="warning">Sous seuil</Badge>
+                       : <Badge variant="success">OK</Badge>}
                     </td>
                   </tr>
                 );
@@ -100,6 +115,7 @@ function ProductsList() {
           )}
         </Card>
       )}
+      </div>
     </div>
   );
 }

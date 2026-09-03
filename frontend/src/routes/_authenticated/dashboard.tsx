@@ -4,7 +4,6 @@ import { fetchProducts, fetchWarehouses, fetchStockLevels, fetchMovements, forma
 import { Card } from "@/components/ui/card";
 import { Package, Warehouse, AlertTriangle, TrendingUp, ArrowDownRight, ArrowUpRight, RefreshCw, ArrowLeftRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroBg from "@/assets/dashboard-hero.jpg";
 
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -48,22 +47,18 @@ function Dashboard() {
 
   return (
     <div className="min-h-full">
-      {/* Hero */}
-      <div className="relative overflow-hidden">
-        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-90" />
-        <div className="absolute inset-0 hero-gradient opacity-85" />
-        <div className="absolute inset-0" style={{ background: "var(--gradient-glow)" }} />
-        <div className="relative p-6 lg:p-10 max-w-7xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-dark text-xs text-white/90 mb-4">
-            <Sparkles className="size-3 text-sidebar-primary" />
-            Vue d'ensemble en temps réel
-          </div>
-          <h1 className="text-4xl font-semibold tracking-tight text-white">Tableau de bord</h1>
-          <p className="text-white/70 mt-2 max-w-2xl">Votre catalogue, vos entrepôts et vos mouvements de stock, tout au même endroit.</p>
-        </div>
+      {/* Simple page header — no hero banner here; the dashboard is the overview,
+          section landing pages use SectionHero instead. */}
+      <div className="px-6 lg:px-10 pt-6 lg:pt-8 pb-2 max-w-7xl flex items-center gap-2 text-sm text-muted-foreground">
+        <Sparkles className="size-3.5 text-primary" />
+        Vue d'ensemble en temps réel
+      </div>
+      <div className="px-6 lg:px-10 pb-4 max-w-7xl">
+        <h1 className="text-2xl lg:text-3xl font-semibold tracking-tight text-foreground">Tableau de bord</h1>
+        <p className="text-muted-foreground mt-1 max-w-2xl text-sm">Votre catalogue, vos entrepôts et vos mouvements de stock, tout au même endroit.</p>
       </div>
 
-      <div className="p-6 lg:p-10 space-y-8 max-w-7xl -mt-10 relative">
+      <div className="p-6 lg:p-10 pt-2 space-y-8 max-w-7xl relative">
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(s => (
             <Card key={s.label} className="p-5 shadow-card border-border/60 hover:shadow-elegant transition-shadow">

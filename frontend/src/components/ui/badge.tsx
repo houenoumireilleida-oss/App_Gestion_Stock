@@ -14,6 +14,10 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
+        /* Soft tinted status pills — e.g. "Sous seuil", "Rupture", "Validé" */
+        warning: "status-pill status-pill-warning border",
+        danger: "status-pill status-pill-danger border",
+        success: "status-pill status-pill-success border",
       },
     },
     defaultVariants: {

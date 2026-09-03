@@ -13,12 +13,20 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Copy, KeyRound, ShieldAlert, UserPlus, Trash2 } from "lucide-react";
+import { Copy, KeyRound, ShieldAlert, UserPlus, Trash2, Shield, ScrollText, History } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/admin/users")({
   head: () => ({ meta: [{ title: "Employés — StockFlow" }] }),
   component: EmployeesPage,
 });
+
+const ADMIN_LINKS = [
+  { to: "/admin/users", label: "Employés", icon: UserPlus },
+  { to: "/admin/roles", label: "Rôles", icon: Shield },
+  { to: "/audit", label: "Journal d'audit", icon: ScrollText },
+  { to: "/admin/login-history", label: "Historique de connexion", icon: History },
+];
 
 type Profile = { user_id: string; display_name: string };
 type RoleRow = { user_id: string; role: AppRole };
@@ -117,10 +125,16 @@ function EmployeesPage() {
   }
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-5xl">
+    <div>
+      <SectionHero
+        eyebrow="Admin"
+        title="Employés, rôles, journal d'audit et connexions"
+        links={ADMIN_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6 max-w-5xl">
       <header className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Employés</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Employés</h1>
           <p className="text-muted-foreground mt-1">Créez, gérez et supprimez les comptes de votre équipe.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
@@ -165,7 +179,7 @@ function EmployeesPage() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left">
+          <thead className="table-head-dark text-left">
             <tr>
               <th className="px-4 py-2">Nom</th>
               <th className="px-4 py-2">Rôles</th>
@@ -205,6 +219,7 @@ function EmployeesPage() {
         </div>
       </Card>
       <CredentialsDialog credentials={credentials} onOpenChange={nextOpen => { if (!nextOpen) setCredentials(null); }} />
+      </div>
     </div>
   );
 }

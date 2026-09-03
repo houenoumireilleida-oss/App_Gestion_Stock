@@ -67,7 +67,7 @@ function DisbPage() {
       <Card className="p-0 overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left"><tr>
+          <thead className="table-head-dark text-left"><tr>
             <th className="p-3">Date</th><th className="p-3">Bénéficiaire</th><th className="p-3">Catégorie</th>
             <th className="p-3">Description</th><th className="p-3 text-right">Montant</th>
             <th className="p-3">Justif.</th><th className="p-3">Statut</th><th className="p-3"></th>

@@ -70,7 +70,7 @@ function WarehousesPage() {
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-muted-foreground">
+            <thead className="table-head-dark">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Code</th>
                 <th className="px-4 py-3 font-medium">Nom</th>

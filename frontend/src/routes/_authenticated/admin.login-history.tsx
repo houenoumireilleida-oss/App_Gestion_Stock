@@ -55,7 +55,7 @@ function LoginHistoryPage() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-left">
+            <thead className="table-head-dark text-left">
               <tr>
                 <th className="px-4 py-2">Email</th>
                 <th className="px-4 py-2">Date / heure</th>

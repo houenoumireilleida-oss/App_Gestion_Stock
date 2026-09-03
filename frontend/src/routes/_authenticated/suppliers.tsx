@@ -10,12 +10,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus } from "lucide-react";
+import { Plus, Truck, ClipboardList, PackageX } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/suppliers")({
   head: () => ({ meta: [{ title: "Fournisseurs — StockFlow" }] }),
   component: SuppliersPage,
 });
+
+const PURCHASING_LINKS = [
+  { to: "/suppliers", label: "Fournisseurs", icon: Truck },
+  { to: "/purchase-orders", label: "Commandes", icon: ClipboardList },
+  { to: "/supplier-returns", label: "Retours fournisseurs", icon: PackageX },
+];
 
 function SuppliersPage() {
   const qc = useQueryClient();
@@ -34,10 +41,16 @@ function SuppliersPage() {
   }
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
+    <div>
+      <SectionHero
+        eyebrow="Achats"
+        title="Fournisseurs, commandes et retours fournisseurs"
+        links={PURCHASING_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Fournisseurs</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Fournisseurs</h1>
           <p className="text-muted-foreground mt-1">Vos partenaires et leurs conditions.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
@@ -64,7 +77,7 @@ function SuppliersPage() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left">
+          <thead className="table-head-dark text-left">
             <tr><th className="px-4 py-2">Code</th><th className="px-4 py-2">Nom</th><th className="px-4 py-2">Contact</th><th className="px-4 py-2">Email</th><th className="px-4 py-2">Téléphone</th><th className="px-4 py-2">Conditions</th></tr>
           </thead>
           <tbody className="divide-y">
@@ -85,6 +98,7 @@ function SuppliersPage() {
         </table>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

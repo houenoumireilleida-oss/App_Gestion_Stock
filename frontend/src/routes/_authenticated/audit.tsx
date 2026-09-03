@@ -23,7 +23,7 @@ function AuditPage() {
         <Card className="p-0 overflow-hidden">
           <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-left"><tr>
+            <thead className="table-head-dark text-left"><tr>
               <th className="p-3">Horodatage</th><th className="p-3">Acteur</th>
               <th className="p-3">Action</th><th className="p-3">Entité</th>
               <th className="p-3">Détails</th>

@@ -37,7 +37,7 @@ function ReturnsPage() {
       <Card className="p-0 overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-left"><tr>
+          <thead className="table-head-dark text-left"><tr>
             <th className="p-3">Date</th><th className="p-3">Vente</th><th className="p-3">Destination</th>
             <th className="p-3">Remboursement</th><th className="p-3 text-right">Montant</th>
             <th className="p-3">Motif</th><th className="p-3">Statut</th><th className="p-3"></th>

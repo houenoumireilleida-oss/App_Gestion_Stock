@@ -96,7 +96,7 @@ function SaleDetail() {
             <p className="font-mono font-semibold">{sale.reference}</p>
             <p className="text-muted-foreground">{formatDate(sale.created_at)}</p>
           </div>
-          <Badge variant={sale.status === "refunded" ? "destructive" : "secondary"}>{sale.status}</Badge>
+          <Badge variant={sale.status === "refunded" ? "danger" : "success"}>{sale.status}</Badge>
         </div>
         {c && <p className="text-sm mb-3">Client : <span className="font-medium">{customerName(c)}</span></p>}
 
