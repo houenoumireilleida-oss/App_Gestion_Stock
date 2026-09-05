@@ -41,7 +41,7 @@ function InvoicesPage() {
         title="Factures, règlements et paramètres de facturation"
         links={canEdit ? BILLING_LINKS : BILLING_LINKS.filter(l => l.to === "/billing")}
       />
-      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
+      <div className="p-6 lg:p-10 space-y-6">
       <header className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Factures</h1>

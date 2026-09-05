@@ -2,22 +2,37 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchSupplierReturns, createSupplierReturn, fetchSuppliers } from "@/lib/purchasing";
-import { fetchProducts, formatDate } from "@/lib/stock";
+import { fetchProducts, formatDate, formatMoney } from "@/lib/stock";
 import { fetchDefective } from "@/lib/workflows";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SectionHero } from "@/components/SectionHero";
 import { toast } from "sonner";
-import { PackageX, Plus } from "lucide-react";
+import { PackageX, Plus, Truck, ClipboardList } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/supplier-returns")({
   head: () => ({ meta: [{ title: "Retours fournisseurs — StockFlow" }] }),
   component: Page,
 });
+
+const PURCHASING_LINKS = [
+  { to: "/suppliers", label: "Fournisseurs", icon: Truck },
+  { to: "/purchase-orders", label: "Commandes", icon: ClipboardList },
+  { to: "/supplier-returns", label: "Retours fournisseurs", icon: PackageX },
+];
+
+function statusVariant(status: string): "warning" | "success" | "danger" | "secondary" {
+  const s = status.toLowerCase();
+  if (s === "approved" || s === "approuvé" || s === "executed" || s === "exécuté") return "success";
+  if (s === "rejected" || s === "rejeté") return "danger";
+  return "warning"; // pending and any other free-text value
+}
 
 function Page() {
   const qc = useQueryClient();
@@ -26,7 +41,7 @@ function Page() {
   const prod = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
   const defective = useQuery({ queryKey: ["defective"], queryFn: fetchDefective });
   const sMap = new Map((sup.data ?? []).map(s => [s.id, s.name]));
-  const pMap = new Map((prod.data ?? []).map(p => [p.id, p.name]));
+  const pMap = new Map((prod.data ?? []).map(p => [p.id, p]));
 
   const [open, setOpen] = useState(false);
   const [supplier_id, setS] = useState("");
@@ -38,6 +53,8 @@ function Page() {
   const eligibleDefective = (defective.data ?? []).filter(d =>
     (d.status === "applied" || d.status === "confirmed") && d.treatment === "retour_fournisseur"
   );
+
+  const list = rows.data ?? [];
 
   async function submit() {
     if (!supplier_id || !product_id || !reason.trim()) { toast.error("Champs requis"); return; }
@@ -53,11 +70,22 @@ function Page() {
   }
 
   return (
-    <div className="p-4 lg:p-8 space-y-6">
+    <div>
+      <SectionHero
+        eyebrow="Achats"
+        title="Fournisseurs, commandes et retours d'approvisionnement"
+        links={PURCHASING_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6">
       <header className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold flex items-center gap-2"><PackageX className="text-purple-600" /> Retours fournisseurs</h1>
-          <p className="text-sm text-muted-foreground">Renvoi de marchandises défectueuses au fournisseur.</p>
+        <div className="flex items-center gap-3">
+          <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+            <PackageX className="size-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Retours fournisseurs</h1>
+            <p className="text-sm text-muted-foreground">{list.length} retour{list.length > 1 ? "s" : ""}</p>
+          </div>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild><Button><Plus className="size-4" /> Nouveau retour</Button></DialogTrigger>
@@ -80,7 +108,7 @@ function Page() {
                 <Select value={defective_id} onValueChange={setD}>
                   <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
                   <SelectContent>{eligibleDefective.map(d =>
-                    <SelectItem key={d.id} value={d.id}>{pMap.get(d.product_id) ?? "?"} × {d.quantity} — {d.reason.slice(0,30)}</SelectItem>)}
+                    <SelectItem key={d.id} value={d.id}>{pMap.get(d.product_id)?.name ?? "?"} × {d.quantity} — {d.reason.slice(0,30)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -98,33 +126,45 @@ function Page() {
           </DialogContent>
         </Dialog>
       </header>
+
       <Card className="p-0 overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="table-head-dark text-left"><tr>
-            <th className="p-3">Référence</th><th className="p-3">Date</th>
-            <th className="p-3">Fournisseur</th><th className="p-3">Produit</th>
-            <th className="p-3 text-right">Qté</th><th className="p-3">Motif</th><th className="p-3">Statut</th>
-          </tr></thead>
+          <thead className="table-head-dark text-left">
+            <tr>
+              <th className="px-4 py-2">Retour</th>
+              <th className="px-4 py-2">Fournisseur</th>
+              <th className="px-4 py-2">Produit</th>
+              <th className="px-4 py-2 text-right">Qté</th>
+              <th className="px-4 py-2">Motif</th>
+              <th className="px-4 py-2 text-right">Valeur</th>
+              <th className="px-4 py-2">Statut</th>
+            </tr>
+          </thead>
           <tbody className="divide-y">
-            {(rows.data ?? []).map(r => (
-              <tr key={r.id}>
-                <td className="p-3 font-mono text-xs">{r.reference}</td>
-                <td className="p-3 text-muted-foreground">{formatDate(r.created_at)}</td>
-                <td className="p-3">{sMap.get(r.supplier_id) ?? "—"}</td>
-                <td className="p-3">{pMap.get(r.product_id) ?? "—"}</td>
-                <td className="p-3 text-right font-mono">{r.quantity}</td>
-                <td className="p-3 max-w-xs truncate">{r.reason}</td>
-                <td className="p-3"><span className="text-xs px-2 py-1 rounded bg-amber-100 text-amber-900">{r.status}</span></td>
-              </tr>
-            ))}
-            {(rows.data ?? []).length === 0 && (
-              <tr><td colSpan={7} className="p-8 text-center text-muted-foreground">Aucun retour fournisseur.</td></tr>
+            {list.map(r => {
+              const p = pMap.get(r.product_id);
+              const value = (p?.cost ?? 0) * r.quantity;
+              return (
+                <tr key={r.id} className="hover:bg-muted/30">
+                  <td className="px-4 py-2 font-mono text-xs">{r.reference}</td>
+                  <td className="px-4 py-2">{sMap.get(r.supplier_id) ?? "—"}</td>
+                  <td className="px-4 py-2">{p?.name ?? "—"}</td>
+                  <td className="px-4 py-2 text-right font-mono">{r.quantity}</td>
+                  <td className="px-4 py-2 max-w-xs truncate text-muted-foreground">{r.reason}</td>
+                  <td className="px-4 py-2 text-right font-mono">{formatMoney(value)}</td>
+                  <td className="px-4 py-2"><Badge variant={statusVariant(r.status)}>{r.status}</Badge></td>
+                </tr>
+              );
+            })}
+            {list.length === 0 && (
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">Aucun retour fournisseur.</td></tr>
             )}
           </tbody>
         </table>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

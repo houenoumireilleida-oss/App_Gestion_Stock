@@ -39,6 +39,27 @@ function ProductsList() {
     stockByProduct.set(l.product_id, (stockByProduct.get(l.product_id) ?? 0) + l.quantity);
   }
 
+  // One row per (product, warehouse) — matches a real stock level record, not an aggregate
+  const rows = (levels.data ?? [])
+    .map(level => ({
+      level,
+      product: (products.data ?? []).find(p => p.id === level.product_id),
+      warehouse: (warehouses.data ?? []).find(w => w.id === level.warehouse_id),
+    }))
+    .filter((r): r is { level: typeof r.level; product: NonNullable<typeof r.product>; warehouse: typeof r.warehouse } =>
+      !!r.product && (!q ||
+        r.product.name.toLowerCase().includes(q.toLowerCase()) ||
+        r.product.sku.toLowerCase().includes(q.toLowerCase()) ||
+        (r.product.barcode ?? "").includes(q)))
+    .sort((a, b) => a.product.name.localeCompare(b.product.name));
+
+  const stockValue = (levels.data ?? []).reduce((s, l) => {
+    const p = (products.data ?? []).find(p => p.id === l.product_id);
+    return s + (p ? p.cost * l.quantity : 0);
+  }, 0);
+  const belowCount = rows.filter(r => r.level.quantity > 0 && r.level.quantity <= r.product.low_stock_threshold).length;
+  const outCount = rows.filter(r => r.level.quantity <= 0).length;
+
   return (
     <div>
       <SectionHero
@@ -46,14 +67,34 @@ function ProductsList() {
         title="Produits, mouvements, entrepôts et suivi des seuils"
         links={STOCK_LINKS}
       />
-      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Produits</h1>
-          <p className="text-muted-foreground mt-1">{items.length} référence{items.length > 1 ? "s" : ""}</p>
+      <div className="p-6 lg:p-10 space-y-6">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+            <Package className="size-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Produits</h1>
+            <p className="text-sm text-muted-foreground">{items.length} référence{items.length > 1 ? "s" : ""}</p>
+          </div>
         </div>
         <Link to="/products/new"><Button><Plus className="size-4 mr-1" /> Nouveau produit</Button></Link>
       </header>
+
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Card className="p-5 card-accent-top card-accent-navy">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Valeur du stock</p>
+          <p className="text-2xl font-semibold mt-2 tracking-tight">{formatMoney(stockValue)}</p>
+        </Card>
+        <Card className="p-5 card-accent-top border-t-warning">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Sous seuil</p>
+          <p className="text-2xl font-semibold mt-2 tracking-tight">{belowCount}</p>
+        </Card>
+        <Card className="p-5 card-accent-top card-accent-danger">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Ruptures</p>
+          <p className="text-2xl font-semibold mt-2 tracking-tight">{outCount}</p>
+        </Card>
+      </div>
 
       <div className="relative max-w-md">
         <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -72,35 +113,38 @@ function ProductsList() {
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="table-head-dark">
-              <tr className="text-left">
-                <th className="px-4 py-3 font-medium">Produit</th>
-                <th className="px-4 py-3 font-medium">SKU</th>
-                <th className="px-4 py-3 font-medium text-right">Prix</th>
-                <th className="px-4 py-3 font-medium text-right">Stock</th>
-                <th className="px-4 py-3 font-medium">Statut</th>
+            <thead className="table-head-dark text-left">
+              <tr>
+                <th className="px-4 py-2">Référence</th>
+                <th className="px-4 py-2">Désignation</th>
+                <th className="px-4 py-2">Catégorie</th>
+                <th className="px-4 py-2">Site</th>
+                <th className="px-4 py-2 text-right">Stock</th>
+                <th className="px-4 py-2 text-right">Seuil</th>
+                <th className="px-4 py-2">État</th>
               </tr>
             </thead>
             <tbody className="divide-y">
-              {items.map(p => {
-                const qty = stockByProduct.get(p.id) ?? 0;
-                const low = qty <= p.low_stock_threshold;
+              {rows.map(({ level, product, warehouse }) => {
+                const low = level.quantity <= product.low_stock_threshold;
                 return (
-                  <tr key={p.id} className="hover:bg-muted/30">
-                    <td className="px-4 py-3">
-                      <Link to="/products/$id" params={{ id: p.id }} className="font-medium hover:text-accent">{p.name}</Link>
-                      {p.category && <div className="text-xs text-muted-foreground">{p.category}</div>}
+                  <tr key={`${level.product_id}-${level.warehouse_id}`} className="hover:bg-muted/30">
+                    <td className="px-4 py-2 font-mono text-xs">{product.sku}</td>
+                    <td className="px-4 py-2">
+                      <Link to="/products/$id" params={{ id: product.id }} className="font-medium hover:text-accent">{product.name}</Link>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs">{p.sku}</td>
-                    <td className="px-4 py-3 text-right tabular-nums">{formatMoney(p.price)}</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-mono">
-                      <span className={low ? "text-warning font-semibold" : ""}>{qty}</span>
-                      <span className="text-muted-foreground"> {p.unit}</span>
+                    <td className="px-4 py-2 text-muted-foreground">{product.category ?? "—"}</td>
+                    <td className="px-4 py-2 text-muted-foreground">{warehouse?.name ?? "—"}</td>
+                    <td className="px-4 py-2 text-right tabular-nums font-mono">
+                      <span className={low ? "text-warning font-semibold" : ""}>{level.quantity}</span>
+                      <span className="text-muted-foreground"> {product.unit}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      {!p.is_active ? <Badge variant="secondary">Inactif</Badge>
+                    <td className="px-4 py-2 text-right tabular-nums font-mono text-muted-foreground">{product.low_stock_threshold}</td>
+                    <td className="px-4 py-2">
+                      {!product.is_active ? <Badge variant="secondary">Inactif</Badge>
+                       : level.quantity <= 0 ? <Badge variant="danger">Rupture</Badge>
                        : low ? <Badge variant="warning">Sous seuil</Badge>
-                       : <Badge variant="success">OK</Badge>}
+                       : <Badge variant="success">Normal</Badge>}
                     </td>
                   </tr>
                 );

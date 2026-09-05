@@ -152,6 +152,7 @@ Deno.serve(async request => {
     const { error: profileError } = await supabaseAdmin.from("user_profiles").upsert({
       user_id: newUserId,
       display_name: payload.display_name,
+      email: payload.email,
     });
     if (profileError) return fail(profileError.message, 500);
 

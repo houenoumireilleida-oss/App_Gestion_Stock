@@ -119,8 +119,8 @@
   --table-row-alt: oklch(0.975 0.006 217);
 
   /* Gradients & shadows — navy → teal brand gradient */
-  --gradient-header: linear-gradient(90deg, oklch(0.2 0.035 240) 0%, oklch(0.27 0.05 225) 45%, oklch(0.4 0.08 195) 100%);
-  --gradient-hero: linear-gradient(120deg, oklch(0.18 0.03 240) 0%, oklch(0.28 0.05 222) 50%, oklch(0.4 0.09 195) 100%);
+  --gradient-header: linear-gradient(90deg, oklch(0.14 0.03 255) 0%, oklch(0.22 0.05 235) 35%, oklch(0.5 0.135 193) 100%);
+  --gradient-hero: linear-gradient(120deg, oklch(0.13 0.025 255) 0%, oklch(0.24 0.05 230) 45%, oklch(0.52 0.14 193) 100%);
   --gradient-accent: linear-gradient(135deg, oklch(0.55 0.1 195) 0%, oklch(0.38 0.08 210) 100%);
   --gradient-surface: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.97 0.008 210) 100%);
   --gradient-glow: radial-gradient(ellipse at top, color-mix(in oklab, var(--accent) 20%, transparent), transparent 60%);
@@ -237,10 +237,13 @@
   letter-spacing: 0.05em;
 }
 
-/* Subtle woven-wave pattern for hero banners — original inline SVG, no external asset */
+/* Subtle overlay pattern for hero banners — bundled with the base gradient itself
+   (as extra background-image layers) so it can never blank out the gradient
+   underneath, regardless of class order. */
 .hero-pattern {
   background-image: radial-gradient(circle at 15% 25%, color-mix(in oklab, white 10%, transparent) 0, transparent 45%),
-    radial-gradient(circle at 85% 75%, color-mix(in oklab, white 8%, transparent) 0, transparent 50%);
+    radial-gradient(circle at 85% 75%, color-mix(in oklab, white 8%, transparent) 0, transparent 50%),
+    var(--gradient-hero);
 }
 
 .glass {
@@ -266,5 +269,3 @@
   body { background: white !important; }
   main { padding: 0 !important; }
 }
-
-

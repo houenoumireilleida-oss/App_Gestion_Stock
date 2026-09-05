@@ -24,7 +24,7 @@ export function SectionHero({ eyebrow, title, description, links }: SectionHeroP
 
   return (
     <div className="relative overflow-hidden hero-gradient hero-pattern">
-      <div className="relative p-6 lg:p-8 max-w-7xl">
+      <div className="relative p-6 lg:p-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-white/70 mb-2">
           {eyebrow}
         </p>

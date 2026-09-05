@@ -7,12 +7,20 @@ import { useMyRoles, hasAny } from "@/lib/roles";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { History, ShieldAlert, CheckCircle2, XCircle } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
+import { History, ShieldAlert, CheckCircle2, XCircle, Shield, UserPlus, ScrollText } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/login-history")({
   head: () => ({ meta: [{ title: "Historique de connexion — StockFlow" }] }),
   component: LoginHistoryPage,
 });
+
+const ADMIN_LINKS = [
+  { to: "/admin/users", label: "Employés", icon: UserPlus },
+  { to: "/admin/roles", label: "Rôles", icon: Shield },
+  { to: "/audit", label: "Journal d'audit", icon: ScrollText },
+  { to: "/admin/login-history", label: "Historique de connexion", icon: History },
+];
 
 const PAGE_SIZE = 20;
 
@@ -27,12 +35,15 @@ function LoginHistoryPage() {
 
   if (!hasAny(myRoles, "admin")) {
     return (
-      <div className="p-10 max-w-xl">
-        <Card className="p-8 text-center">
-          <ShieldAlert className="mx-auto size-10 text-warning mb-3" />
-          <h2 className="font-semibold">Accès réservé</h2>
-          <p className="text-sm text-muted-foreground mt-1">Seuls les administrateurs peuvent consulter l'historique de connexion.</p>
-        </Card>
+      <div>
+        <SectionHero eyebrow="Admin" title="Employés, rôles, journal d'audit et connexions" links={ADMIN_LINKS} />
+        <div className="p-10 max-w-xl">
+          <Card className="p-8 text-center">
+            <ShieldAlert className="mx-auto size-10 text-warning mb-3" />
+            <h2 className="font-semibold">Accès réservé</h2>
+            <p className="text-sm text-muted-foreground mt-1">Seuls les administrateurs peuvent consulter l'historique de connexion.</p>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -42,14 +53,17 @@ function LoginHistoryPage() {
   const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-5xl">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight flex items-center gap-2">
-          <History className="size-7 text-slate-600" /> Historique de connexion
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          Tentatives de connexion réussies et échouées, triées de la plus récente à la plus ancienne.
-        </p>
+    <div>
+      <SectionHero eyebrow="Admin" title="Employés, rôles, journal d'audit et connexions" links={ADMIN_LINKS} />
+      <div className="p-6 lg:p-10 space-y-6">
+      <header className="flex items-center gap-3">
+        <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+          <History className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Historique de connexion</h1>
+          <p className="text-sm text-muted-foreground">{count} entrée{count > 1 ? "s" : ""} enregistrée{count > 1 ? "s" : ""}</p>
+        </div>
       </header>
 
       <Card className="overflow-hidden">
@@ -120,6 +134,7 @@ function LoginHistoryPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

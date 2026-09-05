@@ -4,13 +4,21 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMyRoles, hasAny, type AppRole } from "@/lib/roles";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { SectionHero } from "@/components/SectionHero";
 import { toast } from "sonner";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, Shield, UserPlus, ScrollText, History } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/roles")({
   head: () => ({ meta: [{ title: "Rôles — StockFlow" }] }),
   component: RolesPage,
 });
+
+const ADMIN_LINKS = [
+  { to: "/admin/users", label: "Employés", icon: UserPlus },
+  { to: "/admin/roles", label: "Rôles", icon: Shield },
+  { to: "/audit", label: "Journal d'audit", icon: ScrollText },
+  { to: "/admin/login-history", label: "Historique de connexion", icon: History },
+];
 
 type Profile = { user_id: string; display_name: string };
 type Row = { user_id: string; role: AppRole };
@@ -37,12 +45,15 @@ function RolesPage() {
 
   if (!hasAny(myRoles, "admin")) {
     return (
-      <div className="p-10 max-w-xl">
-        <Card className="p-8 text-center">
-          <ShieldAlert className="mx-auto size-10 text-warning mb-3" />
-          <h2 className="font-semibold">Accès réservé</h2>
-          <p className="text-sm text-muted-foreground mt-1">Seuls les administrateurs peuvent gérer les rôles.</p>
-        </Card>
+      <div>
+        <SectionHero eyebrow="Admin" title="Employés, rôles, journal d'audit et connexions" links={ADMIN_LINKS} />
+        <div className="p-10 max-w-xl">
+          <Card className="p-8 text-center">
+            <ShieldAlert className="mx-auto size-10 text-warning mb-3" />
+            <h2 className="font-semibold">Accès réservé</h2>
+            <p className="text-sm text-muted-foreground mt-1">Seuls les administrateurs peuvent gérer les rôles.</p>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -65,10 +76,17 @@ function RolesPage() {
   }
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-4xl">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight">Rôles & permissions</h1>
-        <p className="text-muted-foreground mt-1">Accordez les permissions par utilisateur.</p>
+    <div>
+      <SectionHero eyebrow="Admin" title="Employés, rôles, journal d'audit et connexions" links={ADMIN_LINKS} />
+      <div className="p-6 lg:p-10 space-y-6">
+      <header className="flex items-center gap-3">
+        <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+          <Shield className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Rôles & permissions</h1>
+          <p className="text-sm text-muted-foreground">{(profiles.data ?? []).length} utilisateur{(profiles.data ?? []).length > 1 ? "s" : ""}</p>
+        </div>
       </header>
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
@@ -80,7 +98,7 @@ function RolesPage() {
             {(profiles.data ?? []).map(p => {
               const set = rolesByUser.get(p.user_id) ?? new Set();
               return (
-                <tr key={p.user_id}>
+                <tr key={p.user_id} className="hover:bg-muted/30">
                   <td className="px-4 py-2 font-medium">{p.display_name}</td>
                   {ALL_ROLES.map(r => (
                     <td key={r} className="px-4 py-2 text-center">
@@ -94,6 +112,7 @@ function RolesPage() {
         </table>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

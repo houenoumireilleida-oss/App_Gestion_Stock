@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
@@ -28,12 +30,15 @@ const ADMIN_LINKS = [
   { to: "/admin/login-history", label: "Historique de connexion", icon: History },
 ];
 
-type Profile = { user_id: string; display_name: string };
+type Profile = { user_id: string; display_name: string; employee_code: string | null; email: string | null; warehouse_id: string | null };
 type RoleRow = { user_id: string; role: AppRole };
 type TemporaryCredentials = { email: string; password: string };
+type LoginRow = { user_id: string | null; success: boolean };
+type Warehouse = { id: string; name: string };
 
 async function fetchProfiles(): Promise<Profile[]> {
-  const { data, error } = await supabase.from("user_profiles").select("user_id, display_name").order("display_name");
+  const { data, error } = await supabase.from("user_profiles")
+    .select("user_id, display_name, employee_code, email, warehouse_id").order("employee_code");
   if (error) throw error;
   return data as Profile[];
 }
@@ -42,14 +47,37 @@ async function fetchAllRoles(): Promise<RoleRow[]> {
   if (error) throw error;
   return data as RoleRow[];
 }
+async function fetchAllLogins(): Promise<LoginRow[]> {
+  const { data, error } = await supabase.from("login_history").select("user_id, success");
+  if (error) throw error;
+  return data as LoginRow[];
+}
+async function fetchWarehousesLite(): Promise<Warehouse[]> {
+  const { data, error } = await supabase.from("warehouses").select("id, name");
+  if (error) throw error;
+  return data as Warehouse[];
+}
 
 const ALL_ROLES: AppRole[] = ["admin", "responsable", "vendeur"];
+const ROLE_LABEL: Record<AppRole, string> = { admin: "Administrateur", responsable: "Responsable", vendeur: "Vendeur" };
+
+/** "I. MIREILLE" — initiale du premier mot + reste en majuscules, comme sur
+ *  les autres listes de l'appli (aucune donnée inventée, juste un format
+ *  d'affichage dérivé du nom saisi). */
+function formatEmployeeName(displayName: string) {
+  const parts = displayName.trim().split(/\s+/);
+  if (parts.length < 2) return displayName.toUpperCase();
+  const [first, ...rest] = parts;
+  return `${first[0].toUpperCase()}. ${rest.join(" ").toUpperCase()}`;
+}
 
 function EmployeesPage() {
   const { data: myRoles } = useMyRoles();
   const qc = useQueryClient();
   const profiles = useQuery({ queryKey: ["profiles"], queryFn: fetchProfiles });
   const rolesQ = useQuery({ queryKey: ["all_roles"], queryFn: fetchAllRoles });
+  const loginsQ = useQuery({ queryKey: ["login_history", "all"], queryFn: fetchAllLogins });
+  const warehousesQ = useQuery({ queryKey: ["warehouses", "lite"], queryFn: fetchWarehousesLite });
 
   const [open, setOpen] = useState(false);
   const [credentials, setCredentials] = useState<TemporaryCredentials | null>(null);
@@ -111,6 +139,14 @@ function EmployeesPage() {
     }
   }
 
+  async function onAssignWarehouse(userId: string, warehouseId: string) {
+    const { error } = await supabase.from("user_profiles")
+      .update({ warehouse_id: warehouseId === "none" ? null : warehouseId })
+      .eq("user_id", userId);
+    if (error) { toast.error(error.message); return; }
+    qc.invalidateQueries({ queryKey: ["profiles"] });
+  }
+
   function toggleRole(r: AppRole) {
     setForm(f => ({
       ...f,
@@ -131,7 +167,7 @@ function EmployeesPage() {
         title="Employés, rôles, journal d'audit et connexions"
         links={ADMIN_LINKS}
       />
-      <div className="p-6 lg:p-10 space-y-6 max-w-5xl">
+      <div className="p-6 lg:p-10 space-y-6">
       <header className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Employés</h1>
@@ -181,38 +217,60 @@ function EmployeesPage() {
         <table className="w-full text-sm">
           <thead className="table-head-dark text-left">
             <tr>
+              <th className="px-4 py-2">Matricule</th>
               <th className="px-4 py-2">Nom</th>
-              <th className="px-4 py-2">Rôles</th>
+              <th className="px-4 py-2">E-mail</th>
+              <th className="px-4 py-2">Profil</th>
+              <th className="px-4 py-2">Affectation</th>
+              <th className="px-4 py-2">Compte</th>
               <th className="px-4 py-2 w-28"></th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {(profiles.data ?? []).map(p => (
-              <tr key={p.user_id} className="hover:bg-muted/30">
-                <td className="px-4 py-2 font-medium">{p.display_name}</td>
-                <td className="px-4 py-2 text-muted-foreground capitalize">
-                  {(rolesByUser.get(p.user_id) ?? []).join(" · ") || "—"}
-                </td>
-                <td className="px-4 py-2">
-                  <div className="flex justify-end gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      disabled={resettingId === p.user_id}
-                      title="Réinitialiser le mot de passe"
-                      onClick={() => onResetPassword(p.user_id, p.display_name)}
-                    >
-                      <KeyRound className="size-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => onDelete(p.user_id, p.display_name)} title="Supprimer le compte">
-                      <Trash2 className="size-4 text-destructive" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {(profiles.data ?? []).map(p => {
+              const roles = rolesByUser.get(p.user_id) ?? [];
+              const hasLoggedIn = (loginsQ.data ?? []).some(l => l.user_id === p.user_id && l.success);
+              return (
+                <tr key={p.user_id} className="hover:bg-muted/30">
+                  <td className="px-4 py-2 font-mono text-xs">{p.employee_code ?? "—"}</td>
+                  <td className="px-4 py-2 font-medium">{formatEmployeeName(p.display_name)}</td>
+                  <td className="px-4 py-2 text-muted-foreground">{p.email ?? "—"}</td>
+                  <td className="px-4 py-2 text-muted-foreground">
+                    {roles.length > 0 ? roles.map(r => ROLE_LABEL[r]).join(" · ") : "—"}
+                  </td>
+                  <td className="px-4 py-2">
+                    <Select value={p.warehouse_id ?? "none"} onValueChange={v => onAssignWarehouse(p.user_id, v)}>
+                      <SelectTrigger className="h-8 w-40 text-xs"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">Siège</SelectItem>
+                        {(warehousesQ.data ?? []).map(w => <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </td>
+                  <td className="px-4 py-2">
+                    {hasLoggedIn ? <Badge variant="success">Validée</Badge> : <Badge variant="warning">En attente</Badge>}
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="flex justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={resettingId === p.user_id}
+                        title="Réinitialiser le mot de passe"
+                        onClick={() => onResetPassword(p.user_id, p.display_name)}
+                      >
+                        <KeyRound className="size-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => onDelete(p.user_id, p.display_name)} title="Supprimer le compte">
+                        <Trash2 className="size-4 text-destructive" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
             {(profiles.data ?? []).length === 0 && (
-              <tr><td colSpan={3} className="px-4 py-8 text-center text-muted-foreground">Aucun employé.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">Aucun employé.</td></tr>
             )}
           </tbody>
         </table>

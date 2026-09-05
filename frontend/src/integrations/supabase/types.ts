@@ -1230,25 +1230,42 @@ export type Database = {
         Row: {
           created_at: string
           display_name: string
+          email: string | null
+          employee_code: string | null
           pin_hash: string | null
           updated_at: string
           user_id: string
+          warehouse_id: string | null
         }
         Insert: {
           created_at?: string
           display_name: string
+          email?: string | null
+          employee_code?: string | null
           pin_hash?: string | null
           updated_at?: string
           user_id: string
+          warehouse_id?: string | null
         }
         Update: {
           created_at?: string
           display_name?: string
+          email?: string | null
+          employee_code?: string | null
           pin_hash?: string | null
           updated_at?: string
           user_id?: string
+          warehouse_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_profiles_warehouse_id_fkey"
+            columns: ["warehouse_id"]
+            isOneToOne: false
+            referencedRelation: "warehouses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

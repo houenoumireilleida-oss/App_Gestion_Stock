@@ -5,11 +5,16 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BookOpen } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/aide")({
   head: () => ({ meta: [{ title: "Aide — StockFlow" }] }),
   component: HelpPage,
 });
+
+const HELP_LINKS = [
+  { to: "/aide", label: "Guide d'utilisation", icon: BookOpen },
+];
 
 type HelpTopic = {
   id: string;
@@ -206,14 +211,21 @@ function HelpPage() {
   });
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-4xl">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight flex items-center gap-2">
-          <BookOpen className="size-7 text-slate-600" /> Aide
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          Guide d'utilisation de l'application, adapté à votre rôle.
-        </p>
+    <div>
+      <SectionHero
+        eyebrow="Aide"
+        title="Guide d'utilisation de l'application, adapté à votre rôle"
+        links={HELP_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6">
+      <header className="flex items-center gap-3">
+        <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+          <BookOpen className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Guide d'utilisation</h1>
+          <p className="text-sm text-muted-foreground">{visibleGroups.length} section{visibleGroups.length > 1 ? "s" : ""} disponible{visibleGroups.length > 1 ? "s" : ""} selon votre rôle</p>
+        </div>
       </header>
 
       <Card className="p-6">
@@ -259,6 +271,7 @@ function HelpPage() {
           </Accordion>
         </Card>
       ))}
+      </div>
     </div>
   );
 }

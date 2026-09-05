@@ -37,7 +37,7 @@ function SalesPage() {
         title="Encaissement, tickets, sessions de caisse et retours clients"
         links={VENTE_LINKS}
       />
-      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
+      <div className="p-6 lg:p-10 space-y-6">
       <header>
         <h1 className="text-2xl font-semibold tracking-tight">Ventes</h1>
         <p className="text-muted-foreground mt-1">Historique des encaissements et tickets.</p>

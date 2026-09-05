@@ -13,12 +13,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, FileText, FilePlus2, Settings } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/billing/new")({
   head: () => ({ meta: [{ title: "Nouvelle facture — StockFlow" }] }),
   component: NewInvoicePage,
 });
+
+const BILLING_LINKS = [
+  { to: "/billing", label: "Factures", icon: FileText },
+  { to: "/billing/new", label: "Nouvelle facture", icon: FilePlus2 },
+  { to: "/billing/settings", label: "Société", icon: Settings },
+];
 
 type Line = { description: string; quantity: number; unit_price: number; vat_rate: number };
 
@@ -86,10 +93,21 @@ function NewInvoicePage() {
   const eligibleSales = (sales.data ?? []).filter(s => s.status === "completed");
 
   return (
-    <div className="p-6 lg:p-10 space-y-6 max-w-5xl">
-      <header>
-        <h1 className="text-3xl font-semibold tracking-tight">Nouvelle facture</h1>
-        <p className="text-muted-foreground mt-1">Émettez une facture manuelle ou à partir d'une vente.</p>
+    <div>
+      <SectionHero
+        eyebrow="Facturation"
+        title="Factures conformes, TVA multi-taux et mentions légales"
+        links={BILLING_LINKS}
+      />
+      <div className="p-6 lg:p-10 space-y-6">
+      <header className="flex items-center gap-3">
+        <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+          <FilePlus2 className="size-5" />
+        </span>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Nouvelle facture</h1>
+          <p className="text-sm text-muted-foreground">Émettez une facture manuelle ou à partir d'une vente.</p>
+        </div>
       </header>
 
       <Tabs defaultValue="manual">
@@ -99,118 +117,123 @@ function NewInvoicePage() {
         </TabsList>
 
         <TabsContent value="manual" className="mt-6">
-          <form onSubmit={submit} className="space-y-6">
-            <Card className="p-6 space-y-4">
-              <h2 className="font-semibold">Client</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Client existant</Label>
-                  <Select onValueChange={pickCustomer}>
-                    <SelectTrigger><SelectValue placeholder="Sélectionner…" /></SelectTrigger>
-                    <SelectContent>
-                      {(customers.data ?? []).map(c => (
-                        <SelectItem key={c.id} value={c.id}>{customerName(c)}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Nom / raison sociale *</Label>
-                  <Input required value={form.customer_name}
-                    onChange={e => setForm(f => ({ ...f, customer_name: e.target.value }))} />
-                </div>
-                <div className="space-y-2 sm:col-span-2">
-                  <Label>Adresse</Label>
-                  <Textarea value={form.customer_address}
-                    onChange={e => setForm(f => ({ ...f, customer_address: e.target.value }))} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input type="email" value={form.customer_email}
-                    onChange={e => setForm(f => ({ ...f, customer_email: e.target.value }))} />
-                </div>
-                <div className="space-y-2">
-                  <Label>N° TVA intracom.</Label>
-                  <Input value={form.customer_vat_number}
-                    onChange={e => setForm(f => ({ ...f, customer_vat_number: e.target.value }))} />
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="font-semibold">Lignes</h2>
-                <Button type="button" variant="outline" size="sm"
-                  onClick={() => setLines(ls => [...ls, { description: "", quantity: 1, unit_price: 0, vat_rate: 20 }])}>
-                  <Plus className="size-4 mr-1" />Ligne
-                </Button>
-              </div>
-              <div className="overflow-x-auto">
-                <div className="min-w-[640px]">
-                  <div className="space-y-2">
-                    {lines.map((l, i) => (
-                      <div key={i} className="grid grid-cols-12 gap-2 items-start">
-                        <Input className="col-span-5" placeholder="Description" required value={l.description}
-                          onChange={e => updateLine(i, { description: e.target.value })} />
-                        <Input className="col-span-1" type="number" min={0} step="0.01" value={l.quantity}
-                          onChange={e => updateLine(i, { quantity: Number(e.target.value) })} />
-                        <Input className="col-span-2" type="number" min={0} step="1" placeholder="PU HT FCFA" value={l.unit_price}
-                          onChange={e => updateLine(i, { unit_price: Number(e.target.value) })} />
-                        <Input className="col-span-1" type="number" min={0} step="0.1" value={l.vat_rate}
-                          onChange={e => updateLine(i, { vat_rate: Number(e.target.value) })} />
-                        <div className="col-span-2 text-right text-sm font-mono pt-2">
-                          {formatMoney(l.quantity * l.unit_price * (1 + l.vat_rate / 100))}
-                        </div>
-                        <Button type="button" variant="ghost" size="sm" className="col-span-1"
-                          onClick={() => setLines(ls => ls.filter((_, idx) => idx !== i))}>
-                          <Trash2 className="size-4 text-destructive" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-12 gap-2 text-xs text-muted-foreground border-t pt-2">
-                    <span className="col-span-5">Description</span>
-                    <span className="col-span-1">Qté</span>
-                    <span className="col-span-2">PU HT FCFA</span>
-                    <span className="col-span-1">TVA %</span>
-                    <span className="col-span-2 text-right">Total TTC</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            <div className="grid sm:grid-cols-2 gap-6">
+          <form onSubmit={submit} className="grid lg:grid-cols-[1fr_360px] gap-6 items-start">
+            <div className="space-y-6 min-w-0">
               <Card className="p-6 space-y-4">
-                <div className="space-y-2">
-                  <Label>Date d'échéance</Label>
-                  <Input type="date" value={form.due_date}
-                    onChange={e => setForm(f => ({ ...f, due_date: e.target.value }))} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Statut initial</Label>
-                  <Select value={form.status} onValueChange={(v: InvoiceStatus) => setForm(f => ({ ...f, status: v }))}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Brouillon</SelectItem>
-                      <SelectItem value="issued">Émise</SelectItem>
-                      <SelectItem value="paid">Payée</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Notes</Label>
-                  <Textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
+                <h2 className="font-semibold">Client</h2>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Client existant</Label>
+                    <Select onValueChange={pickCustomer}>
+                      <SelectTrigger><SelectValue placeholder="Sélectionner…" /></SelectTrigger>
+                      <SelectContent>
+                        {(customers.data ?? []).map(c => (
+                          <SelectItem key={c.id} value={c.id}>{customerName(c)}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Nom / raison sociale *</Label>
+                    <Input required value={form.customer_name}
+                      onChange={e => setForm(f => ({ ...f, customer_name: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label>Adresse</Label>
+                    <Textarea value={form.customer_address}
+                      onChange={e => setForm(f => ({ ...f, customer_address: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Email</Label>
+                    <Input type="email" value={form.customer_email}
+                      onChange={e => setForm(f => ({ ...f, customer_email: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>N° TVA intracom.</Label>
+                    <Input value={form.customer_vat_number}
+                      onChange={e => setForm(f => ({ ...f, customer_vat_number: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Échéance</Label>
+                    <Input type="date" value={form.due_date}
+                      onChange={e => setForm(f => ({ ...f, due_date: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Statut initial</Label>
+                    <Select value={form.status} onValueChange={(v: InvoiceStatus) => setForm(f => ({ ...f, status: v }))}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="draft">Brouillon</SelectItem>
+                        <SelectItem value="issued">Émise</SelectItem>
+                        <SelectItem value="paid">Payée</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </Card>
+
+              <Card className="p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-semibold">Lignes de facturation</h2>
+                  <Button type="button" variant="outline" size="sm"
+                    onClick={() => setLines(ls => [...ls, { description: "", quantity: 1, unit_price: 0, vat_rate: 20 }])}>
+                    <Plus className="size-4 mr-1" />Ligne
+                  </Button>
+                </div>
+                <div className="overflow-x-auto">
+                  <div className="min-w-[640px]">
+                    <div className="space-y-2">
+                      {lines.map((l, i) => (
+                        <div key={i} className="grid grid-cols-12 gap-2 items-start">
+                          <Input className="col-span-5" placeholder="Description" required value={l.description}
+                            onChange={e => updateLine(i, { description: e.target.value })} />
+                          <Input className="col-span-1" type="number" min={0} step="0.01" value={l.quantity}
+                            onChange={e => updateLine(i, { quantity: Number(e.target.value) })} />
+                          <Input className="col-span-2" type="number" min={0} step="1" placeholder="PU HT FCFA" value={l.unit_price}
+                            onChange={e => updateLine(i, { unit_price: Number(e.target.value) })} />
+                          <Input className="col-span-1" type="number" min={0} step="0.1" value={l.vat_rate}
+                            onChange={e => updateLine(i, { vat_rate: Number(e.target.value) })} />
+                          <div className="col-span-2 text-right text-sm font-mono pt-2">
+                            {formatMoney(l.quantity * l.unit_price * (1 + l.vat_rate / 100))}
+                          </div>
+                          <Button type="button" variant="ghost" size="sm" className="col-span-1"
+                            onClick={() => setLines(ls => ls.filter((_, idx) => idx !== i))}>
+                            <Trash2 className="size-4 text-destructive" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-12 gap-2 text-xs text-muted-foreground border-t pt-2">
+                      <span className="col-span-5">Description</span>
+                      <span className="col-span-1">Qté</span>
+                      <span className="col-span-2">PU HT FCFA</span>
+                      <span className="col-span-1">TVA %</span>
+                      <span className="col-span-2 text-right">Total TTC</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
               <Card className="p-6 space-y-2">
-                <div className="flex justify-between text-sm"><span>Sous-total HT</span><span className="font-mono">{formatMoney(subtotal)}</span></div>
-                <div className="flex justify-between text-sm"><span>TVA</span><span className="font-mono">{formatMoney(tax)}</span></div>
-                <div className="flex justify-between text-lg font-semibold border-t pt-2"><span>Total TTC</span><span className="font-mono">{formatMoney(total)}</span></div>
-                <Button type="submit" className="w-full mt-4" disabled={submitting}>
-                  {submitting ? "Création…" : "Créer la facture"}
-                </Button>
+                <Label>Notes</Label>
+                <Textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
               </Card>
             </div>
+
+            {/* Récapitulatif — sticky on desktop so totals stay visible while scrolling the form */}
+            <Card className="p-6 space-y-3 lg:sticky lg:top-20">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Récapitulatif</p>
+              <div className="flex justify-between text-sm"><span className="text-muted-foreground">Total HT</span><span className="font-mono">{formatMoney(subtotal)}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-muted-foreground">TVA</span><span className="font-mono">{formatMoney(tax)}</span></div>
+              <div className="flex justify-between text-lg font-semibold border-t pt-3"><span>Total TTC</span><span className="font-mono">{formatMoney(total)}</span></div>
+              <p className="text-xs text-muted-foreground pt-1">
+                Émission le {formatDate(new Date().toISOString())}
+                {form.due_date && ` — règlement attendu le ${form.due_date}`}.
+              </p>
+              <Button type="submit" className="w-full mt-2" disabled={submitting}>
+                {submitting ? "Création…" : "Émettre la facture"}
+              </Button>
+            </Card>
           </form>
         </TabsContent>
 
@@ -253,6 +276,7 @@ function NewInvoicePage() {
           </Card>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 }

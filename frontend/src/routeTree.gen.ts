@@ -13,10 +13,12 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWarehousesRouteImport } from './routes/_authenticated/warehouses'
+import { Route as AuthenticatedTreasuryRouteImport } from './routes/_authenticated/treasury'
 import { Route as AuthenticatedSuppliersRouteImport } from './routes/_authenticated/suppliers'
 import { Route as AuthenticatedSupplierReturnsRouteImport } from './routes/_authenticated/supplier-returns'
 import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedFinanceReportsRouteImport } from './routes/_authenticated/finance-reports'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedCashSessionsRouteImport } from './routes/_authenticated/cash-sessions'
@@ -67,6 +69,11 @@ const AuthenticatedWarehousesRoute = AuthenticatedWarehousesRouteImport.update({
   path: '/warehouses',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTreasuryRoute = AuthenticatedTreasuryRouteImport.update({
+  id: '/treasury',
+  path: '/treasury',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSuppliersRoute = AuthenticatedSuppliersRouteImport.update({
   id: '/suppliers',
   path: '/suppliers',
@@ -87,6 +94,12 @@ const AuthenticatedNotificationsRoute =
   AuthenticatedNotificationsRouteImport.update({
     id: '/notifications',
     path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceReportsRoute =
+  AuthenticatedFinanceReportsRouteImport.update({
+    id: '/finance-reports',
+    path: '/finance-reports',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -266,10 +279,12 @@ export interface FileRoutesByFullPath {
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/finance-reports': typeof AuthenticatedFinanceReportsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
   '/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
+  '/treasury': typeof AuthenticatedTreasuryRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
   '/admin/login-history': typeof AuthenticatedAdminLoginHistoryRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
@@ -305,10 +320,12 @@ export interface FileRoutesByTo {
   '/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/finance-reports': typeof AuthenticatedFinanceReportsRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/pos': typeof AuthenticatedPosRoute
   '/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/suppliers': typeof AuthenticatedSuppliersRoute
+  '/treasury': typeof AuthenticatedTreasuryRoute
   '/warehouses': typeof AuthenticatedWarehousesRoute
   '/admin/login-history': typeof AuthenticatedAdminLoginHistoryRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
@@ -346,10 +363,12 @@ export interface FileRoutesById {
   '/_authenticated/cash-sessions': typeof AuthenticatedCashSessionsRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/finance-reports': typeof AuthenticatedFinanceReportsRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/pos': typeof AuthenticatedPosRoute
   '/_authenticated/supplier-returns': typeof AuthenticatedSupplierReturnsRoute
   '/_authenticated/suppliers': typeof AuthenticatedSuppliersRoute
+  '/_authenticated/treasury': typeof AuthenticatedTreasuryRoute
   '/_authenticated/warehouses': typeof AuthenticatedWarehousesRoute
   '/_authenticated/admin/login-history': typeof AuthenticatedAdminLoginHistoryRoute
   '/_authenticated/admin/roles': typeof AuthenticatedAdminRolesRoute
@@ -387,10 +406,12 @@ export interface FileRouteTypes {
     | '/cash-sessions'
     | '/customers'
     | '/dashboard'
+    | '/finance-reports'
     | '/notifications'
     | '/pos'
     | '/supplier-returns'
     | '/suppliers'
+    | '/treasury'
     | '/warehouses'
     | '/admin/login-history'
     | '/admin/roles'
@@ -426,10 +447,12 @@ export interface FileRouteTypes {
     | '/cash-sessions'
     | '/customers'
     | '/dashboard'
+    | '/finance-reports'
     | '/notifications'
     | '/pos'
     | '/supplier-returns'
     | '/suppliers'
+    | '/treasury'
     | '/warehouses'
     | '/admin/login-history'
     | '/admin/roles'
@@ -466,10 +489,12 @@ export interface FileRouteTypes {
     | '/_authenticated/cash-sessions'
     | '/_authenticated/customers'
     | '/_authenticated/dashboard'
+    | '/_authenticated/finance-reports'
     | '/_authenticated/notifications'
     | '/_authenticated/pos'
     | '/_authenticated/supplier-returns'
     | '/_authenticated/suppliers'
+    | '/_authenticated/treasury'
     | '/_authenticated/warehouses'
     | '/_authenticated/admin/login-history'
     | '/_authenticated/admin/roles'
@@ -534,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWarehousesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/treasury': {
+      id: '/_authenticated/treasury'
+      path: '/treasury'
+      fullPath: '/treasury'
+      preLoaderRoute: typeof AuthenticatedTreasuryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/suppliers': {
       id: '/_authenticated/suppliers'
       path: '/suppliers'
@@ -560,6 +592,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/finance-reports': {
+      id: '/_authenticated/finance-reports'
+      path: '/finance-reports'
+      fullPath: '/finance-reports'
+      preLoaderRoute: typeof AuthenticatedFinanceReportsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -781,10 +820,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCashSessionsRoute: typeof AuthenticatedCashSessionsRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFinanceReportsRoute: typeof AuthenticatedFinanceReportsRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPosRoute: typeof AuthenticatedPosRoute
   AuthenticatedSupplierReturnsRoute: typeof AuthenticatedSupplierReturnsRoute
   AuthenticatedSuppliersRoute: typeof AuthenticatedSuppliersRoute
+  AuthenticatedTreasuryRoute: typeof AuthenticatedTreasuryRoute
   AuthenticatedWarehousesRoute: typeof AuthenticatedWarehousesRoute
   AuthenticatedAdminLoginHistoryRoute: typeof AuthenticatedAdminLoginHistoryRoute
   AuthenticatedAdminRolesRoute: typeof AuthenticatedAdminRolesRoute
@@ -819,10 +860,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCashSessionsRoute: AuthenticatedCashSessionsRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFinanceReportsRoute: AuthenticatedFinanceReportsRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPosRoute: AuthenticatedPosRoute,
   AuthenticatedSupplierReturnsRoute: AuthenticatedSupplierReturnsRoute,
   AuthenticatedSuppliersRoute: AuthenticatedSuppliersRoute,
+  AuthenticatedTreasuryRoute: AuthenticatedTreasuryRoute,
   AuthenticatedWarehousesRoute: AuthenticatedWarehousesRoute,
   AuthenticatedAdminLoginHistoryRoute: AuthenticatedAdminLoginHistoryRoute,
   AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute,

@@ -10,12 +10,20 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Plus, Minus, Trash2, ScanLine, X, UserPlus } from "lucide-react";
+import { Plus, Minus, Trash2, ScanLine, X, UserPlus, ShoppingCart, Receipt, Wallet, Undo2 } from "lucide-react";
+import { SectionHero } from "@/components/SectionHero";
 
 export const Route = createFileRoute("/_authenticated/pos")({
   head: () => ({ meta: [{ title: "Caisse — StockFlow" }] }),
   component: POSPage,
 });
+
+const VENTE_LINKS = [
+  { to: "/pos", label: "Caisse", icon: ShoppingCart },
+  { to: "/sales", label: "Ventes", icon: Receipt },
+  { to: "/cash-sessions", label: "Sessions & Clôture Z", icon: Wallet },
+  { to: "/returns", label: "Retours clients", icon: Undo2 },
+];
 
 type CartLine = { product: Product; qty: number; discount: number };
 
@@ -96,9 +104,15 @@ function POSPage() {
   }
 
   return (
-    <div className="h-[calc(100vh-2rem)] md:h-screen grid grid-cols-1 lg:grid-cols-[1fr_22rem]">
+    <div>
+      <SectionHero
+        eyebrow="Vente"
+        title="Encaissement, tickets, sessions de caisse et retours clients"
+        links={VENTE_LINKS}
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] lg:h-[calc(100vh-4rem)]">
       {/* Catalog */}
-      <div className="p-4 lg:p-6 overflow-auto">
+      <div className="p-4 lg:p-6 lg:overflow-auto">
         <header className="flex flex-wrap items-center gap-3 mb-4">
           <h1 className="text-2xl font-semibold">Caisse</h1>
           <Select value={warehouseId} onValueChange={setWarehouseId}>
@@ -239,6 +253,7 @@ function POSPage() {
           }
         }}
       />
+      </div>
     </div>
   );
 }

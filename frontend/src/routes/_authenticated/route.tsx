@@ -96,11 +96,49 @@ function AuthLayout() {
   const initials = (user.email ?? "?").slice(0, 2).toUpperCase();
   const roleLabel = roles && roles.length > 0 ? roles.join(" · ") : "—";
 
+  const navPills = (
+    <>
+      {sections.map(s => {
+        const isActive = s.key === activeSection?.key;
+        const first = s.items[0];
+        return (
+          <Link
+            key={s.key}
+            to={first.to}
+            className={`nav-pill ${isActive ? "nav-pill-active" : "nav-pill-inactive"}`}
+          >
+            {s.title}
+          </Link>
+        );
+      })}
+    </>
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Top bar — brand + primary nav + user menu. Single row: subsections now
-          live inside each section's SectionHero banner rather than a second row here. */}
-      <header className="header-gradient text-white">
+      {/* Invisible placeholder — reserves the exact height of the header (which
+          varies between mobile and desktop) so page content isn't hidden under
+          the real, fixed header below. Plain static markup only: it must NOT
+          include stateful/live components (NotificationBell, DropdownMenu),
+          since mounting those twice double-subscribes them (e.g. Supabase
+          realtime channels) and crashes the app. */}
+      <div className="header-gradient text-white invisible" aria-hidden="true">
+        <div className="px-4 lg:px-8 h-16 flex items-center gap-6">
+          <span className="size-9 rounded-lg bg-white shrink-0" />
+          <nav className="hidden md:flex items-center gap-1 flex-1">{navPills}</nav>
+          <div className="ml-auto flex items-center gap-2">
+            <span className="size-9 block" />
+            <span className="h-8 w-32 block" />
+          </div>
+        </div>
+        <div className="md:hidden border-t border-white/15">
+          <div className="flex gap-1 px-2 py-2">{navPills}</div>
+        </div>
+      </div>
+
+      {/* Real header — fixed to the viewport top so it never scrolls away,
+          regardless of any ancestor overflow quirks that can break `sticky`. */}
+      <header className="header-gradient text-white fixed top-0 inset-x-0 z-40 shadow-md">
         <div className="px-4 lg:px-8 h-16 flex items-center gap-6">
           <Link to="/dashboard" className="flex items-center shrink-0">
             <span className="size-9 rounded-lg bg-white grid place-items-center shadow-sm shrink-0">
@@ -108,21 +146,7 @@ function AuthLayout() {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1 flex-1 overflow-x-auto">
-            {sections.map(s => {
-              const isActive = s.key === activeSection?.key;
-              const first = s.items[0];
-              return (
-                <Link
-                  key={s.key}
-                  to={first.to}
-                  className={`nav-pill ${isActive ? "nav-pill-active" : "nav-pill-inactive"}`}
-                >
-                  {s.title}
-                </Link>
-              );
-            })}
-          </nav>
+          <nav className="hidden md:flex items-center gap-1 flex-1 overflow-x-auto">{navPills}</nav>
 
           <div className="ml-auto flex items-center gap-2">
             <NotificationBell />
@@ -152,22 +176,13 @@ function AuthLayout() {
 
         {/* Mobile primary nav */}
         <div className="md:hidden border-t border-white/15 overflow-x-auto">
-          <div className="flex gap-1 px-2 py-2">
-            {sections.map(s => {
-              const isActive = s.key === activeSection?.key;
-              const first = s.items[0];
-              return (
-                <Link key={s.key} to={first.to} className={`nav-pill ${isActive ? "nav-pill-active" : "nav-pill-inactive"}`}>
-                  {s.title}
-                </Link>
-              );
-            })}
-          </div>
+          <div className="flex gap-1 px-2 py-2">{navPills}</div>
         </div>
       </header>
 
       <main className="flex-1 min-w-0">
         <Outlet />
+
       </main>
     </div>
   );

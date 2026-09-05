@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchSuppliers } from "@/lib/purchasing";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,14 +48,19 @@ function SuppliersPage() {
         title="Fournisseurs, commandes et retours fournisseurs"
         links={PURCHASING_LINKS}
       />
-      <div className="p-6 lg:p-10 space-y-6 max-w-7xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Fournisseurs</h1>
-          <p className="text-muted-foreground mt-1">Vos partenaires et leurs conditions.</p>
+      <div className="p-6 lg:p-10 space-y-6">
+      <header className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-3">
+          <span className="size-11 rounded-xl bg-[var(--sidebar)] text-white grid place-items-center shrink-0">
+            <Truck className="size-5" />
+          </span>
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Fournisseurs</h1>
+            <p className="text-sm text-muted-foreground">{(q.data ?? []).length} fournisseur{(q.data ?? []).length > 1 ? "s" : ""}</p>
+          </div>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild><Button><Plus className="size-4" /> Nouveau</Button></DialogTrigger>
+          <DialogTrigger asChild><Button><Plus className="size-4" /> Nouveau fournisseur</Button></DialogTrigger>
           <DialogContent>
             <DialogHeader><DialogTitle>Nouveau fournisseur</DialogTitle></DialogHeader>
             <form onSubmit={save} className="space-y-3">
@@ -72,23 +78,32 @@ function SuppliersPage() {
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+      </header>
 
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="table-head-dark text-left">
-            <tr><th className="px-4 py-2">Code</th><th className="px-4 py-2">Nom</th><th className="px-4 py-2">Contact</th><th className="px-4 py-2">Email</th><th className="px-4 py-2">Téléphone</th><th className="px-4 py-2">Conditions</th></tr>
+            <tr>
+              <th className="px-4 py-2">Code</th>
+              <th className="px-4 py-2">Fournisseur</th>
+              <th className="px-4 py-2">Contact</th>
+              <th className="px-4 py-2">Téléphone</th>
+              <th className="px-4 py-2">Conditions</th>
+              <th className="px-4 py-2">Statut</th>
+            </tr>
           </thead>
           <tbody className="divide-y">
             {(q.data ?? []).map(s => (
               <tr key={s.id} className="hover:bg-muted/30">
-                <td className="px-4 py-2 font-mono">{s.code}</td>
+                <td className="px-4 py-2 font-mono text-xs">{s.code}</td>
                 <td className="px-4 py-2 font-medium">{s.name}</td>
-                <td className="px-4 py-2">{s.contact_name ?? "—"}</td>
-                <td className="px-4 py-2">{s.email ?? "—"}</td>
-                <td className="px-4 py-2">{s.phone ?? "—"}</td>
-                <td className="px-4 py-2">{s.payment_terms ?? "—"}</td>
+                <td className="px-4 py-2 text-muted-foreground">{s.contact_name ?? "—"}</td>
+                <td className="px-4 py-2 text-muted-foreground">{s.phone ?? "—"}</td>
+                <td className="px-4 py-2 text-muted-foreground">{s.payment_terms ?? "—"}</td>
+                <td className="px-4 py-2">
+                  {s.is_active ? <Badge variant="success">Actif</Badge> : <Badge variant="secondary">Inactif</Badge>}
+                </td>
               </tr>
             ))}
             {(q.data ?? []).length === 0 && (

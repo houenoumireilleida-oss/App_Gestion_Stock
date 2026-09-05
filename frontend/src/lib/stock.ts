@@ -47,6 +47,7 @@ export type StockMovement = {
   quantity: number;
   reason: string | null;
   reference: string | null;
+  created_by: string | null;
   created_at: string;
 };
 
