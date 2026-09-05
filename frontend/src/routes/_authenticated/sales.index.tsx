@@ -60,7 +60,7 @@ function SalesPage() {
               const w = (warehouses.data ?? []).find(w => w.id === s.warehouse_id);
               return (
                 <tr key={s.id} className="hover:bg-muted/30">
-                  <td className="px-4 py-2"><Link to="/sales/$id" params={{ id: s.id }} className="text-accent hover:underline font-mono">{s.reference}</Link></td>
+                  <td className="px-4 py-2"><Link to="/sales/$id" params={{ id: s.id }} search={{ print: undefined }} className="text-accent hover:underline font-mono">{s.reference}</Link></td>
                   <td className="px-4 py-2">{formatDate(s.created_at)}</td>
                   <td className="px-4 py-2">{c ? customerName(c) : "—"}</td>
                   <td className="px-4 py-2">{w?.name ?? "—"}</td>

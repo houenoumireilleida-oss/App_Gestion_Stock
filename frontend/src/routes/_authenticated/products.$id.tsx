@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useMyRoles, hasAny } from "@/lib/roles";
 
 export const Route = createFileRoute("/_authenticated/products/$id")({
   head: () => ({ meta: [{ title: "Produit — StockFlow" }] }),
@@ -20,6 +21,8 @@ function ProductDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { data: roles } = useMyRoles();
+  const canManage = hasAny(roles, "admin", "responsable");
   const products = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
   const warehouses = useQuery({ queryKey: ["warehouses"], queryFn: fetchWarehouses });
   const levels = useQuery({ queryKey: ["stock_levels"], queryFn: fetchStockLevels });
@@ -105,12 +108,15 @@ function ProductDetail() {
               <F label="Seuil d'alerte"><Input type="number" value={form.low_stock_threshold ?? 0} onChange={set("low_stock_threshold")} /></F>
             </div>
             <div className="flex justify-between pt-2">
-              <Button type="button" variant="ghost" className="text-destructive hover:text-destructive"
+              <Button type="button" variant="ghost" className="text-destructive hover:text-destructive" disabled={!canManage}
                 onClick={() => { if (confirm("Supprimer ce produit ?")) del.mutate(); }}>
                 <Trash2 className="size-4 mr-1" /> Supprimer
               </Button>
-              <Button type="submit" disabled={update.isPending}>{update.isPending ? "…" : "Enregistrer"}</Button>
+              <Button type="submit" disabled={update.isPending || !canManage}>{update.isPending ? "…" : "Enregistrer"}</Button>
             </div>
+            {!canManage && (
+              <p className="text-xs text-muted-foreground text-right">Lecture seule — réservé aux administrateurs et responsables pour modifier.</p>
+            )}
           </form>
         </Card>
 

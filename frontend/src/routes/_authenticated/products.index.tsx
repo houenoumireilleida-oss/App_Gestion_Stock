@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchProducts, fetchStockLevels, fetchWarehouses, formatMoney } from "@/lib/stock";
+import { useMyRoles, hasAny } from "@/lib/roles";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,8 @@ const STOCK_LINKS = [
 ];
 
 function ProductsList() {
+  const { data: roles } = useMyRoles();
+  const canManage = hasAny(roles, "admin", "responsable");
   const products = useQuery({ queryKey: ["products"], queryFn: fetchProducts });
   const levels = useQuery({ queryKey: ["stock_levels"], queryFn: fetchStockLevels });
   const warehouses = useQuery({ queryKey: ["warehouses"], queryFn: fetchWarehouses });
@@ -78,7 +81,7 @@ function ProductsList() {
             <p className="text-sm text-muted-foreground">{items.length} référence{items.length > 1 ? "s" : ""}</p>
           </div>
         </div>
-        <Link to="/products/new"><Button><Plus className="size-4 mr-1" /> Nouveau produit</Button></Link>
+        <Link to="/products/new"><Button disabled={!canManage}><Plus className="size-4 mr-1" /> Nouveau produit</Button></Link>
       </header>
 
       <div className="grid gap-4 sm:grid-cols-3">

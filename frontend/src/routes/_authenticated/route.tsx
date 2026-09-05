@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, Warehouse, ArrowLeftRight, Boxes, LogOut,
   ShoppingCart, Receipt, Truck, ClipboardList, Users, Wallet, Shield,
   FileText, ChevronDown, Settings, UserPlus, AlertTriangle, PackageMinus,
-  Undo2, Banknote, ScrollText, PackageX, History, BookOpen,
+  Undo2, Banknote, ScrollText, PackageX, History, BookOpen, PiggyBank, BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -52,6 +52,8 @@ const NAV: NavSection[] = [
   ]},
   { key: "finance", title: "Finances", items: [
     { to: "/disbursement", label: "Décaissements", icon: Banknote },
+    { to: "/treasury", label: "Trésorerie", icon: PiggyBank },
+    { to: "/finance-reports", label: "Rapports", icon: BarChart3 },
   ]},
   { key: "purchasing", title: "Achats", items: [
     { to: "/suppliers", label: "Fournisseurs", icon: Truck, roles: ["admin","responsable"] },
@@ -124,7 +126,7 @@ function AuthLayout() {
           realtime channels) and crashes the app. */}
       <div className="header-gradient text-white invisible" aria-hidden="true">
         <div className="px-4 lg:px-8 h-16 flex items-center gap-6">
-          <span className="size-9 rounded-lg bg-white shrink-0" />
+          <span className="size-9 rounded-full bg-white/95 shrink-0" />
           <nav className="hidden md:flex items-center gap-1 flex-1">{navPills}</nav>
           <div className="ml-auto flex items-center gap-2">
             <span className="size-9 block" />
@@ -138,11 +140,11 @@ function AuthLayout() {
 
       {/* Real header — fixed to the viewport top so it never scrolls away,
           regardless of any ancestor overflow quirks that can break `sticky`. */}
-      <header className="header-gradient text-white fixed top-0 inset-x-0 z-40 shadow-md">
+      <header className="header-gradient text-white fixed top-0 inset-x-0 z-50 shadow-md">
         <div className="px-4 lg:px-8 h-16 flex items-center gap-6">
           <Link to="/dashboard" className="flex items-center shrink-0">
-            <span className="size-9 rounded-lg bg-white grid place-items-center shadow-sm shrink-0">
-              <img src="/logo-mytics.png" alt="Mytics" className="h-6 w-auto" />
+            <span className="size-15 grid place-items-center shrink-0">
+              <img src="/logo-mytics.png" alt="Mytics" className="h-11 w-auto" />
             </span>
           </Link>
 

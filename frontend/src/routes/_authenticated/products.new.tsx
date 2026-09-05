@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
+import { useMyRoles, hasAny } from "@/lib/roles";
 
 export const Route = createFileRoute("/_authenticated/products/new")({
   head: () => ({ meta: [{ title: "Nouveau produit — StockFlow" }] }),
@@ -18,10 +19,25 @@ export const Route = createFileRoute("/_authenticated/products/new")({
 function NewProduct() {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { data: roles } = useMyRoles();
+  const canManage = hasAny(roles, "admin", "responsable");
   const [form, setForm] = useState({
     sku: "", name: "", barcode: "", category: "", description: "",
     unit: "pcs", price: "0", cost: "0", vat_rate: "20", low_stock_threshold: "5",
   });
+
+  if (!canManage) {
+    return (
+      <div className="p-10 max-w-xl">
+        <Card className="p-8 text-center">
+          <ShieldAlert className="mx-auto size-10 text-warning mb-3" />
+          <h2 className="font-semibold">Accès réservé</h2>
+          <p className="text-sm text-muted-foreground mt-1">Seuls les administrateurs et responsables peuvent créer un produit.</p>
+          <Link to="/products"><Button variant="outline" className="mt-4">Retour aux produits</Button></Link>
+        </Card>
+      </div>
+    );
+  }
 
   const mut = useMutation({
     mutationFn: async () => {
