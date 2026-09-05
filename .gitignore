@@ -32,3 +32,6 @@ dist-ssr
 *.sw?
 
 *.sql
+
+.env
+frontend/.env
