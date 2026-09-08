@@ -10,6 +10,7 @@ import {
   RefreshCw, ArrowLeftRight, Gauge, ShoppingCart, BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SECTION_BANNER } from "@/components/sectionBanners";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Tableau de bord — StockFlow" }] }),
@@ -103,7 +104,9 @@ function Dashboard() {
   return (
     <div className="min-h-full">
       {/* Hero */}
-      <div className="relative overflow-hidden hero-gradient hero-pattern">
+      <div className="relative overflow-hidden">
+        <img src={SECTION_BANNER["Tableau de bord"]} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 hero-gradient opacity-90" />
         <div className="relative p-6 lg:p-10">
           <p className="text-xs font-semibold uppercase tracking-widest text-white/70 mb-2">Tableau de bord</p>
           <h1 className="text-2xl lg:text-3xl font-semibold tracking-tight text-white max-w-2xl">

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Boxes, Sparkles, ShieldCheck, Zap, Eye, EyeOff } from "lucide-react";
-import heroImg from "@/assets/auth-hero.jpg";
+import heroImg from "@/assets/banners/login-visual.jpg";
 
 
 export const Route = createFileRoute("/auth")({
@@ -129,4 +129,3 @@ function AuthPage() {
     </div>
   );
 }
-
